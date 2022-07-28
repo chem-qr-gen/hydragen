@@ -7,5 +7,6 @@ COPY . .
 RUN poetry install
 WORKDIR /usr/pn/app/static
 RUN npm i
+WORKDIR /usr/pn/app
 EXPOSE 5000
-CMD poetry run gunicorn -w 4 -b 0.0.0.0:5000 app:app
+CMD poetry run gunicorn -w 4 -b 0.0.0.0:5001 app:app
