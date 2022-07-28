@@ -1,0 +1,23 @@
+img#question-img {
+    max-height: 237px;
+}
+input {
+    transition: border-color 0.25s;
+}
+input.wrong {
+    border-color: #c00;
+}
+input.correct {
+    border-color: #0c0;
+}
+p#question-feedback {
+    display: none;
+}
+p#question-feedback.wrong {
+    display: block;
+    color: #c00;
+}
+p#question-feedback.correct {
+    display: block;
+    color: #0c0;
+}

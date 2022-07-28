@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "chemquest-mithril"
+version = "0.1.0"
+description = "An automatic question generator for organic chemistry."
+authors = ["unriellistic"]
+license = "MPL 2.0"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.1.3"
+Flask-SQLAlchemy = "^2.5.1"
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+pylint = "^2.14.5"
+pylint-flask-sqlalchemy = "^0.2.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
