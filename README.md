@@ -10,6 +10,7 @@
 $ poetry install
 $ cd static
 $ npm i
+$ npm run build
 $ cd ..
 $ poetry run gunicorn -w 4 -b 0.0.0.0:5001 app:app
 ```
