@@ -1,16 +1,12 @@
 import m from "mithril";
 import $ from "cash-dom";
 
-var questionId;
 var answers;
 const getNewQuestion = () => {
-    var possibleIds = Array(9).fill(1).map((x, y) => x + y); // array from 1 to 9
-    if (questionId) { possibleIds.splice(possibleIds.indexOf(questionId), 1); }
-    questionId = possibleIds[Math.floor(Math.random() * possibleIds.length)];
     return m.request({
         method: "GET",
         url: "/ms_questions",
-        params: {id: questionId}
+        params: {id: "random"}
     });
 }
 

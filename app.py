@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, url_for
+import random
+from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -25,8 +26,9 @@ def index():
 
 @app.route('/ms_questions')
 def ms_questions():
-    question_id = int(request.args.get('id'))
-    return dict(Question.query.filter_by(id = question_id).first())
-
+    question_id = request.args.get('id')
+    if question_id == "random":
+        return redirect(url_for('ms_questions', id = random.randint(1, 9)))
+    else: return dict(Question.query.filter_by(id = int(question_id)).first())
 if __name__ == "__main__":
     app.run(debug = True, host = "0.0.0.0")
