@@ -13,11 +13,11 @@ input.correct {
 p#question-feedback {
     display: none;
 }
-p#question-feedback.wrong {
+p#question-feedback.is-success {
     display: block;
-    color: #c00;
+    color: hsl(141, 53%, 53%)
 }
-p#question-feedback.correct {
+p#question-feedback.is-danger {
     display: block;
-    color: #0c0;
+    color: hsl(348, 100%, 61%);
 }

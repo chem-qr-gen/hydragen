@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chemquest-mithril"
-version = "0.1.1"
+version = "0.1.2"
 description = "An automatic question generator for organic chemistry."
 authors = ["unriellistic"]
 license = "MPL 2.0"

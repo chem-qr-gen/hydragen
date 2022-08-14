@@ -12,20 +12,31 @@ const getNewQuestion = () => {
 
 var Home = {
     view: () => (
-        <div class="container">
-            <h3>Mass Spectrometry Practice</h3>
-            <div>
-                <fieldset>
+        <div class="content container">
+            <div class="block">
+                <h1>Mass Spectrometry Practice</h1>
+            </div>
+            <div class="block">
+                <div class="field">
                     <p id="question-id" style="display:none;"></p>
                     <p id="question-text-1">test 1</p>
                     <img id="question-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEAAAAALAAAAAABAAEAAAIBAAA="></img>
                     <p id="question-text-2">test 2</p>
-                    <input type="text" placeholder="Answer" id="answer"></input>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" placeholder="Answer" id="answer"></input>
+                    </div>
                     <p id="question-feedback"></p>
-                    <button class="button" id="submit">Submit</button>
-                    &nbsp;
-                    <button class="button button-outline" id="next">Next Question</button>
-                </fieldset>
+                </div>
+                <div class="field is-grouped">
+                    <div class="control">
+                        <button class="button is-primary" id="submit">Submit</button>
+                    </div>
+                    <div class="control">
+                        <button class="button" id="next">Next Question</button>
+                    </div>
+                </div>
             </div>
         </div>
     ),
@@ -39,9 +50,9 @@ var Home = {
         });
         $("#next").on("click", () => {
             getNewQuestion().then(response => {
-                $("#answer").removeClass("wrong correct");
+                $("#answer").removeClass("is-success is-danger");
                 $("#answer").val("");
-                $("#question-feedback").removeClass("wrong correct");
+                $("#question-feedback").removeClass("is-success is-danger");
                 $("#question-id").text(response.id);
                 $("#question-text-1").text(response.text1);
                 $("#question-img").attr("src", response.imgsrc);
@@ -51,16 +62,16 @@ var Home = {
         });
         $("#submit").on("click", () => {
             if (answers.includes($("#answer").val())) {
-                $("#answer").removeClass("wrong");
-                $("#answer").addClass("correct");
-                $("#question-feedback").removeClass("wrong");
-                $("#question-feedback").addClass("correct");
+                $("#answer").removeClass("is-danger");
+                $("#answer").addClass("is-success");
+                $("#question-feedback").removeClass("is-danger");
+                $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
             } else {
-                $("#answer").removeClass("correct");
-                $("#answer").addClass("wrong");
-                $("#question-feedback").removeClass("correct");
-                $("#question-feedback").addClass("wrong");
+                $("#answer").removeClass("is-success");
+                $("#answer").addClass("is-danger");
+                $("#question-feedback").removeClass("is-success");
+                $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
             }
         });
