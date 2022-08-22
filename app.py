@@ -9,6 +9,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 class Question(db.Model):
+    '''A mass spectrometry question. For use with SQLAlchemy.'''
     id = db.Column(db.Integer, primary_key = True)
     text1 = db.Column(db.String(256))
     imgsrc = db.Column(db.String(128))
@@ -22,13 +23,16 @@ class Question(db.Model):
 
 @app.route('/')
 def index():
+    '''Returns a skeleton index page for Flask. For the actual HTML, refer to files in static/src/views.'''
     return render_template("index.html")
 
 @app.route('/ms_questions')
 def ms_questions():
+    '''Returns a question with the requested id, or a random id, in JSON form.'''
     question_id = request.args.get('id')
     if question_id == "random":
         return redirect(url_for('ms_questions', id = random.randint(1, 9)))
-    else: return dict(Question.query.filter_by(id = int(question_id)).first())
+    return dict(Question.query.filter_by(id = int(question_id)).first())
+
 if __name__ == "__main__":
     app.run(debug = True, host = "0.0.0.0")
