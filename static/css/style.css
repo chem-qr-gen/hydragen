@@ -4,12 +4,6 @@ img#question-img {
 input {
     transition: border-color 0.25s;
 }
-input.wrong {
-    border-color: #c00;
-}
-input.correct {
-    border-color: #0c0;
-}
 p#question-feedback {
     display: none;
 }

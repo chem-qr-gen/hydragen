@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM nikolaik/python-nodejs:python3.9-nodejs18-bullseye
+FROM nikolaik/python-nodejs:python3.9-nodejs18-slim
 
 USER pn
 WORKDIR /usr/pn/app
