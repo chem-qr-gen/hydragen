@@ -1,6 +1,7 @@
 import random
 from flask import Flask, redirect, render_template, request, url_for
 from flask_sqlalchemy import SQLAlchemy
+from init_vars import init_vars
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -14,11 +15,19 @@ class Question(db.Model):
     text1 = db.Column(db.String(256))
     imgsrc = db.Column(db.String(128))
     text2 = db.Column(db.String(256))
+    hint1 = db.Column(db.String(256))
+    hint2 = db.Column(db.String(256))
     answers = db.Column(db.String(128), nullable = False)
+    
+    @init_vars
+    def __init__(self, id, text1, imgsrc, text2, hint1, hint2, answers):
+        pass
+    
     def __repr__(self):
         return f"<Question {self.id}>"
+    
     def __iter__(self):
-        for key in ("id", "text1", "imgsrc", "text2", "answers"):
+        for key in ("id", "text1", "imgsrc", "text2", "hint1", "hint2", "answers"):
             yield (key, getattr(self, key))
 
 @app.route('/')

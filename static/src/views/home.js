@@ -38,6 +38,16 @@ var Home = {
                     </div>
                 </div>
             </div>
+            <div class="block tabs-with-content">
+                <div class="tabs">
+                    <ul>
+                        <li><a>Hint 1</a></li>
+                        <li><a>Hint 2</a></li>
+                    </ul>
+                </div>
+                <section class="tab-content"></section>
+                <section class="tab-content"></section>
+            </div>
         </div>
     ),
     oncreate: () => {
@@ -74,6 +84,28 @@ var Home = {
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
             }
+        });
+
+        var tabs = $(".tabs li")
+        var tabsContent = $(".tab-content")
+
+        const deactivateTabs = () => {
+            tabs.each((index, tab) => {
+                $(tab).removeClass("is-active");
+            });
+        }
+        const hideTabsContent = () => {
+            tabsContent.each((index, content) => {
+                $(content).removeClass("is-active")
+            });
+        }
+        tabs.each((index, tab) => {
+            $(tab).on("click", () => {
+                deactivateTabs();
+                hideTabsContent();
+                $(tab).addClass("is-active");
+                tabsContent.eq(index).addClass("is-active");
+            });
         });
     }
 }
