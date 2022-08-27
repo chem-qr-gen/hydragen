@@ -51,43 +51,14 @@ var Home = {
         </div>
     ),
     oncreate: () => {
-        getNewQuestion().then(response => {
-            $("#question-id").text(response.id);
-            $("#question-text-1").text(response.text1);
-            $("#question-img").attr("src", response.imgsrc);
-            $("#question-text-2").text(response.text2);
-            answers = response.answers.split(";");
-        });
-        $("#next").on("click", () => {
-            getNewQuestion().then(response => {
-                $("#answer").removeClass("is-success is-danger");
-                $("#answer").val("");
-                $("#question-feedback").removeClass("is-success is-danger");
-                $("#question-id").text(response.id);
-                $("#question-text-1").text(response.text1);
-                $("#question-img").attr("src", response.imgsrc);
-                $("#question-text-2").text(response.text2);
-                answers = response.answers.split(";");
-            });
-        });
-        $("#submit").on("click", () => {
-            if (answers.includes($("#answer").val())) {
-                $("#answer").removeClass("is-danger");
-                $("#answer").addClass("is-success");
-                $("#question-feedback").removeClass("is-danger");
-                $("#question-feedback").addClass("is-success");
-                $("#question-feedback").text("Correct! Well done!");
-            } else {
-                $("#answer").removeClass("is-success");
-                $("#answer").addClass("is-danger");
-                $("#question-feedback").removeClass("is-success");
-                $("#question-feedback").addClass("is-danger");
-                $("#question-feedback").text("Incorrect, try again.");
-            }
-        });
-
         var tabs = $(".tabs li")
         var tabsContent = $(".tab-content")
+        var id = $("#question-id");
+        var text1 = $("#question-text-1");
+        var img = $("#question-img");
+        var text2 = $("#question-text-2");
+        var ansInput = $("#answer");
+        var feedback = $("#question-feedback");
 
         const deactivateTabs = () => {
             tabs.each((index, tab) => {
@@ -99,6 +70,7 @@ var Home = {
                 $(content).removeClass("is-active")
             });
         }
+
         tabs.each((index, tab) => {
             $(tab).on("click", () => {
                 deactivateTabs();
@@ -106,6 +78,46 @@ var Home = {
                 $(tab).addClass("is-active");
                 tabsContent.eq(index).addClass("is-active");
             });
+        });
+
+        const displayNewQuestion = () => {
+            return getNewQuestion().then(response => {
+                id.text(response.id);
+                text1.text(response.text1);
+                img.attr("src", response.imgsrc);
+                text2.text(response.text2);
+                tabsContent.eq(0).text(response.hint1);
+                tabsContent.eq(1).text(response.hint2);
+                answers = response.answers.split(";");
+            });
+        }
+
+        displayNewQuestion();
+
+        $("#next").on("click", () => {
+            displayNewQuestion().then(() => {
+                deactivateTabs();
+                hideTabsContent();
+                ansInput.removeClass("is-success is-danger");
+                ansInput.val("");
+                feedback.removeClass("is-success is-danger");
+            });
+        });
+
+        $("#submit").on("click", () => {
+            if (answers.includes(ansInput.val())) {
+                ansInput.removeClass("is-danger");
+                ansInput.addClass("is-success");
+                feedback.removeClass("is-danger");
+                feedback.addClass("is-success");
+                feedback.text("Correct! Well done!");
+            } else {
+                ansInput.removeClass("is-success");
+                ansInput.addClass("is-danger");
+                feedback.removeClass("is-success");
+                feedback.addClass("is-danger");
+                feedback.text("Incorrect, try again.");
+            }
         });
     }
 }

@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///chemquest.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-class Question(db.Model):
+class MSQuestion(db.Model):
     '''A mass spectrometry question. For use with SQLAlchemy.'''
     id = db.Column(db.Integer, primary_key = True)
     text1 = db.Column(db.String(256))
@@ -24,7 +24,7 @@ class Question(db.Model):
         pass
     
     def __repr__(self):
-        return f"<Question {self.id}>"
+        return f"<MSQuestion {self.id}>"
     
     def __iter__(self):
         for key in ("id", "text1", "imgsrc", "text2", "hint1", "hint2", "answers"):
@@ -41,7 +41,7 @@ def ms_questions():
     question_id = request.args.get('id')
     if question_id == "random":
         return redirect(url_for('ms_questions', id = random.randint(1, 9)))
-    return dict(Question.query.filter_by(id = int(question_id)).first())
+    return dict(MSQuestion.query.filter_by(id = int(question_id)).first())
 
 if __name__ == "__main__":
     app.run(debug = True, host = "0.0.0.0")

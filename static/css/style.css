@@ -16,6 +16,10 @@ p#question-feedback.is-danger {
     color: hsl(348, 100%, 61%);
 }
 
+.tabs ul {
+    margin-left: 0px;
+}
+
 .tabs-with-content .tabs:not(:last-child) {
     margin-bottom: 0;
 }
