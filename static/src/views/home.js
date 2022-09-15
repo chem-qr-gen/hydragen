@@ -82,13 +82,13 @@ var Home = {
 
         const displayNewQuestion = () => {
             return getNewQuestion().then(response => {
-                id.text(response.id);
+                id.text(response.qid);
                 text1.text(response.text1);
                 img.attr("src", response.imgsrc);
                 text2.text(response.text2);
-                tabsContent.eq(0).text(response.hint1);
-                tabsContent.eq(1).text(response.hint2);
-                answers = response.answers.split(";");
+                tabsContent.eq(0).text(response.hints[0]);
+                tabsContent.eq(1).text(response.hints[1]);
+                answers = response.answers;
             });
         }
 

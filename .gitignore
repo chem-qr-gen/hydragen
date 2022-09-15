@@ -7,3 +7,6 @@ static/bin/
 .pylintrc
 
 fly.toml
+.gitsecret/keys/random_seed
+!*.secret
+mongo_address.py
