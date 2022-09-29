@@ -12,7 +12,7 @@ app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = csrf_secret
 app.config['JWT_SECRET_KEY'] = jwt_secret
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours = 1)
+#app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days = 1)
 jwt = JWTManager(app)
 csrf = SeaSurf(app)
 client = MongoClient(mongo_address)
@@ -46,7 +46,7 @@ def login():
         return {"msg": "Login successful", "access_token": access_token}
     return {"msg": "Incorrect username or password"}, 401
 
-@app.route('/logout', methods = ['POST'])
+@app.route('/logout')
 def logout():
     response = jsonify({"msg": "Logout successful"})
     unset_jwt_cookies(response)
@@ -61,16 +61,17 @@ def signup():
     new_user_id = db.users.insert_one(new_user).inserted_id
     return {"msg": "Signup successful"}
 
-@app.route('/profile')
-@jwt_required
-def profile():
-    return {"username": get_jwt_identity()}
+@app.route('/get_identity')
+@jwt_required()
+def get_identity():
+    return {"identity": get_jwt_identity()}
 
-@app.after_request
+'''@app.after_request
 def refresh_jwt(response):
     try:
-        exp_timestamp = get_jwt()['exp']
-        target_timestamp = datetime.timestamp(datetime.now() + datetime.timedelta(minutes = 30))
+        exp_timestamp = datetime.datetime.fromtimestamp(get_jwt()['exp'])
+        print(exp_timestamp)
+        target_timestamp = datetime.datetime.now() + datetime.timedelta(minutes = 30)
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(get_jwt_identity())
             data = response.get_json()
@@ -79,7 +80,7 @@ def refresh_jwt(response):
                 response.data = json.dumps(data)
             return response
     except (RuntimeError, KeyError):
-        return response
+        return response'''
 
 if __name__ == "__main__":
     app.run(debug = True, host = "0.0.0.0")

@@ -1,35 +1,40 @@
 import m from "mithril";
 import $ from "cash-dom";
 
+import Navbar from "../components/navbar";
+
 var Signup = {
     view: () => (
-        <div class="content container">
-            <div class="block">
-                <h1>Sign Up</h1>
-            </div>
-            <div class="block">
-                <input type="hidden" id="csrf_token"></input>
-                <div class="field">
-                    <label class="label">Username</label>
-                    <div class="control">
-                        <input class="input" type="text" id="usernameInput"></input>
-                    </div>
+        <div class="content">
+            <Navbar />
+            <div class="container">
+                <div class="block">
+                    <h1>Sign Up</h1>
                 </div>
-                <div class="field">
-                    <label class="label">Email</label>
-                    <div class="control">
-                        <input class="input" type="email" id="emailInput"></input>
+                <div class="block">
+                    <input type="hidden" id="csrf_token"></input>
+                    <div class="field">
+                        <label class="label">Username</label>
+                        <div class="control">
+                            <input class="input" type="text" id="usernameInput"></input>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <label class="label">Password</label>
-                    <div class="control">
-                        <input class="input" type="password" id="passwordInput"></input>
+                    <div class="field">
+                        <label class="label">Email</label>
+                        <div class="control">
+                            <input class="input" type="email" id="emailInput"></input>
+                        </div>
                     </div>
-                </div>
-                <div class="field">
-                    <div class="control">
-                        <button class="button is-link" id="signupButton">Sign Up</button>
+                    <div class="field">
+                        <label class="label">Password</label>
+                        <div class="control">
+                            <input class="input" type="password" id="passwordInput"></input>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <button class="button is-link" id="signupButton">Sign Up</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,9 +59,12 @@ var Signup = {
                     "password": $("#passwordInput").val()
                 }
             }).then(response => {
-                alert(response.msg)
+                alert(response.msg);
+                location.href = "#!/home"
             }).catch(e => {
-                alert(e.response.msg)
+                if (e.code === 401) {
+                    alert(e.response.msg);
+                }
             })
         });
     }
