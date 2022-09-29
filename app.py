@@ -1,14 +1,27 @@
-import random
-from flask import Flask, redirect, render_template, request, url_for
+import datetime, json, random
+from werkzeug.security import check_password_hash, generate_password_hash
+from flask import Flask, redirect, render_template, request, url_for, jsonify
+from flask_jwt_extended import JWTManager, create_access_token, get_jwt, get_jwt_identity, jwt_required, unset_jwt_cookies
+from flask_seasurf import SeaSurf
 from pymongo import MongoClient
 
-from mongo_address import mongo_address
+from init_vars import init_vars
+from chemquest_secrets import mongo_address, csrf_secret, jwt_secret # secret address to mongodb database, change or remove for local testing
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
+app.config['SECRET_KEY'] = csrf_secret
+app.config['JWT_SECRET_KEY'] = jwt_secret
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(hours = 1)
+jwt = JWTManager(app)
+csrf = SeaSurf(app)
 client = MongoClient(mongo_address)
 db = client.chemquest_db
-ms_qns_collection = db.ms_qns
+
+
+@app.route('/get_csrf_token')
+def get_csrf_token():
+    return {'csrf_token': csrf._get_token()}
 
 @app.route('/')
 def index():
@@ -21,9 +34,52 @@ def ms_questions():
     question_id = request.args.get('id')
     if question_id == "random":
         return redirect(url_for('ms_questions', id = random.randint(1, 9)))
-    question_response = ms_qns_collection.find_one({"qid": int(question_id)})
+    question_response = db.ms_qns.find_one({"qid": int(question_id)})
     question_response.pop("_id")
     return question_response
+
+@app.route('/login', methods = ['POST'])
+def login():
+    user = db.users.find_one({"username": request.json["username"]})
+    if user and check_password_hash(user["password"], request.json["password"]):
+        access_token = create_access_token(user["username"])
+        return {"msg": "Login successful", "access_token": access_token}
+    return {"msg": "Incorrect username or password"}, 401
+
+@app.route('/logout', methods = ['POST'])
+def logout():
+    response = jsonify({"msg": "Logout successful"})
+    unset_jwt_cookies(response)
+    return response
+
+@app.route('/signup', methods = ['POST'])
+def signup():
+    existing_user = db.users.find_one({"username": request.json["username"]})
+    if existing_user:
+        return {"msg": "Username already exists"}, 401
+    new_user = {"username": request.json["username"], "password": generate_password_hash(request.json["password"])}
+    new_user_id = db.users.insert_one(new_user).inserted_id
+    return {"msg": "Signup successful"}
+
+@app.route('/profile')
+@jwt_required
+def profile():
+    return {"username": get_jwt_identity()}
+
+@app.after_request
+def refresh_jwt(response):
+    try:
+        exp_timestamp = get_jwt()['exp']
+        target_timestamp = datetime.timestamp(datetime.now() + datetime.timedelta(minutes = 30))
+        if target_timestamp > exp_timestamp:
+            access_token = create_access_token(get_jwt_identity())
+            data = response.get_json()
+            if type(data) is dict:
+                data["access_token"] = access_token
+                response.data = json.dumps(data)
+            return response
+    except (RuntimeError, KeyError):
+        return response
 
 if __name__ == "__main__":
     app.run(debug = True, host = "0.0.0.0")

@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 
-from mongo_address import mongo_address
+from mongo_address import mongo_address # secret address to mongodb database, change or remove for local testing
 
 client = MongoClient(mongo_address)
 db = client.chemquest_db
