@@ -21,6 +21,7 @@ db = client.chemquest_db
 
 @app.route('/get_csrf_token')
 def get_csrf_token():
+    '''CSRF token access point for CSRF protection.'''
     return {'csrf_token': csrf._get_token()}
 
 @app.route('/')
@@ -40,6 +41,7 @@ def ms_questions():
 
 @app.route('/login', methods = ['POST'])
 def login():
+    '''API for login.'''
     user = db.users.find_one({"username": request.json["username"]})
     if user and check_password_hash(user["password"], request.json["password"]):
         access_token = create_access_token(user["username"])
@@ -48,12 +50,14 @@ def login():
 
 @app.route('/logout')
 def logout():
+    '''API for logout.'''
     response = jsonify({"msg": "Logout successful"})
     unset_jwt_cookies(response)
     return response
 
 @app.route('/signup', methods = ['POST'])
 def signup():
+    '''API for signup.'''
     existing_user = db.users.find_one({"username": request.json["username"]})
     if existing_user:
         return {"msg": "Username already exists"}, 401
@@ -64,6 +68,7 @@ def signup():
 @app.route('/get_identity')
 @jwt_required()
 def get_identity():
+    '''Returns the username of the current logged-in user, if logged in. Otherwise throws a 401.'''
     return {"identity": get_jwt_identity()}
 
 '''@app.after_request

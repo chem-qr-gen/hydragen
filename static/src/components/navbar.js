@@ -21,8 +21,8 @@ var Navbar = {
         </nav>
     ),
     oncreate: () => {
-        if (localStorage.getItem("jwt") !== null) {
-            m.request({
+        if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
+            m.request({ // get the username
                 method: "GET",
                 url: "/get_identity",
                 headers: {
@@ -32,7 +32,7 @@ var Navbar = {
                 $("#signupLink").toggle();
                 $("#loginLink").text(response.identity + " (Log out)");
                 $("#loginLink").attr("href", "#");
-                $("#loginLink").on("click", () => {
+                $("#loginLink").on("click", () => { // turn the login link into a logout link
                     m.request({
                         method: "GET",
                         url: "/logout",

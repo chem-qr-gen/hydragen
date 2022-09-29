@@ -60,9 +60,9 @@ var Signup = {
                 }
             }).then(response => {
                 alert(response.msg);
-                location.href = "#!/home"
+                location.href = "#!/login" // redirect after successful signup
             }).catch(e => {
-                if (e.code === 401) {
+                if (e.code === 401) { // unauthorized - probably user already exists
                     alert(e.response.msg);
                 }
             })

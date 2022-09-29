@@ -53,10 +53,10 @@ var Login = {
                 }
             }).then(response => {
                 alert(response.msg);
-                localStorage.setItem('jwt', response.access_token);
-                location.href = "#!/home"
+                localStorage.setItem('jwt', response.access_token); // log in the user
+                location.href = "#!/home" // redirect to homepage
             }).catch(e => {
-                if (e.code === 401) {
+                if (e.code === 401) { // unauthorized - probably invalid username/password
                     alert(e.response.msg);
                 }
             })
