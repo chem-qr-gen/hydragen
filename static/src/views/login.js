@@ -36,7 +36,22 @@ var Login = {
         }).then(response => {
             $("#csrf_token").val(response.csrf_token);
         });
-        
+        $("#loginButton").on("click", () => {
+            console.log("test");
+            m.request({
+                method: "POST",
+                url: "/login",
+                body: {
+                    "_csrf_token": $("#csrf_token").val(),
+                    "username": $("#usernameInput").val(),
+                    "password": $("#passwordInput").val()
+                }
+            }).then(response => {
+                alert(response.msg)
+            }).catch(e => {
+                alert(e.response.msg)
+            })
+        });
     }
 }
 

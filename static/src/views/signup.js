@@ -42,7 +42,7 @@ var Signup = {
         }).then(response => {
             $("#csrf_token").val(response.csrf_token);
         });
-        $("#loginButton").on("click", () => {
+        $("#signupButton").on("click", () => {
             console.log("test");
             m.request({
                 method: "POST",
