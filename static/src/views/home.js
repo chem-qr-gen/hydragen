@@ -21,6 +21,7 @@ var Home = {
                     <h1>Mass Spectrometry Practice</h1>
                 </div>
                 <div class="block">
+                    <input type="hidden" id="csrf_token"></input>
                     <div class="field">
                         <p id="question-id" style="display:none;"></p>
                         <p id="question-text-1">test 1</p>
@@ -56,6 +57,13 @@ var Home = {
         </div>
     ),
     oncreate: () => {
+        m.request({
+            method: "GET",
+            url: "/get_csrf_token"
+        }).then(response => {
+            $("#csrf_token").val(response.csrf_token);
+        });
+
         var tabs = $(".tabs li")
         var tabsContent = $(".tab-content")
         var id = $("#question-id");
@@ -97,6 +105,31 @@ var Home = {
             });
         }
 
+        const checkAnswer = () => {
+            if (localStorage.getItem("jwt") !== null) {
+                return m.request({
+                    method: "POST",
+                    url: "/submit_answer",
+                    body: {
+                        "_csrf_token": $("#csrf_token").val(),
+                        "id": id.text(),
+                        "answer": ansInput.val()
+                    },
+                    headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
+                });
+            } else {
+                return m.request({
+                    method: "POST",
+                    url: "/submit_answer",
+                    body: {
+                        "_csrf_token": $("#csrf_token").val(),
+                        "id": id.text(),
+                        "answer": ansInput.val()
+                    }
+                });
+            }
+        }
+
         displayNewQuestion();
 
         $("#next").on("click", () => {
@@ -110,19 +143,21 @@ var Home = {
         });
 
         $("#submit").on("click", () => {
-            if (answers.includes(ansInput.val())) {
-                ansInput.removeClass("is-danger");
-                ansInput.addClass("is-success");
-                feedback.removeClass("is-danger");
-                feedback.addClass("is-success");
-                feedback.text("Correct! Well done!");
-            } else {
-                ansInput.removeClass("is-success");
-                ansInput.addClass("is-danger");
-                feedback.removeClass("is-success");
-                feedback.addClass("is-danger");
-                feedback.text("Incorrect, try again.");
-            }
+            checkAnswer().then(response => {
+                if (response.is_correct) {
+                    ansInput.removeClass("is-danger");
+                    ansInput.addClass("is-success");
+                    feedback.removeClass("is-danger");
+                    feedback.addClass("is-success");
+                    feedback.text("Correct! Well done!");
+                } else {
+                    ansInput.removeClass("is-success");
+                    ansInput.addClass("is-danger");
+                    feedback.removeClass("is-success");
+                    feedback.addClass("is-danger");
+                    feedback.text("Incorrect, try again.");
+                }
+            });
         });
     }
 }

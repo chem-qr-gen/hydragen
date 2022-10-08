@@ -25,9 +25,7 @@ var Navbar = {
             m.request({ // get the username
                 method: "GET",
                 url: "/get_identity",
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("jwt")
-                }
+                headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
             }).then(response => {
                 $("#signupLink").toggle();
                 $("#loginLink").text(response.identity + " (Log out)");

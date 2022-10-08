@@ -39,6 +39,29 @@ def ms_questions():
     question_response.pop("_id")
     return question_response
 
+@app.route('/submit_answer', methods = ['POST'])
+@jwt_required(optional = True)
+def submit_answer():
+    '''Checks the answer given by the student against the answers on the server.'''
+    question_id = request.json['id']
+    answer = request.json['answer']
+    question = db.ms_qns.find_one({"qid": int(question_id)})
+    is_correct = answer in question["answers"]
+
+    jwt_identity = get_jwt_identity()
+    if jwt_identity:
+        user_dict = db.users.find_one({"username": jwt_identity})
+        this_attempt = {"timestamp": datetime.datetime.now(), "question_id": question_id, "answer": answer, "is_correct": is_correct}
+        if "attempts" in user_dict:
+            new_attempts = user_dict["attempts"]
+            new_attempts.append(this_attempt)
+        else:
+            new_attempts = [this_attempt]
+        db.users.update_one({"_id": user_dict["_id"]}, {"$set": {"attempts": new_attempts}}, upsert = False)
+    
+    return {"is_correct": is_correct}
+
+
 @app.route('/login', methods = ['POST'])
 def login():
     '''API for login.'''
