@@ -96,6 +96,17 @@ Werkzeug = ">=0.14"
 asymmetric_crypto = ["cryptography (>=3.3.1)"]
 
 [[package]]
+name = "flask-seasurf"
+version = "1.1.1"
+description = "An updated CSRF extension for Flask."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Flask = "*"
+
+[[package]]
 name = "gunicorn"
 version = "20.1.0"
 description = "WSGI HTTP Server for UNIX"
@@ -315,7 +326,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "55b79ff19cfed68b77f4e8aebef8f1b1d7cc73c8c16965d933c6007882d5cfde"
+content-hash = "f0800385b06257b455ed3fa51d3873c3ee4fa4ea04878fa9794c07d5fc4cd009"
 
 [metadata.files]
 astroid = [
@@ -345,6 +356,10 @@ flask = [
 flask-jwt-extended = [
     {file = "Flask-JWT-Extended-4.4.4.tar.gz", hash = "sha256:62b521d75494c290a646ae8acc77123721e4364790f1e64af0038d823961fbf0"},
     {file = "Flask_JWT_Extended-4.4.4-py2.py3-none-any.whl", hash = "sha256:a85eebfa17c339a7260c4643475af444784ba6de5588adda67406f0a75599553"},
+]
+flask-seasurf = [
+    {file = "Flask-SeaSurf-1.1.1.tar.gz", hash = "sha256:54537008c769ac0ada8237877327c3e7ed74dcd8b01e74a9120ee0232c5951a9"},
+    {file = "Flask_SeaSurf-1.1.1-py3-none-any.whl", hash = "sha256:f70e58b3b5e8fa9a928fe6b8e7a01b953d67cb9b7bde1a54d1ec95e40fcc2ade"},
 ]
 gunicorn = [
     {file = "gunicorn-20.1.0-py3-none-any.whl", hash = "sha256:9dcc4547dbb1cb284accfb15ab5667a0e5d1881cc443e0677b4882a4067a807e"},
