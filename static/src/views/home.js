@@ -93,16 +93,15 @@ var Home = {
             });
         });
 
-        const displayNewQuestion = () => {
-            return getNewQuestion().then(response => {
-                id.text(response.qid);
-                text1.text(response.text1);
-                img.attr("src", response.imgsrc);
-                text2.text(response.text2);
-                tabsContent.eq(0).text(response.hints[0]);
-                tabsContent.eq(1).text(response.hints[1]);
-                answers = response.answers;
-            });
+        const displayNewQuestion = async () => {
+            const response = await getNewQuestion();
+            id.text(response.qid);
+            text1.text(response.text1);
+            img.attr("src", response.imgsrc);
+            text2.text(response.text2);
+            tabsContent.eq(0).text(response.hints[0]);
+            tabsContent.eq(1).text(response.hints[1]);
+            answers = response.answers;
         }
 
         const checkAnswer = () => {

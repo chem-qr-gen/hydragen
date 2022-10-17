@@ -11,7 +11,9 @@
   "license": "MPL 2.0",
   "dependencies": {
     "cash-dom": "^8.1.1",
-    "mithril": "^2.2.2"
+    "email-validator": "^2.0.4",
+    "mithril": "^2.2.2",
+    "pristinejs": "^0.1.9"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
