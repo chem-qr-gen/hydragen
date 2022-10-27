@@ -2,6 +2,7 @@ import m from "mithril";
 import Pristine from "../libraries/pristine";
 
 import Navbar from "../components/navbar";
+import CountryInput from "../components/countryInput";
 
 var Signup = {
     view: () => (
@@ -56,16 +57,14 @@ var Signup = {
                             <label class="label">Country</label>
                             <div class="control">
                                 <div class="select">
-                                    <select id="countryInput" required></select>
+                                    <CountryInput id="countryInput" />
                                 </div>
                             </div>
                         </div>
                         <div class="field column is-one-third pt-0">
                             <label class="label">Region</label>
                             <div class="control">
-                                <div class="select">
-                                    <select id="regionInput" required></select>
-                                </div>
+                                <input class="input" type="text" id="regionInput" required></input>
                             </div>
                         </div>
                     </div>
@@ -112,7 +111,7 @@ var Signup = {
                         "password": $("#passwordInput").val(),
                         "gender": $("#genderInput option:selected").text(),
                         "country": $("#countryInput option:selected").text(),
-                        "region": $("#regionInput option:selected").text()
+                        "region": $("#regionInput").val()
                     }
                 }).then(response => {
                     alert(response.msg);
