@@ -1,34 +1,6 @@
-img#question-img {
-    max-height: 237px;
-}
+@import "views/landing.css";
+@import "views/home.css";
+
 input {
     transition: border-color 0.25s;
-}
-p#question-feedback {
-    display: none;
-}
-p#question-feedback.is-success {
-    display: block;
-    color: hsl(141, 53%, 53%)
-}
-p#question-feedback.is-danger {
-    display: block;
-    color: hsl(348, 100%, 61%);
-}
-
-.tabs ul {
-    margin-left: 0px;
-}
-
-.tabs-with-content .tabs:not(:last-child) {
-    margin-bottom: 0;
-}
-
-.tabs-with-content .tab-content {
-    padding: 1rem;
-    display: none;
-}
-
-.tabs-with-content .tab-content.is-active {
-    display: block;
 }
