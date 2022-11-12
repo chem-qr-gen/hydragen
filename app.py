@@ -2,18 +2,25 @@ import datetime, json, random
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, get_jwt_identity, jwt_required, unset_jwt_cookies
+from flask_mail import Mail, Message
 from flask_seasurf import SeaSurf
 from pymongo import MongoClient
 
 from init_vars import init_vars
-from chemquest_secrets import mongo_address, csrf_secret, jwt_secret # secret address to mongodb database, change or remove for local testing
+from chemquest_secrets import * # secret addresses, change or remove for local testing
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
 app.config['SECRET_KEY'] = csrf_secret
 app.config['JWT_SECRET_KEY'] = jwt_secret
+app.config['MAIL_SERVER'] = mail_server_secret
+app.config['MAIL_DEFAULT_SENDER'] = mail_sender_secret
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = mail_username_secret
+app.config['MAIL_PASSWORD'] = mail_password_secret
 #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days = 1)
 jwt = JWTManager(app)
+mail = Mail(app)
 csrf = SeaSurf(app)
 client = MongoClient(mongo_address)
 db = client.chemquest_db
@@ -88,6 +95,12 @@ def signup():
     new_user.pop("_csrf_token")
     new_user["password"] = generate_password_hash(new_user["password"])
     new_user_id = db.users.insert_one(new_user).inserted_id
+    email_msg = Message(
+        subject="ChemQuest - Signup Successful", 
+        recipients=[new_user["email"]], 
+        body=f"Hello {new_user['username']},\n\nCongratulations! You have successfully signed up for ChemQuest."
+    )
+    mail.send(email_msg)
     return {"msg": "Signup successful"}
 
 @app.route('/get_identity')
