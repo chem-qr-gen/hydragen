@@ -3,13 +3,6 @@ import m from "mithril";
 import Navbar from "../components/navbar";
 
 var answers;
-const getNewQuestion = () => {
-    return m.request({
-        method: "GET",
-        url: "/ms_questions",
-        params: {id: "random"}
-    });
-}
 
 var Home = {
     view: () => (
@@ -93,7 +86,11 @@ var Home = {
         });
 
         const displayNewQuestion = async () => {
-            const response = await getNewQuestion();
+            const response = await m.request({
+                method: "GET",
+                url: "/ms_questions",
+                params: {id: "random"}
+            });
             id.text(response.qid);
             text1.text(response.text1);
             img.attr("src", response.imgsrc);
