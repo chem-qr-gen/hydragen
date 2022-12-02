@@ -35,16 +35,16 @@ var ChartTest = {
                     </div>
                     <div class="field">
                         <div class="control">
-                            <input class="input" type="text" placeholder="Answer" id="answer"></input>
+                            <input class="input" type="text" placeholder="Answer" id="answer" autocomplete="off"></input>
                         </div>
                         <p id="question-feedback"></p>
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                            <input class="button is-primary" type="submit" id="submit">Submit</input>
+                            <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
                         </div>
                         <div class="control">
-                            <button class="button" id="next">Next Question</button>
+                            <span class="button" id="next">Next Question</span>
                         </div>
                     </div>
                 </form>
@@ -103,12 +103,26 @@ var ChartTest = {
                 url: "/ms_questions_new",
                 params: {id: "random"}
             });
+            console.log(data.smiles);
             filledData = fillMsDataGaps(data['ms_data']);
             updateData(msChart, filledData);
         });
 
         document.getElementById("msQuestionForm").addEventListener("submit", e => {
             e.preventDefault();
+            if ($("#answer").val() === data.smiles) {
+                $("#answer").removeClass("is-danger");
+                $("#answer").addClass("is-success");
+                $("#question-feedback").removeClass("is-danger");
+                $("#question-feedback").addClass("is-success");
+                $("#question-feedback").text("Correct! Well done!");
+            } else {
+                $("#answer").removeClass("is-success");
+                $("#answer").addClass("is-danger");
+                $("#question-feedback").removeClass("is-success");
+                $("#question-feedback").addClass("is-danger");
+                $("#question-feedback").text("Incorrect, try again.");
+            }
         });
 
     }
