@@ -17,6 +17,8 @@ const fillMsDataGaps = msData => {
     return newMsData;
 }
 
+const processChemNames = names => names.split("\n").map(name => name.toLowerCase());
+
 var ChartTest = {
     view: () => (
         <div class="content">
@@ -68,6 +70,14 @@ var ChartTest = {
             params: {id: "random"}
         });
         var filledData = fillMsDataGaps(data['ms_data']);
+    
+        var answers = await m.request({
+            method: "GET",
+            url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
+            responseType: "text/plain",
+            deserialize: processChemNames
+        });
+        console.log(answers);
 
         var msChart = new Chart(
             document.getElementById("msChart"),
@@ -98,19 +108,31 @@ var ChartTest = {
         );
         
         $("#next").on("click", async () => {
+            $("#answer").removeClass("is-success is-danger");
+            $("#answer").val("");
+            $("#question-feedback").removeClass("is-success is-danger");
+            $("#question-feedback").text("");
+
             data = await m.request({
                 method: "GET",
                 url: "/ms_questions_new",
                 params: {id: "random"}
             });
-            console.log(data.smiles);
             filledData = fillMsDataGaps(data['ms_data']);
+        
+            answers = await m.request({
+                method: "GET",
+                url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
+                responseType: "text/plain",
+                deserialize: processChemNames
+            });
             updateData(msChart, filledData);
+            console.log(answers);
         });
 
         document.getElementById("msQuestionForm").addEventListener("submit", e => {
             e.preventDefault();
-            if ($("#answer").val() === data.smiles) {
+            if (answers.includes($("#answer").val().toLowerCase())) {
                 $("#answer").removeClass("is-danger");
                 $("#answer").addClass("is-success");
                 $("#question-feedback").removeClass("is-danger");
