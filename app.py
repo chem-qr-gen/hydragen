@@ -6,7 +6,6 @@ from flask_mail import Mail, Message
 from flask_seasurf import SeaSurf
 from pymongo import MongoClient
 
-from init_vars import init_vars
 from chemquest_secrets import * # secret addresses, change or remove for local testing
 
 app = Flask(__name__)
