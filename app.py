@@ -26,10 +26,6 @@ client = MongoClient(mongo_address)
 db = client.chemquest_db
 
 
-with open("molecules_msdata.json") as f:
-    ms_database = json.load(f)
-
-
 @app.route('/get_csrf_token')
 def get_csrf_token():
     '''CSRF token access point for CSRF protection.'''
@@ -55,8 +51,10 @@ def ms_questions_new():
     '''Returns a set of MS data.'''
     question_id = request.args.get('id')
     if question_id == "random":
-        return redirect(url_for('ms_questions_new', id = random.randint(0, len(ms_database) - 1)))
-    return ms_database[int(question_id)]
+        return redirect(url_for('ms_questions_new', id = random.randint(0, db.ms_data.count_documents({}) - 1)))
+    question_response = db.ms_data.find_one({"qid": int(question_id)})
+    question_response.pop("_id")
+    return question_response
 
 @app.route('/submit_answer', methods = ['POST'])
 @jwt_required(optional = True)
