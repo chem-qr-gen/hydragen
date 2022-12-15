@@ -100,7 +100,14 @@ def signup():
     existing_user = db.users.find_one({"username": request.json["username"]})
     if existing_user:
         return {"msg": "Username already exists"}, 401
-    new_user = request.json
+    new_user = {
+        "username": request.json["username"],
+        "email": request.json["email"],
+        "password": generate_password_hash(request.json["password"]),
+        "gender": request.json["gender"],
+        "country": request.json["country"],
+        "region": request.json["region"]
+    }
     new_user.pop("_csrf_token")
     new_user["password"] = generate_password_hash(new_user["password"])
     new_user_id = db.users.insert_one(new_user).inserted_id
