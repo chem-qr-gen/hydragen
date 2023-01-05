@@ -31,9 +31,11 @@ var ChartTest = {
                     <input type="hidden" id="csrf_token"></input>
                     <div class="field">
                         <p>Identify the compound that would give this mass spectrum.</p>
-                        <canvas id="msChart">
-                            <p>Loading...</p>
-                        </canvas>
+                        <div class="chartContainer">
+                            <canvas id="msChart">
+                                <p>Loading...</p>
+                            </canvas>
+                        </div>
                     </div>
                     <div class="field">
                         <div class="control">

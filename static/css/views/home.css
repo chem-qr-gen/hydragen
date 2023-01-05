@@ -29,3 +29,11 @@ p#question-feedback.is-danger {
 .tabs-with-content .tab-content.is-active {
     display: block;
 }
+
+
+/* chart styling */
+@media(min-width: 1024px) {
+    .chartContainer {
+        max-width: 70%;
+    }
+}
