@@ -132,6 +132,8 @@ var Home = {
             console.log(answers);
         });
 
+        var isCorrect;
+
         document.getElementById("msQuestionForm").addEventListener("submit", e => {
             e.preventDefault();
             if (answers.includes($("#answer").val().toLowerCase())) {
@@ -140,13 +142,26 @@ var Home = {
                 $("#question-feedback").removeClass("is-danger");
                 $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
+                isCorrect = true;
             } else {
                 $("#answer").removeClass("is-success");
                 $("#answer").addClass("is-danger");
                 $("#question-feedback").removeClass("is-success");
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
+                isCorrect = false;
             }
+            m.request({
+                method: "POST",
+                url: "/record_attempt",
+                headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")},
+                body: {
+                    "_csrf_token": $("#csrf_token").val(),
+                    "id": data.qid,
+                    "answer": $("#answer").val(),
+                    "isCorrect": isCorrect
+                }
+            });
         });
 
     }

@@ -138,21 +138,19 @@ var Legacy = {
         });
 
         $("#submit").on("click", () => {
-            checkAnswer().then(response => {
-                if (response.is_correct) {
-                    ansInput.removeClass("is-danger");
-                    ansInput.addClass("is-success");
-                    feedback.removeClass("is-danger");
-                    feedback.addClass("is-success");
-                    feedback.text("Correct! Well done!");
-                } else {
-                    ansInput.removeClass("is-success");
-                    ansInput.addClass("is-danger");
-                    feedback.removeClass("is-success");
-                    feedback.addClass("is-danger");
-                    feedback.text("Incorrect, try again.");
-                }
-            });
+            if (answers.includes(ansInput.val())) {
+                ansInput.removeClass("is-danger");
+                ansInput.addClass("is-success");
+                feedback.removeClass("is-danger");
+                feedback.addClass("is-success");
+                feedback.text("Correct! Well done!");
+            } else {
+                ansInput.removeClass("is-success");
+                ansInput.addClass("is-danger");
+                feedback.removeClass("is-success");
+                feedback.addClass("is-danger");
+                feedback.text("Incorrect, try again.");
+            }
         });
     }
 }

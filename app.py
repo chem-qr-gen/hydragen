@@ -55,27 +55,26 @@ def ms_questions_new():
     question_response.pop("_id")
     return question_response
 
-@app.route('/submit_answer', methods = ['POST'])
+@app.route('/record_attempt', methods = ['POST'])
 @jwt_required(optional = True)
-def submit_answer():
-    '''Checks the answer given by the student against the answers on the server.'''
+def record_attempt():
+    '''Record a question attempt made by the user, and relevant stats.'''
     question_id = request.json['id']
     answer = request.json['answer']
-    question = db.ms_qns.find_one({"qid": int(question_id)})
-    is_correct = answer in question["answers"]
+    is_correct = request.json['isCorrect']
 
     jwt_identity = get_jwt_identity()
     if jwt_identity:
         user_dict = db.users.find_one({"username": jwt_identity})
-        this_attempt = {"timestamp": datetime.datetime.now(), "question_id": question_id, "answer": answer, "is_correct": is_correct}
-        if "attempts" in user_dict:
-            new_attempts = user_dict["attempts"]
-            new_attempts.append(this_attempt)
-        else:
-            new_attempts = [this_attempt]
+        this_attempt = {"timestamp": datetime.datetime.utcnow(), "question_id": question_id, "answer": answer, "is_correct": is_correct}
+        
+        new_attempts = user_dict["attempts"] if "attempts" in user_dict else []
+        new_attempts.append(this_attempt)
+        
         db.users.update_one({"_id": user_dict["_id"]}, {"$set": {"attempts": new_attempts}}, upsert = False)
     
-    return {"is_correct": is_correct}
+        return this_attempt
+    return {"msg": "Not logged in, response not recorded."}
 
 
 @app.route('/login', methods = ['POST'])
@@ -108,8 +107,6 @@ def signup():
         "country": request.json["country"],
         "region": request.json["region"]
     }
-    new_user.pop("_csrf_token")
-    new_user["password"] = generate_password_hash(new_user["password"])
     new_user_id = db.users.insert_one(new_user).inserted_id
     email_msg = Message(
         subject="ChemQuest - Signup Successful", 
