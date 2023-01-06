@@ -1,8 +1,23 @@
 import m from "mithril";
+import Chart from "chart.js/auto"
 
 import Navbar from "../components/navbar";
+import updateData from "../libraries/chartjs_helpers";
 
-var answers;
+// fills "gaps" in the chart with zeros so it looks more like a proper MS chart
+const fillMsDataGaps = msData => {
+    var dataLength = msData[msData.length - 1]['mz']
+    var newMsData = []
+    for (var i = 1; i <= dataLength; i++) {
+        newMsData.push({"mz": i, "abundance": 0});
+    }
+    for (const i of msData) {
+        newMsData[i["mz"] - 1]["abundance"] = i["abundance"];
+    }
+    return newMsData;
+}
+
+const processChemNames = names => names.split("\n").map(name => name.toLowerCase());
 
 var Home = {
     view: () => (
@@ -12,43 +27,38 @@ var Home = {
                 <div class="block">
                     <h1>Mass Spectrometry Practice</h1>
                 </div>
-                <div class="block">
+                <form class="block" id="msQuestionForm">
                     <input type="hidden" id="csrf_token"></input>
                     <div class="field">
-                        <p id="question-id" style="display:none;"></p>
-                        <p id="question-text-1">test 1</p>
-                        <img id="question-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEAAAAALAAAAAABAAEAAAIBAAA="></img>
-                        <p id="question-text-2">test 2</p>
+                        <p>Identify the compound that would give this mass spectrum.</p>
+                        <div class="chartContainer">
+                            <canvas id="msChart">
+                                <p>Loading...</p>
+                            </canvas>
+                        </div>
                     </div>
                     <div class="field">
                         <div class="control">
-                            <input class="input" type="text" placeholder="Answer" id="answer"></input>
+                            <input class="input" type="text" placeholder="Answer" id="answer" autocomplete="off"></input>
                         </div>
                         <p id="question-feedback"></p>
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
-                            <button class="button is-primary" id="submit">Submit</button>
+                            <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
                         </div>
                         <div class="control">
-                            <button class="button" id="next">Next Question</button>
+                            <span class="button" id="next">Next Question</span>
                         </div>
                     </div>
-                </div>
-                <div class="block tabs-with-content">
-                    <div class="tabs">
-                        <ul>
-                            <li><a>Hint 1</a></li>
-                            <li><a>Hint 2</a></li>
-                        </ul>
-                    </div>
-                    <section class="tab-content"></section>
-                    <section class="tab-content"></section>
+                </form>
+                <div class="block">
+                    
                 </div>
             </div>
         </div>
     ),
-    oncreate: () => {
+    oncreate: async () => {
         m.request({
             method: "GET",
             url: "/get_csrf_token"
@@ -56,104 +66,89 @@ var Home = {
             $("#csrf_token").val(response.csrf_token);
         });
 
-        var tabs = $(".tabs li")
-        var tabsContent = $(".tab-content")
-        var id = $("#question-id");
-        var text1 = $("#question-text-1");
-        var img = $("#question-img");
-        var text2 = $("#question-text-2");
-        var ansInput = $("#answer");
-        var feedback = $("#question-feedback");
-
-        const deactivateTabs = () => {
-            tabs.each((index, tab) => {
-                $(tab).removeClass("is-active");
-            });
-        }
-        const hideTabsContent = () => {
-            tabsContent.each((index, content) => {
-                $(content).removeClass("is-active")
-            });
-        }
-
-        tabs.each((index, tab) => {
-            $(tab).on("click", () => {
-                deactivateTabs();
-                hideTabsContent();
-                $(tab).addClass("is-active");
-                tabsContent.eq(index).addClass("is-active");
-            });
+        var data = await m.request({
+            method: "GET",
+            url: "/ms_questions_new",
+            params: {id: "random"}
         });
+        var filledData = fillMsDataGaps(data['ms_data']);
+    
+        var answers = await m.request({
+            method: "GET",
+            url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
+            responseType: "text/plain",
+            deserialize: processChemNames
+        });
+        console.log(answers);
 
-        const displayNewQuestion = async () => {
-            const response = await m.request({
+        var msChart = new Chart(
+            document.getElementById("msChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: filledData.map(entry => entry.mz),
+                    datasets: [{
+                        label: "Relative Abundance",
+                        data: filledData.map(entry => entry.abundance),
+                        backgroundColor: [
+                            'rgba(0, 0, 0, 1)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 0, 0, 1)'
+                        ],
+                        barPercentage: 0.5
+                    }]
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        );
+        
+        $("#next").on("click", async () => {
+            $("#answer").removeClass("is-success is-danger");
+            $("#answer").val("");
+            $("#question-feedback").removeClass("is-success is-danger");
+            $("#question-feedback").text("");
+
+            data = await m.request({
                 method: "GET",
-                url: "/ms_questions",
+                url: "/ms_questions_new",
                 params: {id: "random"}
             });
-            id.text(response.qid);
-            text1.text(response.text1);
-            img.attr("src", response.imgsrc);
-            text2.text(response.text2);
-            tabsContent.eq(0).text(response.hints[0]);
-            tabsContent.eq(1).text(response.hints[1]);
-            answers = response.answers;
-        }
+            filledData = fillMsDataGaps(data['ms_data']);
+        
+            answers = await m.request({
+                method: "GET",
+                url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
+                responseType: "text/plain",
+                deserialize: processChemNames
+            });
+            updateData(msChart, filledData);
+            console.log(answers);
+        });
 
-        const checkAnswer = () => {
-            if (localStorage.getItem("jwt") !== null) {
-                return m.request({
-                    method: "POST",
-                    url: "/submit_answer",
-                    body: {
-                        "_csrf_token": $("#csrf_token").val(),
-                        "id": id.text(),
-                        "answer": ansInput.val()
-                    },
-                    headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
-                });
+        document.getElementById("msQuestionForm").addEventListener("submit", e => {
+            e.preventDefault();
+            if (answers.includes($("#answer").val().toLowerCase())) {
+                $("#answer").removeClass("is-danger");
+                $("#answer").addClass("is-success");
+                $("#question-feedback").removeClass("is-danger");
+                $("#question-feedback").addClass("is-success");
+                $("#question-feedback").text("Correct! Well done!");
             } else {
-                return m.request({
-                    method: "POST",
-                    url: "/submit_answer",
-                    body: {
-                        "_csrf_token": $("#csrf_token").val(),
-                        "id": id.text(),
-                        "answer": ansInput.val()
-                    }
-                });
+                $("#answer").removeClass("is-success");
+                $("#answer").addClass("is-danger");
+                $("#question-feedback").removeClass("is-success");
+                $("#question-feedback").addClass("is-danger");
+                $("#question-feedback").text("Incorrect, try again.");
             }
-        }
-
-        displayNewQuestion();
-
-        $("#next").on("click", () => {
-            displayNewQuestion().then(() => {
-                deactivateTabs();
-                hideTabsContent();
-                ansInput.removeClass("is-success is-danger");
-                ansInput.val("");
-                feedback.removeClass("is-success is-danger");
-            });
         });
 
-        $("#submit").on("click", () => {
-            checkAnswer().then(response => {
-                if (response.is_correct) {
-                    ansInput.removeClass("is-danger");
-                    ansInput.addClass("is-success");
-                    feedback.removeClass("is-danger");
-                    feedback.addClass("is-success");
-                    feedback.text("Correct! Well done!");
-                } else {
-                    ansInput.removeClass("is-success");
-                    ansInput.addClass("is-danger");
-                    feedback.removeClass("is-success");
-                    feedback.addClass("is-danger");
-                    feedback.text("Incorrect, try again.");
-                }
-            });
-        });
     }
 }
 
