@@ -3,14 +3,14 @@ import Landing from "./views/landing";
 import Home from "./views/home";
 import Login from "./views/login";
 import Signup from "./views/signup";
-import Legacy from "./views/legacy";
+import MCQ from "./views/mcq";
 
 var root = document.body;
 
 m.route(root, '/landing', {
     '/landing': Landing,
-    '/legacy': Legacy,
     '/login': Login,
     '/signup': Signup,
     '/home': Home,
+    '/mcq': MCQ,
 })

@@ -1,4 +1,5 @@
 import datetime, json, random
+import pandas as pd
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, get_jwt_identity, jwt_required, unset_jwt_cookies
@@ -6,8 +7,9 @@ from flask_mail import Mail, Message
 from flask_seasurf import SeaSurf
 from pymongo import MongoClient
 
-from chemquest_secrets import * # secret addresses, change or remove for local testing
 import elo
+import mcq_generator as mcq
+from chemquest_secrets import * # secret addresses, change or remove for local testing
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -25,6 +27,8 @@ csrf = SeaSurf(app)
 client = MongoClient(mongo_address)
 db = client.chemquest_db
 
+molecules_df = mcq.init()
+fpe = mcq.start_engine()
 
 @app.route('/get_csrf_token')
 def get_csrf_token():
@@ -36,16 +40,6 @@ def index():
     '''Returns a skeleton index page for Flask. For the actual HTML, refer to files in static/src/views.'''
     return render_template("index.html")
 
-@app.route('/ms_questions')
-def ms_questions():
-    '''Returns a question with the requested id, or a random id, in JSON form.'''
-    question_id = request.args.get('id')
-    if question_id == "random":
-        return redirect(url_for('ms_questions', id = random.randint(1, 9)))
-    question_response = db.ms_qns.find_one({"qid": int(question_id)})
-    question_response.pop("_id")
-    return question_response
-
 @app.route('/ms_questions_new')
 def ms_questions_new():
     '''Returns a set of MS data.'''
@@ -55,6 +49,12 @@ def ms_questions_new():
     question_response = db.ms_data.find_one({"qid": int(question_id)})
     question_response.pop("_id")
     return question_response
+
+@app.route('/generate_mcq')
+def generate_mcq():
+    '''Returns a set of similar molecules to the input SMILES for use in MCQ questions.'''
+    input_smiles = request.args.get('input_smiles')
+    return mcq.get_similar_compounds(molecules_df, fpe, input_smiles)
 
 @app.route('/record_attempt', methods = ['POST'])
 @jwt_required(optional = True)
@@ -129,7 +129,7 @@ def signup():
         "region": request.json["region"],
         "elo": 1000.0
     }
-    new_user_id = db.users.insert_one(new_user).inserted_id
+    db.users.insert_one(new_user).inserted_id
     email_msg = Message(
         subject="ChemQuest - Signup Successful", 
         recipients=[new_user["email"]], 

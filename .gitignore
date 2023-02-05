@@ -6,6 +6,8 @@ static/bin/
 .vscode/
 .pylintrc
 
+.venv/
+
 fly.toml
 
 .gitsecret/keys/random_seed
