@@ -1,5 +1,4 @@
 import datetime, json, random
-import pandas as pd
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask import Flask, redirect, render_template, request, url_for, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, get_jwt, get_jwt_identity, jwt_required, unset_jwt_cookies
@@ -8,7 +7,7 @@ from flask_seasurf import SeaSurf
 from pymongo import MongoClient
 
 import elo
-import mcq_generator as mcq
+#import mcq_generator as mcq
 from chemquest_secrets import * # secret addresses, change or remove for local testing
 
 app = Flask(__name__)
@@ -27,8 +26,8 @@ csrf = SeaSurf(app)
 client = MongoClient(mongo_address)
 db = client.chemquest_db
 
-molecules_df = mcq.init()
-fpe = mcq.start_engine()
+#molecules_df = mcq.init()
+#fpe = mcq.start_engine()
 
 @app.route('/get_csrf_token')
 def get_csrf_token():
@@ -50,11 +49,11 @@ def ms_questions_new():
     question_response.pop("_id")
     return question_response
 
-@app.route('/generate_mcq')
-def generate_mcq():
-    '''Returns a set of similar molecules to the input SMILES for use in MCQ questions.'''
-    input_smiles = request.args.get('input_smiles')
-    return mcq.get_similar_compounds(molecules_df, fpe, input_smiles)
+#@app.route('/generate_mcq')
+#def generate_mcq():
+#    '''Returns a set of similar molecules to the input SMILES for use in MCQ questions.'''
+#    input_smiles = request.args.get('input_smiles')
+#    return mcq.get_similar_compounds(molecules_df, fpe, input_smiles)
 
 @app.route('/record_attempt', methods = ['POST'])
 @jwt_required(optional = True)
