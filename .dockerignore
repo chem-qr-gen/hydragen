@@ -1,0 +1,16 @@
+__pycache__/
+.python-version
+static/bin/
+
+static/.pnp.*
+static/.yarn/*
+!static/.yarn/patches
+!static/.yarn/plugins
+!static/.yarn/releases
+!static/.yarn/sdks
+!static/.yarn/versions
+
+.vscode/
+.pylintrc
+
+.venv/

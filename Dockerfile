@@ -9,5 +9,5 @@ WORKDIR /usr/pn/app/static
 RUN yarn install
 RUN yarn run build
 WORKDIR /usr/pn/app
-EXPOSE 5000
+EXPOSE 5001
 CMD poetry run gunicorn -w 4 -b 0.0.0.0:5001 app:app
