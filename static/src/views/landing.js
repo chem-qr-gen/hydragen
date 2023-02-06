@@ -10,14 +10,19 @@ var Landing = {
                 <div class="hero-body">
                     <p class="title">Mass Spectrometry Practice Made Easy</p>
                     <div class="block">
-                        <a class="button is-primary mx-1" href="#!/signup">Sign Up</a>
-                        <a class="button mx-1" href="#!/login">Log In</a>
-                        <a class="button mx-1" href="#!/home">Try Now</a>
+                        <a class="button is-primary mx-1" id="tryNowButton" href="#!/home">Try Now</a>
+                        <a class="button mx-1" id="loginButton" href="#!/login">Log In</a>
+                        <a class="button mx-1" id="signupButton" href="#!/signup">Sign Up</a>
                     </div>
                 </div>
             </div>
         </div>
-    )
+    ),
+    oncreate: () => {
+        if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
+            $("#loginButton, #signupButton").hide();
+        }
+    }
 }
 
 export default Landing;
