@@ -1,5 +1,6 @@
 @import "views/landing.css";
 @import "views/home.css";
+@import "views/signup.css";
 
 input {
     transition: border-color 0.25s;

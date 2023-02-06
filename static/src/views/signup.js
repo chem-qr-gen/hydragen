@@ -1,5 +1,5 @@
 import m from "mithril";
-import Pristine from "../libraries/pristine";
+import Parsley from "parsleyjs";
 
 import Navbar from "../components/navbar";
 import CountryInput from "../components/countryInput";
@@ -12,7 +12,7 @@ var Signup = {
                 <div class="block">
                     <h1>Sign Up</h1>
                 </div>
-                <form class="block" id="signupForm">
+                <form class="block" id="signupForm" data-parsley-validate>
                     <input type="hidden" id="csrf_token"></input>
                     <div class="columns is-mobile is-multiline">
                         <div class="field column is-half pt-0">
@@ -36,7 +36,7 @@ var Signup = {
                         <div class="field column is-half pt-0">
                             <label class="label">Confirm Password</label>
                             <div class="control">
-                                <input class="input" type="password" id="confirmPasswordInput" required minlength="8" data-pristine-equals="#passwordInput"></input>
+                                <input class="input" type="password" id="confirmPasswordInput" required minlength="8" data-parsley-equalto="#passwordInput"></input>
                             </div>
                         </div>
                         <div class="field column is-one-third pt-0">
@@ -85,43 +85,32 @@ var Signup = {
             $("#csrf_token").val(response.csrf_token);
         });
 
-        var form = document.getElementById("signupForm");
-
-        var pristine = new Pristine(form, {
-            classTo: "field",
-            errorClass: "is-danger",
-            successClass: "is-success",
-            errorTextParent: "field",
-            errorTextTag: "p",
-            errorTextClass: "help is-danger"
-        });
-
-        form.addEventListener("submit", e => {
-            e.preventDefault();
-
-            var valid = pristine.validate();
-            if (valid) {
-                m.request({
-                    method: "POST",
-                    url: "/signup",
-                    body: {
-                        "_csrf_token": $("#csrf_token").val(),
-                        "username": $("#usernameInput").val(),
-                        "email": $("#emailInput").val(),
-                        "password": $("#passwordInput").val(),
-                        "gender": $("#genderInput option:selected").text(),
-                        "country": $("#countryInput option:selected").text(),
-                        "region": $("#regionInput").val()
-                    }
-                }).then(response => {
-                    alert(response.msg);
-                    location.href = "#!/login" // redirect after successful signup
-                }).catch(e => {
-                    if (e.code === 401) { // unauthorized - probably user already exists
-                        alert(e.response.msg);
-                    }
-                });
-            }
+        $("#signupForm").parsley({
+            trigger: "change",
+            errorsWrapper: '<div class="parsley-errors-list"></ul>',
+            errorTemplate: "<p></p>"
+        }).on("form:submit", () => {
+            m.request({
+                method: "POST",
+                url: "/signup",
+                body: {
+                    "_csrf_token": $("#csrf_token").val(),
+                    "username": $("#usernameInput").val(),
+                    "email": $("#emailInput").val(),
+                    "password": $("#passwordInput").val(),
+                    "gender": $("#genderInput option:selected").text(),
+                    "country": $("#countryInput option:selected").text(),
+                    "region": $("#regionInput").val()
+                }
+            }).then(response => {
+                alert(response.msg);
+                location.href = "#!/login" // redirect after successful signup
+            }).catch(e => {
+                if (e.code === 401) { // unauthorized - probably user already exists
+                    alert(e.response.msg);
+                }
+            });
+            return false;
         });
     }
 }

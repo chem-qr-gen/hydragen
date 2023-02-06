@@ -1,0 +1,4 @@
+/* parsley validation styling */
+.parsley-errors-list p {
+    color: hsl(348, 100%, 61%);
+}

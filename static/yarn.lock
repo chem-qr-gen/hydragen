@@ -1793,6 +1793,7 @@ __metadata:
     chart.js: ^4.0.1
     jquery: ^3.6.3
     mithril: ^2.2.2
+    parsleyjs: ^2.9.2
     smiles-drawer: ^2.1.7
     webpack: ^5.74.0
     webpack-cli: ^4.10.0
@@ -2215,7 +2216,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jquery@npm:^3.6.3":
+"jquery@npm:>=1.8.0, jquery@npm:^3.6.3":
   version: 3.6.3
   resolution: "jquery@npm:3.6.3"
   checksum: 0fd366bdcaa0c84a7a8751ce20f8192290141913978b5059574426d9b01f4365daa675f95aab3eec94fd794d27b08d32078a2236bef404b8ba78073009988ce6
@@ -2435,6 +2436,15 @@ __metadata:
   version: 2.2.0
   resolution: "p-try@npm:2.2.0"
   checksum: f8a8e9a7693659383f06aec604ad5ead237c7a261c18048a6e1b5b85a5f8a067e469aa24f5bc009b991ea3b058a87f5065ef4176793a200d4917349881216cae
+  languageName: node
+  linkType: hard
+
+"parsleyjs@npm:^2.9.2":
+  version: 2.9.2
+  resolution: "parsleyjs@npm:2.9.2"
+  dependencies:
+    jquery: ">=1.8.0"
+  checksum: 259eab31084f4a294acda2690901bcf0aa5b4ecd6c0211fdf7116914d7888faec5cbd04c3bc59a36e2128bbd7b3bdf8b00820a5f7886614fad4e49997afb8d27
   languageName: node
   linkType: hard
 
