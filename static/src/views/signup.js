@@ -85,6 +85,7 @@ var Signup = {
             $("#csrf_token").val(response.csrf_token);
         });
 
+        // TODO: make the form dynamically check if username and email already exist (should be possible with parsley)
         $("#signupForm").parsley({
             trigger: "change",
             errorsWrapper: '<div class="parsley-errors-list"></ul>',
