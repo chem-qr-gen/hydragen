@@ -1781,9 +1781,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chemquest-mithril@workspace:.":
+"chemquest_website@workspace:.":
   version: 0.0.0-use.local
-  resolution: "chemquest-mithril@workspace:."
+  resolution: "chemquest_website@workspace:."
   dependencies:
     "@babel/core": ^7.18.10
     "@babel/plugin-transform-react-jsx": ^7.18.10

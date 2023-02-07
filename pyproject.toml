@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "chemquest-mithril"
+name = "chemquest_website"
 version = "0.3.0"
 description = "An automatic question generator for organic chemistry."
 authors = ["Charles <charliewindle@gmail.com>"]

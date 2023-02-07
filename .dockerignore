@@ -1,14 +1,14 @@
 __pycache__/
 .python-version
-static/bin/
+chemquest_website/static/bin/
 
-static/.pnp.*
-static/.yarn/*
-!static/.yarn/patches
-!static/.yarn/plugins
-!static/.yarn/releases
-!static/.yarn/sdks
-!static/.yarn/versions
+chemquest_website/static/.pnp.*
+chemquest_website/static/.yarn/*
+!chemquest_website/static/.yarn/patches
+!chemquest_website/static/.yarn/plugins
+!chemquest_website/static/.yarn/releases
+!chemquest_website/static/.yarn/sdks
+!chemquest_website/static/.yarn/versions
 
 .vscode/
 .pylintrc

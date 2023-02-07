@@ -6,9 +6,9 @@ from flask_mail import Mail, Message
 from flask_seasurf import SeaSurf
 from pymongo import MongoClient
 
-import elo
+import chemquest_website.elo as elo
 #import mcq_generator as mcq
-from chemquest_secrets import * # secret addresses, change or remove for local testing
+from chemquest_website.chemquest_secrets import * # secret addresses, change or remove for local testing
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
