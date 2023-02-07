@@ -7,26 +7,30 @@ An automatic question generator for organic chemistry.
 ## Requirements
 
 - Python 3.6+
-- Node.js
+- Node.js ?+
 - [poetry](https://python-poetry.org/)
+- [Yarn](https://yarnpkg.com/)
 
 ## Installation
 
+For development and testing (port 5000):
+
 ```bash
 $ poetry install
-$ cd static
-$ npm i
-$ npm run build
-$ cd ..
-$ poetry run gunicorn -w 4 -b 0.0.0.0:5001 app:app
+$ cd chemquest_website/static
+$ yarn install
+$ yarn run watch
+$ cd ../..
+$ poetry run flask --app=chemquest_website --debug run
 ```
 
-The website will be accessible at `localhost:5001` or `<YOUR_IP>:5001`.
+For a production environment (port 5001):
 
-## API Usage
-
-The api for MS questions is accessible at <https://chemquest.fly.dev/ms_questions?id=1> or, if hosted locally, `<YOUR_IP>:5001/ms_questions?id=1`.
-
-Parameters:
-
-- `id`: Input the desired question id, or "random" for a redirect to a random question.
+```bash
+$ poetry install
+$ cd chemquest_website/static
+$ yarn install
+$ yarn run build
+$ cd ../..
+$ poetry run gunicorn -w 4 -b 0.0.0.0:5001 chemquest_website:app
+```
