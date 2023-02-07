@@ -6,7 +6,7 @@ from chemquest_website import app, db
 
 @app.route('/login', methods = ['POST'])
 def login():
-    '''API for login.'''
+    '''API for login. If login is unsuccessful, 401 will be returned.'''
     user = db.users.find_one({"username": request.json["username"]})
     if user and check_password_hash(user["password"], request.json["password"]):
         access_token = create_access_token(user["username"])

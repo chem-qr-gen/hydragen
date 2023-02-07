@@ -7,7 +7,7 @@ from chemquest_website import app, db, mail
 @app.route('/signup', methods = ['POST'])
 def signup():
     '''API for signup.'''
-    existing_user = db.users.find_one({"username": request.json["username"]})
+    existing_user = db.users.find_one({"username": request.json["username"]}) # check if a user already exists
     if existing_user:
         return {"msg": "Username already exists"}, 401
     new_user = {
