@@ -17,8 +17,6 @@ const fillMsDataGaps = msData => {
     return newMsData;
 }
 
-const processChemNames = names => names.split("\n").map(name => name.toLowerCase());
-
 var MCQ = {
     view: () => (
         <div class="content">
@@ -41,33 +39,28 @@ var MCQ = {
                         <div class="columns">
                             <div class="control column">
                                 <label class="radio">
-                                    <input type="radio" name="answer"></input>
-                                    Option 1
+                                    <input type="radio" name="answer" value="0"></input>
+                                    <img id="radio-opt0"></img>
                                 </label>
                             </div>
                             <div class="control column">
                                 <label class="radio">
-                                    <input type="radio" name="answer"></input>
-                                    Option 2
+                                    <input type="radio" name="answer" value="1"></input>
+                                    <img id="radio-opt1"></img>
                                 </label>
                             </div>
                             <div class="control column">
                                 <label class="radio">
-                                    <input type="radio" name="answer"></input>
-                                    Option 3
+                                    <input type="radio" name="answer" value="2"></input>
+                                    <img id="radio-opt2"></img>
                                 </label>
                             </div>
                             <div class="control column">
                                 <label class="radio">
-                                    <input type="radio" name="answer"></input>
-                                    Option 4
+                                    <input type="radio" name="answer" value="3"></input>
+                                    <img id="radio-opt3"></img>
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" type="text" placeholder="Answer" id="answer" autocomplete="off"></input>
                         </div>
                         <p id="question-feedback"></p>
                     </div>
@@ -94,6 +87,8 @@ var MCQ = {
             $("#csrf_token").val(response.csrf_token);
         });
 
+        var drawer = new SmiDrawer();
+
         // highlight the selected option
         $("input[name='answer']").on("click", () => {
             $("input[name='answer']:checked").parent().parent()
@@ -101,21 +96,29 @@ var MCQ = {
             .siblings().removeClass("radio_selected")
         });
 
+        // get new question with SMILES, mass spec data, etc.
         var data = await m.request({
             method: "GET",
             url: "/ms_questions_new",
             params: {id: "random"}
         });
         var filledData = fillMsDataGaps(data['ms_data']);
-    
-        var answers = await m.request({
-            method: "GET",
-            url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
-            responseType: "text/plain",
-            deserialize: processChemNames
-        });
-        console.log(answers);
 
+        // get random MCQ options
+        var mcqAnswers = await m.request({
+            method: "GET",
+            url: "/generate_mcq",
+            params: {input_smiles: data["smiles"]}
+        }).then(response => response.map(i => i["SMILES"]));
+
+        var correctAnswer = Math.floor(Math.random() * 3); 
+        mcqAnswers.splice(correctAnswer, 0, data["smiles"]); // insert the correct answer randomly into the options
+
+        for (var index = 0; index < mcqAnswers.length; index++) {
+            drawer.draw(mcqAnswers[index], "#radio-opt" + index); // generate the structure images based on the SMILES MCQ options
+        }
+
+        // chart initialisation
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
@@ -145,8 +148,10 @@ var MCQ = {
         );
         
         $("#next").on("click", async () => {
-            $("#answer").removeClass("is-success is-danger");
-            $("#answer").val("");
+            $("input[name='answer']").each(() => {
+                $(this).prop("checked", false);
+                $(this).removeClass("radio_selected"); // TODO: this doesn't remove the grey background. figure out why
+            });
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
@@ -156,31 +161,31 @@ var MCQ = {
                 params: {id: "random"}
             });
             filledData = fillMsDataGaps(data['ms_data']);
-        
-            answers = await m.request({
+
+            mcqAnswers = await m.request({
                 method: "GET",
-                url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
-                responseType: "text/plain",
-                deserialize: processChemNames
-            });
-            updateData(msChart, filledData);
-            console.log(answers);
+                url: "/generate_mcq",
+                params: {input_smiles: data["smiles"]}
+            }).then(response => response.map(i => i["SMILES"]));
+    
+            correctAnswer = Math.floor(Math.random() * 3);
+    
+            mcqAnswers.splice(correctAnswer, 0, data["smiles"]);
+    
+            for (var index = 0; index < mcqAnswers.length; index++) {
+                drawer.draw(mcqAnswers[index], "#radio-opt" + index);
+            }
         });
 
         var isCorrect;
 
-        document.getElementById("msQuestionForm").addEventListener("submit", e => {
-            e.preventDefault();
-            if (answers.includes($("#answer").val().toLowerCase())) {
-                $("#answer").removeClass("is-danger");
-                $("#answer").addClass("is-success");
+        $("#msQuestionForm").on("submit", () => {
+            if (correctAnswer == $("input[name='answer']:checked").val()) {
                 $("#question-feedback").removeClass("is-danger");
                 $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
                 isCorrect = true;
             } else {
-                $("#answer").removeClass("is-success");
-                $("#answer").addClass("is-danger");
                 $("#question-feedback").removeClass("is-success");
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
@@ -193,12 +198,12 @@ var MCQ = {
                 body: {
                     "_csrf_token": $("#csrf_token").val(),
                     "id": data.qid,
-                    "answer": $("#answer").val(),
+                    "answer": mcqAnswers[$("input[name='answer']:checked").val()],
                     "isCorrect": isCorrect
                 }
             });
+            return false;
         });
-
     }
 }
 
