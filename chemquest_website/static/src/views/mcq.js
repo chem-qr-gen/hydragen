@@ -38,6 +38,34 @@ var MCQ = {
                         </div>
                     </div>
                     <div class="field">
+                        <div class="columns">
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer"></input>
+                                    Option 1
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer"></input>
+                                    Option 2
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer"></input>
+                                    Option 3
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer"></input>
+                                    Option 4
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
                         <div class="control">
                             <input class="input" type="text" placeholder="Answer" id="answer" autocomplete="off"></input>
                         </div>
@@ -64,6 +92,13 @@ var MCQ = {
             url: "/get_csrf_token"
         }).then(response => {
             $("#csrf_token").val(response.csrf_token);
+        });
+
+        // highlight the selected option
+        $("input[name='answer']").on("click", () => {
+            $("input[name='answer']:checked").parent().parent()
+            .addClass("radio_selected")
+            .siblings().removeClass("radio_selected")
         });
 
         var data = await m.request({

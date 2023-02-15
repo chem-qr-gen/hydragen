@@ -37,3 +37,17 @@ p#question-feedback.is-danger {
         max-width: 70%;
     }
 }
+
+
+/* radio button styling */
+[type=radio] { 
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio_selected {
+    background-color: silver;
+    background-clip: content-box;
+}
