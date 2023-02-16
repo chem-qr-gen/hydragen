@@ -92,8 +92,8 @@ var MCQ = {
         // highlight the selected option
         $("input[name='answer']").on("click", () => {
             $("input[name='answer']:checked").parent().parent()
-            .addClass("radio_selected")
-            .siblings().removeClass("radio_selected")
+            .addClass("radio-selected")
+            .siblings().removeClass("radio-selected");
         });
 
         // get new question with SMILES, mass spec data, etc.
@@ -148,9 +148,9 @@ var MCQ = {
         );
         
         $("#next").on("click", async () => {
-            $("input[name='answer']").each(() => {
-                $(this).prop("checked", false);
-                $(this).removeClass("radio_selected"); // TODO: this doesn't remove the grey background. figure out why
+            $("input[name='answer']").each((index, element) => {
+                $(element).prop("checked", false);
+                $(element).parent().parent().removeClass("radio-selected");
             });
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");

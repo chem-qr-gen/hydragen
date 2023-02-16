@@ -47,7 +47,7 @@ p#question-feedback.is-danger {
     height: 0;
 }
 
-.radio_selected {
+.radio-selected {
     background-color: silver;
     background-clip: content-box;
 }
