@@ -89,34 +89,45 @@ var MCQ = {
 
         var drawer = new SmiDrawer();
 
-        // highlight the selected option
+        // highlight the selected option when clicked
         $("input[name='answer']").on("click", () => {
             $("input[name='answer']:checked").parent().parent()
             .addClass("radio-selected")
             .siblings().removeClass("radio-selected");
         });
 
-        // get new question with SMILES, mass spec data, etc.
-        var data = await m.request({
-            method: "GET",
-            url: "/ms_questions_new",
-            params: {id: "random"}
-        });
-        var filledData = fillMsDataGaps(data['ms_data']);
+        const getNewQuestion = async () => {
+            // get new question with SMILES, mass spec data, etc.
+            var data = await m.request({
+                method: "GET",
+                url: "/ms_questions_new",
+                params: {id: "random"}
+            });
+            var filledMsData = fillMsDataGaps(data['ms_data']);
 
-        // get random MCQ options
-        var mcqAnswers = await m.request({
-            method: "GET",
-            url: "/generate_mcq",
-            params: {input_smiles: data["smiles"]}
-        }).then(response => response.map(i => i["SMILES"]));
+            // get random MCQ options
+            var mcqAnswers = await m.request({
+                method: "GET",
+                url: "/generate_mcq",
+                params: {input_smiles: data["smiles"]}
+            }).then(response => response.map(i => i["SMILES"]));
 
-        var correctAnswer = Math.floor(Math.random() * 3); 
-        mcqAnswers.splice(correctAnswer, 0, data["smiles"]); // insert the correct answer randomly into the options
+            var correctAnswer = Math.floor(Math.random() * 3); 
+            mcqAnswers.splice(correctAnswer, 0, data["smiles"]); // insert the correct answer randomly into the options
 
-        for (var index = 0; index < mcqAnswers.length; index++) {
-            drawer.draw(mcqAnswers[index], "#radio-opt" + index); // generate the structure images based on the SMILES MCQ options
-        }
+            for (var index = 0; index < mcqAnswers.length; index++) {
+                drawer.draw(mcqAnswers[index], "#radio-opt" + index); // generate the structure images based on the SMILES MCQ options
+            }
+
+            return {
+                rawData: data,
+                filledMsData: filledMsData,
+                mcqAnswers: mcqAnswers,
+                correctAnswer: correctAnswer
+            }
+        };
+
+        var questionData = await getNewQuestion();
 
         // chart initialisation
         var msChart = new Chart(
@@ -124,10 +135,10 @@ var MCQ = {
             {
                 type: "bar",
                 data: {
-                    labels: filledData.map(entry => entry.mz),
+                    labels: questionData.filledMsData.map(entry => entry.mz),
                     datasets: [{
                         label: "Relative Abundance",
-                        data: filledData.map(entry => entry.abundance),
+                        data: questionData.filledMsData.map(entry => entry.abundance),
                         backgroundColor: [
                             'rgba(0, 0, 0, 1)'
                         ],
@@ -155,32 +166,14 @@ var MCQ = {
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
-            data = await m.request({
-                method: "GET",
-                url: "/ms_questions_new",
-                params: {id: "random"}
-            });
-            filledData = fillMsDataGaps(data['ms_data']);
-
-            mcqAnswers = await m.request({
-                method: "GET",
-                url: "/generate_mcq",
-                params: {input_smiles: data["smiles"]}
-            }).then(response => response.map(i => i["SMILES"]));
-    
-            correctAnswer = Math.floor(Math.random() * 3);
-    
-            mcqAnswers.splice(correctAnswer, 0, data["smiles"]);
-    
-            for (var index = 0; index < mcqAnswers.length; index++) {
-                drawer.draw(mcqAnswers[index], "#radio-opt" + index);
-            }
+            questionData = await getNewQuestion();
+            updateData(msChart, questionData.filledMsData);
         });
 
         var isCorrect;
 
         $("#msQuestionForm").on("submit", () => {
-            if (correctAnswer == $("input[name='answer']:checked").val()) {
+            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {
                 $("#question-feedback").removeClass("is-danger");
                 $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
@@ -197,8 +190,8 @@ var MCQ = {
                 headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")},
                 body: {
                     "_csrf_token": $("#csrf_token").val(),
-                    "id": data.qid,
-                    "answer": mcqAnswers[$("input[name='answer']:checked").val()],
+                    "id": questionData.rawData.qid,
+                    "answer": questionData.mcqAnswers[$("input[name='answer']:checked").val()],
                     "isCorrect": isCorrect
                 }
             });
