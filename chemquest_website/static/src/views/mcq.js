@@ -1,5 +1,6 @@
 import m from "mithril";
 import Chart from "chart.js/auto"
+import md5 from "md5";
 
 import Navbar from "../components/navbar";
 import updateData from "../libraries/chartjs_helpers";
@@ -103,6 +104,8 @@ var MCQ = {
                 url: "/ms_questions_new",
                 params: {id: "random"}
             });
+
+            // filled data for the mass spec graph
             var filledMsData = fillMsDataGaps(data['ms_data']);
 
             // get random MCQ options
@@ -119,7 +122,12 @@ var MCQ = {
                 drawer.draw(mcqAnswers[index], "#radio-opt" + index); // generate the structure images based on the SMILES MCQ options
             }
 
+            // create a unique hash id from the timestamp and SMILES of the correct answer
+            var timestamp = new Date().getTime();
+            var questionHash = md5(timestamp + data["smiles"]);
+
             return {
+                hashId: questionHash,
                 rawData: data,
                 filledMsData: filledMsData,
                 mcqAnswers: mcqAnswers,
@@ -184,14 +192,18 @@ var MCQ = {
                 $("#question-feedback").text("Incorrect, try again.");
                 isCorrect = false;
             }
+
+            // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
             m.request({
                 method: "POST",
                 url: "/record_attempt",
                 headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")},
                 body: {
                     "_csrf_token": $("#csrf_token").val(),
-                    "id": questionData.rawData.qid,
-                    "answer": questionData.mcqAnswers[$("input[name='answer']:checked").val()],
+                    "hashId": questionData.hashId,
+                    "qid": questionData.rawData.qid,
+                    "options": questionData.mcqAnswers,
+                    "answer": $("input[name='answer']:checked").val(),
                     "isCorrect": isCorrect
                 }
             });

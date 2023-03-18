@@ -8,3 +8,17 @@ def rate_single(rating_a: float, rating_b: float, score_a: float, score_b: float
     new_rating_b = rating_b + max_adj * (score_b - expected_score_b)
 
     return (new_rating_a, new_rating_b)
+
+def calculate_new_elo(old_elo: float, question_elo: float, attempts: list[bool]) -> float:
+    score = 0.0
+    for attempt in attempts:
+        if attempt == False:
+            score -= 0.4
+        else:
+            score += 1.0
+            break
+    
+    score = max(0.0, score)
+    
+    new_elo = rate_single(old_elo, question_elo, score, 1.0 - score)[0]
+    return new_elo

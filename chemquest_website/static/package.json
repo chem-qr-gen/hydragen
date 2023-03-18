@@ -16,6 +16,7 @@
     "babel-loader": "^8.2.5",
     "chart.js": "^4.0.1",
     "jquery": "^3.6.3",
+    "md5": "^2.3.0",
     "mithril": "^2.2.2",
     "parsleyjs": "^2.9.2",
     "smiles-drawer": "^2.1.7",
