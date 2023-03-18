@@ -1,5 +1,6 @@
 import m from "mithril";
 import Chart from "chart.js/auto"
+import md5 from "md5";
 
 import Navbar from "../components/navbar";
 import updateData from "../libraries/chartjs_helpers";
@@ -17,9 +18,7 @@ const fillMsDataGaps = msData => {
     return newMsData;
 }
 
-const processChemNames = names => names.split("\n").map(name => name.toLowerCase());
-
-var Home = {
+var MCQ = {
     view: () => (
         <div class="content">
             <Navbar />
@@ -38,8 +37,31 @@ var Home = {
                         </div>
                     </div>
                     <div class="field">
-                        <div class="control">
-                            <input class="input" type="text" placeholder="Answer" id="answer" autocomplete="off"></input>
+                        <div class="columns">
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="0"></input>
+                                    <img id="radio-opt0"></img>
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="1"></input>
+                                    <img id="radio-opt1"></img>
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="2"></input>
+                                    <img id="radio-opt2"></img>
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="3"></input>
+                                    <img id="radio-opt3"></img>
+                                </label>
+                            </div>
                         </div>
                         <p id="question-feedback"></p>
                     </div>
@@ -66,30 +88,98 @@ var Home = {
             $("#csrf_token").val(response.csrf_token);
         });
 
-        var data = await m.request({
-            method: "GET",
-            url: "/ms_questions_new",
-            params: {id: "random"}
+        var drawer = new SmiDrawer({
+            themes: {
+                dark: {
+                    C: '#fff',
+                    O: '#fff',
+                    N: '#fff',
+                    F: '#fff',
+                    CL: '#fff',
+                    BR: '#fff',
+                    I: '#fff',
+                    P: '#fff',
+                    S: '#fff',
+                    B: '#fff',
+                    SI: '#fff',
+                    H: '#fff',
+                    BACKGROUND: '#141414'
+                },
+                light: {
+                    C: '#222',
+                    O: '#222',
+                    N: '#222',
+                    F: '#222',
+                    CL: '#222',
+                    BR: '#222',
+                    I: '#222',
+                    P: '#222',
+                    S: '#222',
+                    B: '#222',
+                    SI: '#222',
+                    H: '#222',
+                    BACKGROUND: '#fff'
+                }
+            }
         });
-        var filledData = fillMsDataGaps(data['ms_data']);
-    
-        var answers = await m.request({
-            method: "GET",
-            url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
-            responseType: "text/plain",
-            deserialize: processChemNames
-        });
-        console.log(answers);
 
+        // highlight the selected option when clicked
+        $("input[name='answer']").on("click", () => {
+            $("input[name='answer']:checked").parent().parent()
+            .addClass("radio-selected")
+            .siblings().removeClass("radio-selected");
+        });
+
+        const getNewQuestion = async () => {
+            // get new question with SMILES, mass spec data, etc.
+            var data = await m.request({
+                method: "GET",
+                url: "/ms_questions_new",
+                params: {id: "random"}
+            });
+
+            // filled data for the mass spec graph
+            var filledMsData = fillMsDataGaps(data['ms_data']);
+
+            // get random MCQ options
+            var mcqAnswers = await m.request({
+                method: "GET",
+                url: "/generate_mcq",
+                params: {input_smiles: data["smiles"]}
+            }).then(response => response.map(i => i["SMILES"]));
+
+            var correctAnswer = Math.floor(Math.random() * 3); 
+            mcqAnswers.splice(correctAnswer, 0, data["smiles"]); // insert the correct answer randomly into the options
+
+            for (var index = 0; index < mcqAnswers.length; index++) {
+                drawer.draw(mcqAnswers[index], "#radio-opt" + index); // generate the structure images based on the SMILES MCQ options
+            }
+
+            // create a unique hash id from the timestamp and SMILES of the correct answer
+            var timestamp = new Date().getTime();
+            var questionHash = md5(timestamp + data["smiles"]);
+
+            return {
+                hashId: questionHash,
+                rawData: data,
+                filledMsData: filledMsData,
+                mcqAnswers: mcqAnswers,
+                correctAnswer: correctAnswer
+            }
+        };
+
+        var questionData = await getNewQuestion();
+
+        // chart initialisation
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
                 type: "bar",
                 data: {
-                    labels: filledData.map(entry => entry.mz),
+                    labels: questionData.filledMsData.map(entry => entry.mz),
                     datasets: [{
                         label: "Relative Abundance",
-                        data: filledData.map(entry => entry.abundance),
+                        data: questionData.filledMsData.map(entry => entry.abundance),
                         backgroundColor: [
                             'rgba(0, 0, 0, 1)'
                         ],
@@ -110,61 +200,49 @@ var Home = {
         );
         
         $("#next").on("click", async () => {
-            $("#answer").removeClass("is-success is-danger");
-            $("#answer").val("");
+            $("input[name='answer']").each((index, element) => {
+                $(element).prop("checked", false);
+                $(element).parent().parent().removeClass("radio-selected");
+            });
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
-            data = await m.request({
-                method: "GET",
-                url: "/ms_questions_new",
-                params: {id: "random"}
-            });
-            filledData = fillMsDataGaps(data['ms_data']);
-        
-            answers = await m.request({
-                method: "GET",
-                url: "https://cactus.nci.nih.gov/chemical/structure/" + encodeURIComponent(data.smiles) + "/names",
-                responseType: "text/plain",
-                deserialize: processChemNames
-            });
-            updateData(msChart, filledData);
-            console.log(answers);
+            questionData = await getNewQuestion();
+            updateData(msChart, questionData.filledMsData);
         });
 
         var isCorrect;
 
-        document.getElementById("msQuestionForm").addEventListener("submit", e => {
-            e.preventDefault();
-            if (answers.includes($("#answer").val().toLowerCase())) {
-                $("#answer").removeClass("is-danger");
-                $("#answer").addClass("is-success");
+        $("#msQuestionForm").on("submit", () => {
+            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {
                 $("#question-feedback").removeClass("is-danger");
                 $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
                 isCorrect = true;
             } else {
-                $("#answer").removeClass("is-success");
-                $("#answer").addClass("is-danger");
                 $("#question-feedback").removeClass("is-success");
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
                 isCorrect = false;
             }
+
+            // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
             m.request({
                 method: "POST",
                 url: "/record_attempt",
                 headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")},
                 body: {
                     "_csrf_token": $("#csrf_token").val(),
-                    "id": data.qid,
-                    "answer": $("#answer").val(),
+                    "hashId": questionData.hashId,
+                    "qid": questionData.rawData.qid,
+                    "options": questionData.mcqAnswers,
+                    "answer": $("input[name='answer']:checked").val(),
                     "isCorrect": isCorrect
                 }
             });
+            return false;
         });
-
     }
 }
 
-export default Home;
+export default MCQ;
