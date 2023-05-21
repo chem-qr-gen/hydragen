@@ -30,6 +30,19 @@ p#question-feedback.is-danger {
     display: block;
 }
 
+/* MCQ form styling */
+#msQuestionForm {
+    position: relative;
+}
+.mcq-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mcq-overlay .is-hidden {
+    display: none;
+}
 
 /* chart styling */
 @media(min-width: 1024px) {

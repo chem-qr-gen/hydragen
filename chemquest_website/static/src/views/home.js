@@ -73,10 +73,10 @@ var MCQ = {
                             <span class="button" id="next">Next Question</span>
                         </div>
                     </div>
+                    <div class="is-overlay mcq-overlay is-hidden">
+                        <h2>Loading...</h2>
+                    </div>
                 </form>
-                <div class="block">
-                    
-                </div>
             </div>
         </div>
     ),
@@ -207,7 +207,10 @@ var MCQ = {
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
+            $(".mcq-overlay").removeClass("is-hidden");
+
             questionData = await getNewQuestion();
+            $(".mcq-overlay").addClass("is-hidden");
             updateData(msChart, questionData.filledMsData);
         });
 
