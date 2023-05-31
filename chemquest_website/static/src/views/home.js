@@ -26,7 +26,7 @@ var MCQ = {
                 <div class="block">
                     <h1>Mass Spectrometry Practice</h1>
                 </div>
-                <form class="block" id="msQuestionForm">
+                <form class="block" id="msQuestionForm is-relative">
                     <input type="hidden" id="csrf_token"></input>
                     <div class="field">
                         <p>Identify the compound that would give this mass spectrum.</p>
