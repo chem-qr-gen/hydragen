@@ -9,6 +9,7 @@ chemquest_website/static/.yarn/*
 !chemquest_website/static/.yarn/releases
 !chemquest_website/static/.yarn/sdks
 !chemquest_website/static/.yarn/versions
+node_modules/
 
 .vscode/
 .pylintrc
