@@ -148,11 +148,13 @@ var MCQ = {
                 params: {input_smiles: data["smiles"]}
             }).then(response => response.map(i => i["SMILES"]));
 
+            // insert the correct answer randomly into the options
             var correctAnswer = Math.floor(Math.random() * 3); 
-            mcqAnswers.splice(correctAnswer, 0, data["smiles"]); // insert the correct answer randomly into the options
+            mcqAnswers.splice(correctAnswer, 0, data["smiles"]);
 
+            // generate the structure images for display based on the SMILES MCQ options
             for (var index = 0; index < mcqAnswers.length; index++) {
-                drawer.draw(mcqAnswers[index], "#radio-opt" + index); // generate the structure images based on the SMILES MCQ options
+                drawer.draw(mcqAnswers[index], "#radio-opt" + index);
             }
 
             // create a unique hash id from the timestamp and SMILES of the correct answer
