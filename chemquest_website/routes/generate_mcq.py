@@ -8,6 +8,8 @@ def generate_mcq():
     '''Returns a set of 3 random similar molecules to the input SMILES. For use in MCQ questions.'''
     input_smiles = request.args.get('input_smiles')
     
+    # TODO: we need a better "similar molecule" algorithm. 
+    # This algo tends to generate molecules that are much larger than the original, so it's easy to tell what the answer is.
     results = fpe.on_disk_similarity(input_smiles, threshold = 0.5, n_workers = 4)[1:] # remove the first element as it's the input molecule itself, with similarity 1
     if len(results) < 3:
         results = fpe.on_disk_similarity(input_smiles, threshold = 0.45, n_workers = 4)[1:] # quick fix for small molecules
