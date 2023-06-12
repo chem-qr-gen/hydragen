@@ -71,9 +71,6 @@ def record_attempt():
                 "elo": new_elo
             }},
             upsert = False)
-
-        # TODO: implement elo system based on partial scores with wrong MCQ answers. Elo changes will be calculated when "next question" clicked or navigated away.
-        # CURRENT: Elo is calculated after every attempt, treating it as a full win (1) or loss (0).
     
         return {"msg": "Response recorded.", "new_elo": new_elo}
     return {"msg": "Not logged in, response not recorded."}
