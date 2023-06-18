@@ -202,15 +202,23 @@ var MCQ = {
         );
         
         $("#next").on("click", async () => {
+            // remove disabled from submit button
+            $("#submit").prop("disabled", false);
+
+            // reset the option buttons
             $("input[name='answer']").each((index, element) => {
                 $(element).prop("checked", false);
                 $(element).parent().parent().removeClass("radio-selected");
             });
+
+            // reset the feedback text
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
+            // show loading overlay
             $(".mcq-overlay").removeClass("is-hidden");
 
+            // get new question data and remove loading overlay
             questionData = await getNewQuestion();
             $(".mcq-overlay").addClass("is-hidden");
             updateData(msChart, questionData.filledMsData);
@@ -229,6 +237,11 @@ var MCQ = {
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
                 isCorrect = false;
+            }
+
+            // disable the submit button if the answer is correct
+            if (isCorrect) {
+                $("#submit").prop("disabled", true);
             }
 
             // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side

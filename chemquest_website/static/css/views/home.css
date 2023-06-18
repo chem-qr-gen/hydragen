@@ -37,9 +37,6 @@ p#question-feedback.is-danger {
     justify-content: center;
     align-items: center;
 }
-.mcq-overlay .is-hidden {
-    display: none;
-}
 
 /* chart styling */
 @media(min-width: 1024px) {

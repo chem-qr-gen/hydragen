@@ -2,6 +2,6 @@
 @import "views/home.css";
 @import "views/parsley_style.css";
 
-input {
-    transition: border-color 0.25s;
+input.button {
+    transition: all 0.25s;
 }
