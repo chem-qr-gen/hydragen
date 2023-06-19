@@ -6,8 +6,8 @@ An automatic question generator for organic chemistry.
 
 ## Requirements
 
-- Python 3.6+
-- Node.js ?+
+- Python 3.11+
+- Node.js 18+
 - [poetry](https://python-poetry.org/)
 - [Yarn](https://yarnpkg.com/)
 

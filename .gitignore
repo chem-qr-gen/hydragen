@@ -20,4 +20,4 @@ fly.toml
 
 .gitsecret/keys/random_seed
 !*.secret
-chemquest_website/chemquest_secrets.py
+chemquest_website/chemquest_config.toml
