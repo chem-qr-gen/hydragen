@@ -63,7 +63,7 @@ var MCQ = {
                                 </label>
                             </div>
                         </div>
-                        <p id="question-feedback"></p>
+                        <h4 id="question-feedback"></h4>
                     </div>
                     <div class="field is-grouped">
                         <div class="control">
@@ -88,6 +88,9 @@ var MCQ = {
             $("#csrf_token").val(response.csrf_token);
         });
 
+        // TODO: get hint data from server side
+
+        // setup SMILES drawer
         var drawer = new SmiDrawer({
             themes: {
                 dark: {
@@ -195,6 +198,36 @@ var MCQ = {
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            titleFont: {
+                                size: 16
+                            },
+                            bodyFont: {
+                                size: 16
+                            },
+                            callbacks: {
+                                label: (context) => {
+                                    var mz = parseInt(context.label);
+                                    var main_text = "Relative Abundance: " + context.parsed.y;
+                                    if (msChart.data.datasets[context.datasetIndex].backgroundColor[context.dataIndex] == "#009900") {
+                                        var hint_text = "This is a test hint."
+                                    } else {
+                                        var hint_text = "Click to see a hint."
+                                    }
+                                    return [main_text, hint_text];
+                                }
+                            }
+                        }
+                    },
+                    onClick: (event, elements) => {
+                        if (elements.length > 0) {
+                            var index = elements[0].index;
+                            var datasetIndex = elements[0].datasetIndex;
+
+                            msChart.data.datasets[datasetIndex].backgroundColor[index] = "#009900";
+
+                            msChart.update();
                         }
                     }
                 }
