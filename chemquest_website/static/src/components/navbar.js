@@ -4,7 +4,7 @@ var Navbar = {
     view: () => (
         <nav class="navbar">
             <div class="navbar-brand">
-                <a class="navbar-item is-size-5" href="#!/home"><b>ChemQuest</b></a>
+                <a class="navbar-item is-size-5" href="#!/home"><b>Hydra.io</b></a>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarContent">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
