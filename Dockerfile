@@ -1,11 +1,10 @@
 # syntax=docker/dockerfile:1
-FROM node:lts
+FROM node:lts-slim
 
-ENV POETRY_VENV=/opt/poetry_venv
 RUN apt-get update && apt-get install -y python3 python3-pip python3-venv
-RUN yarn set version stable
 
 # Install poetry separated from system interpreter
+ENV POETRY_VENV=/opt/poetry_venv
 RUN python3 -m venv $POETRY_VENV \
     && $POETRY_VENV/bin/pip install -U pip \
     && $POETRY_VENV/bin/pip install poetry
@@ -13,12 +12,17 @@ RUN python3 -m venv $POETRY_VENV \
 # Add `poetry` to PATH
 ENV PATH="${PATH}:${POETRY_VENV}/bin"
 
+# Update yarn to latest version
+RUN yarn set version stable
+
 WORKDIR /app
 COPY . .
 
+# Install dependencies for Python
 RUN poetry config virtualenvs.in-project true
 RUN poetry install
 
+# Install dependencies for JS
 WORKDIR /app/chemquest_website/static
 RUN yarn install
 RUN yarn run build
