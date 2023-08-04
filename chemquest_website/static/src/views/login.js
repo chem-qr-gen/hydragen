@@ -7,30 +7,32 @@ var Login = {
     view: () => (
         <div class="content">
             <Navbar />
-            <div class="container">
-                <div class="block">
-                    <h1>Log In</h1>
+            <div class="container-wrapper">
+                <div class="container">
+                    <div class="block">
+                        <h1>Log In</h1>
+                    </div>
+                    <form class="block" id="loginForm" data-parsley-validate>
+                        <input type="hidden" id="csrf_token"></input>
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                <input class="input" type="text" id="usernameInput" required></input>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password" id="passwordInput" required></input>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input type="submit" class="button is-link" id="signupButton" value="Log In"></input>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                <form class="block" id="loginForm" data-parsley-validate>
-                    <input type="hidden" id="csrf_token"></input>
-                    <div class="field">
-                        <label class="label">Username</label>
-                        <div class="control">
-                            <input class="input" type="text" id="usernameInput" required></input>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Password</label>
-                        <div class="control">
-                            <input class="input" type="password" id="passwordInput" required></input>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input type="submit" class="button is-link" id="signupButton" value="Log In"></input>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
     ),

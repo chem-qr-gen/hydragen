@@ -1,6 +1,7 @@
 @import "views/landing.css";
 @import "views/home.css";
 @import "views/parsley_style.css";
+@import "views/ptableSidebar.css";
 
 input.button {
     transition: all 0.25s;

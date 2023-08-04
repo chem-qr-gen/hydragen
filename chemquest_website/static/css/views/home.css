@@ -1,3 +1,7 @@
+.container-wrapper {
+    position: relative;
+}
+
 img#question-img {
     max-height: 237px;
 }

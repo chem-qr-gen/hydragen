@@ -3,6 +3,7 @@ import Chart from "chart.js/auto"
 import md5 from "md5";
 
 import Navbar from "../components/navbar";
+import PtableSidebar from "../components/ptableSidebar";
 import updateData from "../libraries/chartjs_helpers";
 
 // fills "gaps" in the chart with zeros so it looks more like a proper MS chart
@@ -22,61 +23,64 @@ var MCQ = {
     view: () => (
         <div class="content">
             <Navbar />
-            <div class="container">
-                <div class="block">
-                    <h1>Mass Spectrometry Practice</h1>
+            <div class="container-wrapper">
+                <PtableSidebar />
+                <div class="container">
+                    <div class="block">
+                        <h1>Mass Spectrometry Practice</h1>
+                    </div>
+                    <form class="block is-relative" id="msQuestionForm">
+                        <input type="hidden" id="csrf_token"></input>
+                        <div class="field">
+                            <p>Identify the compound that would give this mass spectrum.</p>
+                            <div class="chartContainer">
+                                <canvas id="msChart">
+                                    <p>Loading...</p>
+                                </canvas>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="columns">
+                                <div class="control column">
+                                    <label class="radio">
+                                        <input type="radio" name="answer" value="0"></input>
+                                        <img id="radio-opt0"></img>
+                                    </label>
+                                </div>
+                                <div class="control column">
+                                    <label class="radio">
+                                        <input type="radio" name="answer" value="1"></input>
+                                        <img id="radio-opt1"></img>
+                                    </label>
+                                </div>
+                                <div class="control column">
+                                    <label class="radio">
+                                        <input type="radio" name="answer" value="2"></input>
+                                        <img id="radio-opt2"></img>
+                                    </label>
+                                </div>
+                                <div class="control column">
+                                    <label class="radio">
+                                        <input type="radio" name="answer" value="3"></input>
+                                        <img id="radio-opt3"></img>
+                                    </label>
+                                </div>
+                            </div>
+                            <h4 id="question-feedback"></h4>
+                        </div>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
+                            </div>
+                            <div class="control">
+                                <span class="button" id="next">Next Question</span>
+                            </div>
+                        </div>
+                        <div class="is-overlay mcq-overlay is-hidden">
+                            <h2>Loading...</h2>
+                        </div>
+                    </form>
                 </div>
-                <form class="block is-relative" id="msQuestionForm">
-                    <input type="hidden" id="csrf_token"></input>
-                    <div class="field">
-                        <p>Identify the compound that would give this mass spectrum.</p>
-                        <div class="chartContainer">
-                            <canvas id="msChart">
-                                <p>Loading...</p>
-                            </canvas>
-                        </div>
-                    </div>
-                    <div class="field">
-                        <div class="columns">
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="0"></input>
-                                    <img id="radio-opt0"></img>
-                                </label>
-                            </div>
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="1"></input>
-                                    <img id="radio-opt1"></img>
-                                </label>
-                            </div>
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="2"></input>
-                                    <img id="radio-opt2"></img>
-                                </label>
-                            </div>
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="3"></input>
-                                    <img id="radio-opt3"></img>
-                                </label>
-                            </div>
-                        </div>
-                        <h4 id="question-feedback"></h4>
-                    </div>
-                    <div class="field is-grouped">
-                        <div class="control">
-                            <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
-                        </div>
-                        <div class="control">
-                            <span class="button" id="next">Next Question</span>
-                        </div>
-                    </div>
-                    <div class="is-overlay mcq-overlay is-hidden">
-                        <h2>Loading...</h2>
-                    </div>
-                </form>
             </div>
         </div>
     ),
