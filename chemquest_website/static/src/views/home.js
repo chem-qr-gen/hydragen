@@ -33,10 +33,16 @@ var MCQ = {
                         <input type="hidden" id="csrf_token"></input>
                         <div class="field">
                             <p>Identify the compound that would give this mass spectrum.</p>
-                            <div class="chartContainer">
-                                <canvas id="msChart">
-                                    <p>Loading...</p>
-                                </canvas>
+                            <div class="columns">
+                                <div class="column is-three-quarters">
+                                    <canvas id="msChart">
+                                        <p>Loading...</p>
+                                    </canvas>
+                                </div>
+                                <div class="column is-one-quarter has-background-grey-lighter">
+                                    <h5>Hints</h5>
+                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents. You have used 0 of 3 hints.</i></p>
+                                </div>
                             </div>
                         </div>
                         <div class="field">
@@ -214,7 +220,7 @@ var MCQ = {
                                 label: (context) => {
                                     var mz = parseInt(context.label);
                                     var main_text = "Relative Abundance: " + context.parsed.y;
-                                    if (msChart.data.datasets[context.datasetIndex].backgroundColor[context.dataIndex] == "#009900") {
+                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#009900") {
                                         var hint_text = "This is a test hint."
                                     } else {
                                         var hint_text = "Click to see a hint."
@@ -227,9 +233,8 @@ var MCQ = {
                     onClick: (event, elements) => {
                         if (elements.length > 0) {
                             var index = elements[0].index;
-                            var datasetIndex = elements[0].datasetIndex;
 
-                            msChart.data.datasets[datasetIndex].backgroundColor[index] = "#009900";
+                            msChart.data.datasets[0].backgroundColor[index] = "#009900";
 
                             msChart.update();
                         }
@@ -251,6 +256,9 @@ var MCQ = {
             // reset the feedback text
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
+
+            // reset hints
+            msChart.data.datasets[0].backgroundColor = ['rgba(0, 0, 0, 1)'];
 
             // show loading overlay
             $(".mcq-overlay").removeClass("is-hidden");

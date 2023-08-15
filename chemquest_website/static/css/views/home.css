@@ -42,13 +42,6 @@ img#question-img {
     align-items: center;
 }
 
-/* chart styling */
-@media(min-width: 1024px) {
-    .chartContainer {
-        max-width: 70%;
-    }
-}
-
 
 /* radio button styling */
 [type=radio] { 
