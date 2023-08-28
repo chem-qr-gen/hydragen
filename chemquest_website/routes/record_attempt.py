@@ -1,9 +1,10 @@
 import datetime
 from flask import request
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from sqlalchemy.dialects.postgresql import insert
 
 import chemquest_website.elo as elo
-from chemquest_website import app, db
+from chemquest_website import app, engine, meta
 
 @app.route('/record_attempt', methods = ['POST'])
 @jwt_required(optional = True)
@@ -19,58 +20,116 @@ def record_attempt():
         # Check list of attempts to see if the question has already been attempted
         # If attempted, updates the attempt based on the number of wrong answers
 
-        user_dict = db.users.find_one({"username": jwt_identity})
-        question_dict = db.ms_data.find_one({"qid": qid})
+        users_table = meta.tables["users"]
+        ms_data_table = meta.tables["ms_data"]
+        attempts_table = meta.tables["attempts"]
+
+        # Retrieve the user and question from the database
+        with engine.connect() as conn:
+            user_dict = conn.execute(
+                users_table.select().where(users_table.c.username == jwt_identity)
+            ).fetchone()
+            question_dict = conn.execute(
+                ms_data_table.select().where(ms_data_table.c.qid == qid)
+            ).fetchone()
+
+        if question_dict:
+            question_dict = question_dict._mapping
+
+        # user_dict = db.users.find_one({"username": jwt_identity})
+        # question_dict = db.ms_data.find_one({"qid": qid})
 
         player_old_elo = user_dict["elo"] if "elo" in user_dict else 1000.0
-        attempted_before = False
+        # attempted_before = False
 
-        if "attempts" not in user_dict:
-            user_dict["attempts"] = []
+        # check if the current question has been attempted before
+        with engine.connect() as conn:
+            attempt = conn.execute(
+                attempts_table.select().where(attempts_table.c.attempt_id == hash_id)
+            ).fetchone()
 
-        for i in range(len(user_dict["attempts"])):
-            if user_dict["attempts"][i]["hash_id"] == hash_id:
-                # This question has been attempted before. Modify the elo calculation and update player elo
-                attempted_before = True                
+        if attempt:
+            attempt = dict(attempt._mapping)
+            attempt["is_correct"].append(is_correct)
+            new_elo = elo.calculate_new_elo(
+                old_elo=attempt["player_old_elo"],
+                question_elo=question_dict["difficulty"],
+                attempts=attempt["is_correct"]
+            )
+            attempt["player_new_elo"] = new_elo
 
-                new_attempts = user_dict["attempts"]
-                new_attempts[i]["is_correct"].append(is_correct)
-                new_elo = elo.calculate_new_elo(
-                    old_elo=new_attempts[i]["player_old_elo"],
-                    question_elo=question_dict["difficulty"],
-                    attempts=new_attempts[i]["is_correct"]
-                )
-                new_attempts[i]["player_new_elo"] = new_elo
-
-                break
-        
-        if not attempted_before:
+        else:
             # This question hasn't been attempted before. Add it to the attempts list and update the user
             new_elo = elo.calculate_new_elo(
                 old_elo=player_old_elo,
                 question_elo=question_dict["difficulty"],
                 attempts=[is_correct]
             )
-            this_attempt = {
-                "timestamp": datetime.datetime.utcnow(),
-                "hash_id": hash_id,
+            attempt = {
+                "attempt_id": hash_id,
+                "username": jwt_identity,
                 "qid": qid,
+                "timestamp": datetime.datetime.utcnow(),
                 "is_correct": [is_correct],
                 "player_old_elo": player_old_elo,
                 "player_new_elo": new_elo,
             }
+
+        # for i in range(len(user_dict["attempts"])):
+        #     if user_dict["attempts"][i]["hash_id"] == hash_id:
+        #         # This question has been attempted before. Modify the elo calculation and update player elo
+        #         attempted_before = True                
+
+        #         new_attempts = user_dict["attempts"]
+        #         new_attempts[i]["is_correct"].append(is_correct)
+        #         new_elo = elo.calculate_new_elo(
+        #             old_elo=new_attempts[i]["player_old_elo"],
+        #             question_elo=question_dict["difficulty"],
+        #             attempts=new_attempts[i]["is_correct"]
+        #         )
+        #         new_attempts[i]["player_new_elo"] = new_elo
+
+        #         break
         
-            new_attempts = user_dict["attempts"] if "attempts" in user_dict else []
-            new_attempts.append(this_attempt)
+        # if not attempted_before:
+        #     # This question hasn't been attempted before. Add it to the attempts list and update the user
+        #     new_elo = elo.calculate_new_elo(
+        #         old_elo=player_old_elo,
+        #         question_elo=question_dict["difficulty"],
+        #         attempts=[is_correct]
+        #     )
+        #     this_attempt = {
+        #         "timestamp": datetime.datetime.utcnow(),
+        #         "hash_id": hash_id,
+        #         "qid": qid,
+        #         "is_correct": [is_correct],
+        #         "player_old_elo": player_old_elo,
+        #         "player_new_elo": new_elo,
+        #     }
+        
+        #     new_attempts = user_dict["attempts"] if "attempts" in user_dict else []
+        #     new_attempts.append(this_attempt)
 
 
-        db.users.update_one(
-            {"_id": user_dict["_id"]},
-            {"$set": {
-                "attempts": new_attempts,
-                "elo": new_elo
-            }},
-            upsert = False)
+        # Update the attempt in the database. on conflict, overwrite the old entry
+        with engine.connect() as conn:
+            conn.execute(
+                insert(attempts_table).values(**attempt).on_conflict_do_update(
+                    index_elements=["attempt_id"],
+                    set_={
+                        "is_correct": attempt["is_correct"],
+                        "player_new_elo": attempt["player_new_elo"]
+                    }
+                )
+            )
+
+        # db.users.update_one(
+        #     {"_id": user_dict["_id"]},
+        #     {"$set": {
+        #         "attempts": new_attempts,
+        #         "elo": new_elo
+        #     }},
+        #     upsert = False)
     
         return {"msg": "Response recorded.", "new_elo": new_elo}
     return {"msg": "Not logged in, response not recorded."}

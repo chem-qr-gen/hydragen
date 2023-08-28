@@ -4,8 +4,7 @@ from flask import Flask
 from flask_jwt_extended import JWTManager
 from flask_mail import Mail
 from flask_seasurf import SeaSurf
-from FPSim2 import FPSim2Engine
-from pymongo import MongoClient
+from sqlalchemy import create_engine, MetaData
 
 
 app = Flask(__name__)
@@ -20,8 +19,10 @@ app.config.from_mapping(cfg)
 jwt = JWTManager(app)
 mail = Mail(app)
 csrf = SeaSurf(app)
-client = MongoClient(cfg["mongo_address"])
-db = client.chemquest_db
-fpe = FPSim2Engine("db/fingerprints.h5", in_memory_fps=False) # engine for molecule similarity search
+
+# initialise the database engine
+engine = create_engine(cfg["postgres_address"], isolation_level="AUTOCOMMIT")
+meta = MetaData()
+meta.reflect(bind=engine)
 
 from chemquest_website.routes import *

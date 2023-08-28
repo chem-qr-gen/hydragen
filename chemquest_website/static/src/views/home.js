@@ -8,13 +8,17 @@ import updateData from "../libraries/chartjs_helpers";
 
 // fills "gaps" in the chart with zeros so it looks more like a proper MS chart
 const fillMsDataGaps = msData => {
-    var dataLength = msData[msData.length - 1]['mz']
+    // get the highest mz value in the data
+    var highestMz = msData[msData.length - 1][0]
     var newMsData = []
-    for (var i = 1; i <= dataLength; i++) {
+
+    // fill the gaps with zeros
+    for (var i = 1; i <= highestMz; i++) {
         newMsData.push({"mz": i, "abundance": 0});
     }
+    // fill in the data from the server
     for (const i of msData) {
-        newMsData[i["mz"] - 1]["abundance"] = i["abundance"];
+        newMsData[i[0] - 1]["abundance"] = i[1];
     }
     return newMsData;
 }
