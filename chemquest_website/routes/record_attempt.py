@@ -6,6 +6,7 @@ from sqlalchemy.dialects.postgresql import insert
 import chemquest_website.elo as elo
 from chemquest_website import app, engine, meta
 
+# TODO: add number of hints to the calculation
 @app.route('/record_attempt', methods = ['POST'])
 @jwt_required(optional = True)
 def record_attempt():
@@ -36,11 +37,7 @@ def record_attempt():
         if question_dict:
             question_dict = question_dict._mapping
 
-        # user_dict = db.users.find_one({"username": jwt_identity})
-        # question_dict = db.ms_data.find_one({"qid": qid})
-
         player_old_elo = user_dict["elo"] if "elo" in user_dict else 1000.0
-        # attempted_before = False
 
         # check if the current question has been attempted before
         with engine.connect() as conn:
@@ -75,43 +72,6 @@ def record_attempt():
                 "player_new_elo": new_elo,
             }
 
-        # for i in range(len(user_dict["attempts"])):
-        #     if user_dict["attempts"][i]["hash_id"] == hash_id:
-        #         # This question has been attempted before. Modify the elo calculation and update player elo
-        #         attempted_before = True                
-
-        #         new_attempts = user_dict["attempts"]
-        #         new_attempts[i]["is_correct"].append(is_correct)
-        #         new_elo = elo.calculate_new_elo(
-        #             old_elo=new_attempts[i]["player_old_elo"],
-        #             question_elo=question_dict["difficulty"],
-        #             attempts=new_attempts[i]["is_correct"]
-        #         )
-        #         new_attempts[i]["player_new_elo"] = new_elo
-
-        #         break
-        
-        # if not attempted_before:
-        #     # This question hasn't been attempted before. Add it to the attempts list and update the user
-        #     new_elo = elo.calculate_new_elo(
-        #         old_elo=player_old_elo,
-        #         question_elo=question_dict["difficulty"],
-        #         attempts=[is_correct]
-        #     )
-        #     this_attempt = {
-        #         "timestamp": datetime.datetime.utcnow(),
-        #         "hash_id": hash_id,
-        #         "qid": qid,
-        #         "is_correct": [is_correct],
-        #         "player_old_elo": player_old_elo,
-        #         "player_new_elo": new_elo,
-        #     }
-        
-        #     new_attempts = user_dict["attempts"] if "attempts" in user_dict else []
-        #     new_attempts.append(this_attempt)
-
-
-        # Update the attempt in the database. on conflict, overwrite the old entry
         with engine.connect() as conn:
             conn.execute(
                 insert(attempts_table).values(**attempt).on_conflict_do_update(
@@ -122,14 +82,6 @@ def record_attempt():
                     }
                 )
             )
-
-        # db.users.update_one(
-        #     {"_id": user_dict["_id"]},
-        #     {"$set": {
-        #         "attempts": new_attempts,
-        #         "elo": new_elo
-        #     }},
-        #     upsert = False)
     
         return {"msg": "Response recorded.", "new_elo": new_elo}
     return {"msg": "Not logged in, response not recorded."}

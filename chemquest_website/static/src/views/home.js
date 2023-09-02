@@ -45,7 +45,9 @@ var MCQ = {
                                 </div>
                                 <div class="column is-one-quarter has-background-grey-lighter">
                                     <h5>Hints</h5>
-                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents. You have used 0 of 3 hints.</i></p>
+                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents.</i></p>
+                                    <p><i>Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</i></p>
+                                    <p><i>You have used <b><span id="hints-used">0</span> of 3</b> hints.</i></p>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +104,13 @@ var MCQ = {
             $("#csrf_token").val(response.csrf_token);
         });
 
-        // TODO: get hint data from server side
+        // get hint data from server side
+        var hintData = await m.request({
+            method: "GET",
+            url: "/get_hints"
+        });
+        var hintsUsed = 0;
+        $("#hints-used").text(hintsUsed);
 
         // setup SMILES drawer
         var drawer = new SmiDrawer({
@@ -199,12 +207,8 @@ var MCQ = {
                     datasets: [{
                         label: "Relative Abundance",
                         data: questionData.filledMsData.map(entry => entry.abundance),
-                        backgroundColor: [
-                            'rgba(0, 0, 0, 1)'
-                        ],
-                        borderColor: [
-                            'rgba(0, 0, 0, 1)'
-                        ],
+                        backgroundColor: Array(questionData.filledMsData.length).fill("#000000"),
+                        borderColor: Array(questionData.filledMsData.length).fill("#000000"),
                         barPercentage: 0.5
                     }]
                 },
@@ -225,7 +229,12 @@ var MCQ = {
                                     var mz = parseInt(context.label);
                                     var main_text = "Relative Abundance: " + context.parsed.y;
                                     if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#009900") {
-                                        var hint_text = "This is a test hint."
+                                        var hint = hintData.find(i => i.mz == mz);
+                                        var hint_text = hint.hint_text;
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#990000") {
+                                        var hint_text = "No hint available for this value."
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#996600") {
+                                        var hint_text = "You have used all of your hints."
                                     } else {
                                         var hint_text = "Click to see a hint."
                                     }
@@ -238,7 +247,22 @@ var MCQ = {
                         if (elements.length > 0) {
                             var index = elements[0].index;
 
-                            msChart.data.datasets[0].backgroundColor[index] = "#009900";
+                            var mz = parseInt(msChart.data.labels[index]);
+                            var hint = hintData.find(i => i.mz == mz);
+                            
+                            if (hintsUsed >= 3) {
+                                msChart.data.datasets[0].backgroundColor[index] = "#996600";
+                            } else if (hint) {
+                                msChart.data.datasets[0].backgroundColor[index] = "#009900";
+                                hintsUsed++;
+                                $("#hints-used").text(hintsUsed);
+                                
+                            } else {
+                                msChart.data.datasets[0].backgroundColor[index] = "#990000";
+                            }
+                            console.log(msChart.data.datasets[0].backgroundColor[index])
+                            console.log(msChart.data.datasets[0].backgroundColor[index * 2])
+                            console.log(msChart.data.datasets[0].backgroundColor)
 
                             msChart.update();
                         }
@@ -261,8 +285,10 @@ var MCQ = {
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
-            // reset hints
+            // reset hint data
             msChart.data.datasets[0].backgroundColor = ['rgba(0, 0, 0, 1)'];
+            hintsUsed = 0;
+            $("#hints-used").text(hintsUsed);
 
             // show loading overlay
             $(".mcq-overlay").removeClass("is-hidden");
@@ -294,6 +320,7 @@ var MCQ = {
             }
 
             // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
+            // TODO: add number of hints used
             m.request({
                 method: "POST",
                 url: "/record_attempt",
