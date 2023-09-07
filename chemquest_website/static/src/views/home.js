@@ -260,9 +260,6 @@ var MCQ = {
                             } else {
                                 msChart.data.datasets[0].backgroundColor[index] = "#990000";
                             }
-                            console.log(msChart.data.datasets[0].backgroundColor[index])
-                            console.log(msChart.data.datasets[0].backgroundColor[index * 2])
-                            console.log(msChart.data.datasets[0].backgroundColor)
 
                             msChart.update();
                         }
