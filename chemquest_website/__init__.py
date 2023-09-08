@@ -21,7 +21,7 @@ mail = Mail(app)
 csrf = SeaSurf(app)
 
 # initialise the database engine
-engine = create_engine(cfg["postgres_address"], isolation_level="AUTOCOMMIT")
+engine = create_engine(cfg["postgres_address"], isolation_level="AUTOCOMMIT", pool_pre_ping=True)
 meta = MetaData()
 meta.reflect(bind=engine)
 
