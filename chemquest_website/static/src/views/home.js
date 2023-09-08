@@ -321,7 +321,7 @@ var MCQ = {
             m.request({
                 method: "POST",
                 url: "/record_attempt",
-                headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")},
+                headers: localStorage.getItem("jwt") ? {"Authorization": "Bearer " + localStorage.getItem("jwt")} : {},
                 body: {
                     "_csrf_token": $("#csrf_token").val(),
                     "hashId": questionData.hashId,

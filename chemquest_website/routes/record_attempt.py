@@ -15,15 +15,15 @@ def record_attempt():
     qid = request.json['qid']
     is_correct = request.json['isCorrect']
 
+    users_table = meta.tables["users"]
+    ms_data_table = meta.tables["ms_data"]
+    attempts_table = meta.tables["attempts"]
+
     jwt_identity = get_jwt_identity()
     if jwt_identity:
-
+        
         # Check list of attempts to see if the question has already been attempted
         # If attempted, updates the attempt based on the number of wrong answers
-
-        users_table = meta.tables["users"]
-        ms_data_table = meta.tables["ms_data"]
-        attempts_table = meta.tables["attempts"]
 
         # Retrieve the user and question from the database
         with engine.connect() as conn:
@@ -78,10 +78,50 @@ def record_attempt():
                     index_elements=["attempt_id"],
                     set_={
                         "is_correct": attempt["is_correct"],
-                        "player_new_elo": attempt["player_new_elo"]
+                        "player_new_elo": attempt["player_new_elo"],
                     }
                 )
             )
     
         return {"msg": "Response recorded.", "new_elo": new_elo}
-    return {"msg": "Not logged in, response not recorded."}
+    
+    # User not logged in, record attempt without username
+    else:
+        # Retrieve the question from the database
+        with engine.connect() as conn:
+            question_dict = conn.execute(
+                ms_data_table.select().where(ms_data_table.c.qid == qid)
+            ).fetchone()
+
+        if question_dict:
+            question_dict = question_dict._mapping
+
+        # check if the current question has been attempted before
+        with engine.connect() as conn:
+            attempt = conn.execute(
+                attempts_table.select().where(attempts_table.c.attempt_id == hash_id)
+            ).fetchone()
+        
+        if attempt:
+            attempt = dict(attempt._mapping)
+            attempt["is_correct"].append(is_correct)
+
+        else:
+            attempt = {
+                "attempt_id": hash_id,
+                "qid": qid,
+                "timestamp": datetime.datetime.utcnow(),
+                "is_correct": [is_correct],
+            }
+
+        with engine.connect() as conn:
+            conn.execute(
+                insert(attempts_table).values(**attempt).on_conflict_do_update(
+                    index_elements=["attempt_id"],
+                    set_={
+                        "is_correct": attempt["is_correct"],
+                    }
+                )
+            )
+
+    return {"msg": "Response recorded. Not logged in."}
