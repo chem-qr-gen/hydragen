@@ -1,13 +1,14 @@
 import m from "mithril";
 import Chart from "chart.js/auto"
 import md5 from "md5";
+import Shepherd from "shepherd.js";
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
 import { updateData, fillMsDataGaps, smiDrawerTheme } from "../libraries/home_helpers";
 
 
-var MCQ = {
+var Tutorial = {
     view: () => (
         <div class="content">
             <Navbar />
@@ -36,7 +37,7 @@ var MCQ = {
                             </div>
                         </div>
                         <div class="field">
-                            <div class="columns">
+                            <div class="columns" id="ms-mcq-options">
                                 <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="0"></input>
@@ -64,7 +65,7 @@ var MCQ = {
                             </div>
                             <h4 id="question-feedback"></h4>
                         </div>
-                        <div class="field is-grouped">
+                        <div class="field is-grouped" id="field-buttons">
                             <div class="control">
                                 <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
                             </div>
@@ -221,6 +222,113 @@ var MCQ = {
             }
         );
         
+        
+        // shepherd tour (tutorial) setup
+        var tour = new Shepherd.Tour({
+            useModalOverlay: true,
+            defaultStepOptions: {
+                cancelIcon: {
+                    enabled: true
+                },
+                scrollTo: true
+            }
+        });
+
+        // steps of the tutorial
+        tour.addStep({
+            id: "step-mschart",
+            title: "Mass Spec Graph",
+            text: "Click on the bars on the graph to get hints. You have 3 hints per question.",
+            attachTo: {
+                element: "#msChart",
+                on: "left"
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+        });
+
+        tour.addStep({
+            id: "step-mschart-2",
+            title: "Mass Spec Graph",
+            text: "Not every m/z value will have a hint. If no hint is available, the bar will turn red and a hint will not be used up.",
+            attachTo: {
+                element: "#msChart",
+                on: "left"
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+        });
+
+        tour.addStep({
+            id: "step-ms-options",
+            title: "MCQ Options",
+            text: "Select the structure you think would produce the MS chart above.\nYou have multiple attempts, but you'll get a lower score with each attempt.",
+            attachTo: {
+                element: "#ms-mcq-options",
+                on: "top"
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.next();
+                    },
+                    text: 'Next'
+                }
+            ],
+        });
+
+        tour.addStep({
+            id: "step-submit",
+            title: "Submit Your Answer",
+            text: "Click Submit to check your answer, or Next if you want to skip the question and generate a new one.",
+            attachTo: {
+                element: "#field-buttons",
+                on: "top"
+            },
+            buttons: [
+                {
+                    action() {
+                        return this.back();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Back'
+                },
+                {
+                    action() {
+                        return this.complete();
+                    },
+                    text: 'Done'
+                }
+            ],
+        });
+
+
         $("#next").on("click", async () => {
             // remove disabled from submit button
             $("#submit").prop("disabled", false);
@@ -286,7 +394,9 @@ var MCQ = {
             });
             return false;
         });
+
+        tour.start();
     }
 }
 
-export default MCQ;
+export default Tutorial;
