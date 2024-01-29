@@ -17,6 +17,7 @@ node_modules/
 .venv/
 
 fly.toml
+fly.toml.old
 
 .gitsecret/keys/random_seed
 !*.secret
