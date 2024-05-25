@@ -4,6 +4,7 @@ chemquest_website/static/bin/
 
 chemquest_website/static/.pnp.*
 chemquest_website/static/.yarn/*
+chemquest_website/static/yarn.lock
 !chemquest_website/static/.yarn/patches
 !chemquest_website/static/.yarn/plugins
 !chemquest_website/static/.yarn/releases
@@ -13,6 +14,8 @@ node_modules/
 
 .vscode/
 .pylintrc
+
+.idea/
 
 .venv/
 
