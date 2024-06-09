@@ -13,4 +13,5 @@ m.route(root, '/landing', {
     '/signup': Signup,
     '/home': Home,
     '/tutorial': Tutorial,
+    '/settings': Settings,
 })

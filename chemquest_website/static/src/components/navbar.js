@@ -15,6 +15,7 @@ var Navbar = {
                 <div class="navbar-end">
                     <a class="navbar-item" href="#!/signup" id="signupLink">Sign Up</a>
                     <a class="navbar-item" href="#!/login" id="loginLink">Log In</a>
+                    <a class="navbar-item" href="#!/settings" id="settingsLink">Settings</a>
                 </div>
             </div>
         </nav>
