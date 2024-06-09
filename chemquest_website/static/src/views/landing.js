@@ -8,7 +8,7 @@ var Landing = {
             <Navbar />
             <div class="hero is-large" id="landing-splash">
                 <div class="hero-body">
-                    <p class="title">Mass Spectrometry Practice Made Easy</p>
+                    <p class="title" id="landing-title">Mass Spectrometry Practice Made Easy</p>
                     <div class="block">
                         <a class="button is-primary mx-1" id="tryNowButton" href="#!/home">Try Now</a>
                         <a class="button mx-1" id="loginButton" href="#!/login">Log In</a>

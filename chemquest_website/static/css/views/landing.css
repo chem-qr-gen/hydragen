@@ -1,4 +1,15 @@
 #landing-splash {
-    background: url("https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1") center;
+    background: url("../../images/background.gif") center;
     background-size: cover;
+}
+
+#landing-title {
+    color: whitesmoke;
+}
+
+#bg-src-link{
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    font-size: small;
 }
