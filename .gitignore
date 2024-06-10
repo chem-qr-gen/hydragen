@@ -22,3 +22,4 @@ fly.toml.old
 .gitsecret/keys/random_seed
 !*.secret
 chemquest_website/chemquest_config.toml
+chemquest_website/chemquest_config_SAMPLE.toml
