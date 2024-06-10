@@ -1,0 +1,25 @@
+.settings-input{
+    float: left;
+    width: 2.5%;
+    padding: 10px;
+    border-style: solid;
+    border-color: blue;
+    border-width: 3px;
+}
+.settings-label{
+    float: left;
+    width: 90%;
+    padding: 10px;
+    border-style: solid;
+    border-color: violet;
+    border-width: 3px;
+}
+.settings-block{
+    padding: 40px;
+
+}
+.field::after {
+    content: "";
+    clear: both;
+    display: table;
+}

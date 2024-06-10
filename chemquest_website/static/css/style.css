@@ -2,7 +2,40 @@
 @import "views/home.css";
 @import "views/parsley_style.css";
 @import "views/ptableSidebar.css";
+@import "views/settings.css";
 
 input.button {
     transition: all 0.25s;
+}
+
+/* For testing purposes, disable upon use */
+.container-wrapper{
+    border-style: solid;
+    border-color: black;
+    border-width: 3px;
+}
+.container{
+    border-style: solid;
+    border-color: cadetblue;
+    border-width: 3px;
+}
+.block{
+    border-style: solid;
+    border-color:chartreuse ;
+    border-width: 3px;
+}
+.field{
+    border-style: solid;
+    border-color: bisque;
+    border-width: 3px;
+}
+.control{
+    border-style: solid;
+    border-color: brown;
+    border-width: 3px;
+}
+.field::after {
+    content: "";
+    clear: both;
+    display: table;
 }
