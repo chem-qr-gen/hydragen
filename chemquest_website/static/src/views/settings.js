@@ -21,7 +21,9 @@ var Settings = {
                             </div>
                         </div>
                         <div class="field settings-field">
+                            <div class="settings-label">
                             <h4>Change Theme</h4>
+                            </div>
                             <div id="theme-input">
                                 <div class="settings-control">
                                     <input type="radio" id="theme1" name="theme-selector" value="auto" onclick="setTheme(auto)" >

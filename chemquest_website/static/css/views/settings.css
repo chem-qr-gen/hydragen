@@ -1,3 +1,7 @@
+#settings-logo{
+    content: url("../../images/settings-light.svg");
+    max-height: 50px;
+}
 .settings-input{
     float: left;
     width: 2.5%;
@@ -6,7 +10,7 @@
     border-color: blue;
     border-width: 3px;
 }
-.settings-label{
+.settings-fiel{
     float: left;
     width: 90%;
     padding: 10px;
