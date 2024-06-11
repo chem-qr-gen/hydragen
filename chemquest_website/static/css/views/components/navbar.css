@@ -1,0 +1,7 @@
+.navbar-brand, .navbar-menu {
+    background-color: var(--bg-color-navbar);
+    color: var(--text-color-navbar);
+}
+.navbar-item {
+    color: var(--text-color-navbar);
+}

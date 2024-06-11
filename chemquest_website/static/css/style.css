@@ -3,7 +3,7 @@
 @import "views/parsley_style.css";
 @import "views/ptableSidebar.css";
 @import "views/settings.css";
-
+@import "views/components/navbar.css";
 input.button {
     transition: all 0.25s;
 }
@@ -18,6 +18,8 @@ html[data-theme="light"] {
     --bg-color: #ededed;
     --inversion: 0;
     --hints-bg-color: #4690c2;
+    --bg-color-navbar: #d1d1d1;
+    --text-color-navbar: #1c1d26;
 }
 
 /* Dark theme override */
@@ -26,7 +28,9 @@ html[data-theme="dark"] {
     --text-color: #ededed;
     --bg-color: #22242e;
     --inversion: 1;
-    --hints-bg-color:#3e454a
+    --hints-bg-color: #3e454a;
+    --bg-color-navbar: #1c1d26;
+    --text-color-navbar: #d1d1d1;
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -35,13 +39,21 @@ html[data-theme="dark"] {
         --text-color: #ededed;
         --bg-color: #22242e;
         --inversion: 1;
-        --hints-bg-color:#3e454a
+        --hints-bg-color: #3e454a;
+        --bg-color-navbar: #1c1d26;
+        --text-color-navbar: #d1d1d1;
     }
 }
-
+body, html{
+    min-height: 100vh;
+}
+.content {
+    height:100%;
+}
 .container-wrapper {
     color: var(--text-color);
     background-color: var(--bg-color);
+    height: 100%;
 }
 h1,h2,h3,h4,h5,p{
     color: var(--text-color) !important; 
