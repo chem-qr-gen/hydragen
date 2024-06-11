@@ -22,18 +22,21 @@ var Settings = {
                         </div>
                         <div class="field settings-field">
                             <h4>Change Theme</h4>
-                            <div class="settings-input">
+                            <div class="theme-input">
                                 <div class="settings-control">
-                                    <input type="radio" name="theme-selector" value="0"></input>
-                                    <span id="theme1"></span>
+                                    <input type="radio" id="theme1" name="theme-selector" value="auto" onclick="setTheme(auto)" checked>
+                                        <img id="theme-preview1"></img>
+                                    </input>
                                 </div>
                                 <div class="settings-control">
-                                    <input type="radio" name="theme-selector" value="1"></input>
-                                    <span id="theme2"></span>
+                                    <input type="radio" id="theme2" name="theme-selector" value="light" onclick="setTheme(light)" >
+                                        <img id="theme-preview2"></img>
+                                    </input>
                                 </div>
                                 <div class="settings-control">
-                                    <input type="radio" name="theme-selector" value="2"></input>
-                                    <span id="theme3"></span>
+                                    <input type="radio" id="theme3" name="theme-selector" value="dark" onclick="setTheme(dark)">
+                                        <img id="theme-preview3"></img>
+                                    </input>
                                 </div>
                             </div>
                         </div>
@@ -45,3 +48,5 @@ var Settings = {
 }
 
 export default Settings;
+
+

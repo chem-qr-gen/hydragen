@@ -22,12 +22,12 @@ var MCQ = {
                         <div class="field">
                             <p>Identify the compound that would give this mass spectrum.</p>
                             <div class="columns">
-                                <div class="column is-three-quarters">
+                                <div class="column chartContainer">
                                     <canvas id="msChart">
                                         <p>Loading...</p>
                                     </canvas>
                                 </div>
-                                <div class="column is-one-quarter has-background-grey-lighter">
+                                <div class="column hints-column">
                                     <h5>Hints</h5>
                                     <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents.</i></p>
                                     <p><i>Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</i></p>
@@ -40,25 +40,25 @@ var MCQ = {
                                 <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="0"></input>
-                                        <img id="radio-opt0"></img>
+                                        <img id="radio-opt0" class="options"></img>
                                     </label>
                                 </div>
                                 <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="1"></input>
-                                        <img id="radio-opt1"></img>
+                                        <img id="radio-opt1" class="options"></img>
                                     </label>
                                 </div>
                                 <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="2"></input>
-                                        <img id="radio-opt2"></img>
+                                        <img id="radio-opt2" class="options"></img>
                                     </label>
-                                </div>
+                                </div>m
                                 <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="3"></input>
-                                        <img id="radio-opt3"></img>
+                                        <img id="radio-opt3" class="options"></img>
                                     </label>
                                 </div>
                             </div>

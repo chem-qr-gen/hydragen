@@ -15,11 +15,26 @@
     border-width: 3px;
 }
 .settings-block{
-    padding: 40px;
+    padding: 5%;
 
 }
 .field::after {
     content: "";
     clear: both;
     display: table;
+}
+.settings-control{
+    float: left;
+    width: 19%;
+    border-style: solid;
+    border-color:darkorchid;
+    border-width: 3px;
+}
+.theme-input{
+    border-style: solid;
+    border-color:aquamarine; 
+    border-width: 3px;
+}
+.theme1{
+    background-color: black;
 }

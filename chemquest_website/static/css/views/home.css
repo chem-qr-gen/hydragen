@@ -16,6 +16,11 @@ img#question-img {
     display: block;
     color: hsl(348, 100%, 61%);
 }
+/* ms graph styling */
+#msChart {
+    -webkit-filter: invert(var(--inversion));
+    filter: invert(var(--inversion))
+}
 
 .tabs ul {
     margin-left: 0px;
@@ -42,9 +47,19 @@ img#question-img {
     align-items: center;
 }
 
+/* molecule styling */
+.options {
+    -webkit-filter: invert(var(--inversion));
+    filter: invert(var(--inversion));
+}
+/* hints instruction column styling */
+.hints-column {
+    background: var(--hints-bg-color);
+    width: 25%
+}
 
 /* radio button styling */
-[type=radio] { 
+[name=answer] { 
     position: absolute;
     opacity: 0;
     width: 0;
@@ -54,4 +69,8 @@ img#question-img {
 .radio-selected {
     background-color: silver;
     background-clip: content-box;
+}
+
+.chartContainer {
+    width: 75%;
 }

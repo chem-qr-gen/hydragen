@@ -8,8 +8,53 @@ input.button {
     transition: all 0.25s;
 }
 
+/* Themes */
+
+/* Light theme */
+html,
+html[data-theme="light"] {
+    color-scheme: light;
+    --text-color: #22242e;
+    --bg-color: #ededed;
+    --inversion: 0;
+    --hints-bg-color: #4690c2;
+}
+
+/* Dark theme override */
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --text-color: #ededed;
+    --bg-color: #22242e;
+    --inversion: 1;
+    --hints-bg-color:#3e454a
+}
+/* Dark theme (system preference) */
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme]) {
+        color-scheme: dark;
+        --text-color: #ededed;
+        --bg-color: #22242e;
+        --inversion: 1;
+        --hints-bg-color:#3e454a
+    }
+}
+
+.container-wrapper {
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+h1,h2,h3,h4,h5,p{
+    color: var(--text-color) !important; 
+}
+.field::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+
 /* For testing purposes, disable upon use */
-.container-wrapper{
+/* .container-wrapper{
     border-style: solid;
     border-color: black;
     border-width: 3px;
@@ -33,9 +78,4 @@ input.button {
     border-style: solid;
     border-color: brown;
     border-width: 3px;
-}
-.field::after {
-    content: "";
-    clear: both;
-    display: table;
-}
+} */
