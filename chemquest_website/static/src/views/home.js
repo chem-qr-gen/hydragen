@@ -152,6 +152,7 @@ var MCQ = {
 
         // chart initialisation
         const chartStyles = getChartStyles();
+        console.log(chartStyles.backgroundColor);
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
@@ -161,18 +162,38 @@ var MCQ = {
                     datasets: [{
                         label: "Relative Abundance",
                         data: questionData.filledMsData.map(entry => entry.abundance),
-                        backgroundColor: Array(questionData.filledMsData.length).fill(chartStyles[0]),
-                        borderColor: Array(questionData.filledMsData.length).fill(chartStyles[1]),
-                        barPercentage: chartStyles[2]
+                        backgroundColor: Array(questionData.filledMsData.length).fill(chartStyles.backgroundColor),
+                        borderColor: Array(questionData.filledMsData.length).fill(chartStyles.borderColor),
+                        barPercentage: chartStyles.barPercentage
                     }]
                 },
                 options: {
                     scales: {
                         x: {
-                            Color: chartStyles[11]
+                            grid:{color: 
+                                function(context) {
+                                    if(context.tick.value > 0) {
+                                        return chartStyles.gridColor;
+                                    } 
+                                    else if (context.tick.value == 0) {
+                                        return chartStyles.axisColor;
+                                    }
+                                }            
+                            },
+                            ticks: {color: chartStyles.tickColor}
                         },
                         y: {
-                            Color: chartStyles[11]
+                            grid:{color:
+                                function(context) {
+                                    if(context.tick.value > 0) {
+                                        return chartStyles.gridColor;
+                                    } 
+                                    else if (context.tick.value == 0) {
+                                        return chartStyles.axisColor;
+                                    }
+                                }      
+                            }, 
+                            ticks: {color: chartStyles.tickColor}
                         }
                     },
                     plugins: {
@@ -181,27 +202,23 @@ var MCQ = {
                         },
                         tooltip: {
                             titleFont: {
-                                size: chartStyles[3]
+                                size: chartStyles.titleFontSize
                             },
-                            titleColor: {
-                                Color: chartStyles[9]
-                            },
+                            titleColor: chartStyles.titleColor,
                             bodyFont: {
-                                size: chartStyles[4]
+                                size: chartStyles.bodyFontSize
                             },
-                            bodyColor: {
-                                Color: chartStyles[10]
-                            },
+                            bodyColor: chartStyles.bodyColor,
                             callbacks: {
                                 label: (context) => {
                                     var mz = parseInt(context.label);
                                     var main_text = "Relative Abundance: " + context.parsed.y;
-                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles[6]) {
+                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles.hintColor) {
                                         var hint = hintData.find(i => i.mz == mz);
                                         var hint_text = hint.hint_text;
-                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles[7]) {
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles.noHintColor) {
                                         var hint_text = "No hint available for this value."
-                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles[8]) {
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles.usedAllHintsColor) {
                                         var hint_text = "You have used all of your hints."
                                     } else {
                                         var hint_text = "Click to see a hint."
@@ -219,14 +236,14 @@ var MCQ = {
                             var hint = hintData.find(i => i.mz == mz);
                             
                             if (hintsUsed >= 3) {
-                                msChart.data.datasets[0].backgroundColor[index] = chartStyles[7];
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles.usedAllHintsColor;
                             } else if (hint) {
-                                msChart.data.datasets[0].backgroundColor[index] = chartStyles[5];
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
                                 hintsUsed++;
                                 $("#hints-used").text(hintsUsed);
                                 
                             } else {
-                                msChart.data.datasets[0].backgroundColor[index] = chartStyles[6];
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles.noHintColor;
                             }
 
                             msChart.update();
@@ -251,7 +268,7 @@ var MCQ = {
             $("#question-feedback").text("");
 
             // reset hint data
-            msChart.data.datasets[0].backgroundColor = ['rgba(0, 0, 0, 1)'];
+            msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
             hintsUsed = 0;
             $("#hints-used").text(hintsUsed);
 

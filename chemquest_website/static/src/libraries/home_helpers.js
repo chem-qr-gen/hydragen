@@ -1,26 +1,76 @@
-// Get Chart colors
-//chartStyles structure: [
-//    1 backgroundColor, 2 borderColor, 3 barPercentage, 4 titleFont size, 
-//    5 bodyFont size, 6 hint color, 7 noHint color, 8 usedAllHints color,
-//    9 titleColor, 10 bodyColor, 11 gridColor
+//Define Chart Styles
+//chartStyles: [
+//    0 backgroundColor, 1 borderColor, 2 barPercentage, 3 titleFont size, 
+//    4 bodyFont size, 5 hint color, 6 noHint color, 7 usedAllHints color,
+//    8 titleColor, 9 bodyColor, 10 gridColor, 11 axis color, 12 tick color
 //]
 function getChartStyles() {
-    const chartStyles = new Array(); 
+    const chartStyles = new Object();
     const theme = document.documentElement.getAttribute('data-theme');
     console.log(theme);
+    let _ = chartStyles;
     switch(theme) {
         case 'auto':
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                chartStyles.push('#000000','#000000', 0.5, 16, 16, '#009900', '#990000', "#996600", '#000000', '#000000', '#575d5e')
+                _.backgroundColor = '#000000';
+                _.borderColor = '#000000';
+                _.barPeercentage = 0.5;
+                _.titleFontSize = 16;
+                _.titleColor = '#9da5cc';
+                _.bodyFontSize = 16;
+                _.bodyColor = '#9da5cc';
+                _.hintColor = '#009900';
+                _.noHintColor = '#990000';
+                _.usedAllHintsColor = '#996600';
+                _.gridColor = '#9da5cc';
+                _.axisColor = '#212121';
+                _.tickColor = '#212121';
+            
             }
             else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                chartStyles.push('#FFFFFF','#FFFFFF', 0.5, 16, 16, '#009900', '#990000', "#996600",'#FFFFFF', '#FFFFFF', '#dbdbdb')
-            }          
+                _.backgroundColor = '#FFFFFF';
+                _.borderColor = '#FFFFFF';
+                _.barPeercentage = 0.5;
+                _.titleFontSize = 16;
+                _.titleColor = '#9da5cc';
+                _.bodyFontSize = 16;
+                _.bodyColor = '#9da5cc';
+                _.hintColor = '#009900';
+                _.noHintColor = '#990000';
+                _.usedAllHintsColor = '#996600';
+                _.gridColor = '#9da5cc';
+                _.axisColor = '#212121';
+                _.tickColor = '#212121';        
+            }  
         case 'light':
-            chartStyles.push('#000000','#000000', 0.5, 16, 16, '#009900', '#990000', "#996600", '#000000', '#000000', '#575d5e')
+            _.backgroundColor = '#000000';
+            _.borderColor = '#000000';
+            _.barPeercentage = 0.5;
+            _.titleFontSize = 16;
+            _.titleColor = '#9da5cc';
+            _.bodyFontSize = 16;
+            _.bodyColor = '#9da5cc';
+            _.hintColor = '#009900';
+            _.noHintColor = '#990000';
+            _.usedAllHintsColor = '#996600';
+            _.gridColor = '#383B4A';
+            _.axisColor = '#F5F5F5';
+            _.tickColor = '#F5F5F5';
+        
         case 'dark':
-            chartStyles.push('#FFFFFF','#FFFFFF', 0.5, 16, 16, '#009900', '#990000', "#996600",'#FFFFFF', '#FFFFFF', '#dbdbdb')
-
+            _.backgroundColor = '#FFFFFF';
+            _.borderColor = '#FFFFFF';
+            _.barPeercentage = 0.5;
+            _.titleFontSize = 16;
+            _.titleColor = '#9da5cc';
+            _.bodyFontSize = 16;
+            _.bodyColor = '#9da5cc';
+            _.hintColor = '#009900';
+            _.noHintColor = '#990000';
+            _.usedAllHintsColor = '#996600';
+            _.gridColor = '#9da5cc';
+            _.axisColor = '#212121';
+            _.tickColor = '#212121';
     }
     console.log(chartStyles);
     return chartStyles
