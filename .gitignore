@@ -12,6 +12,7 @@ chemquest_website/static/.yarn/*
 node_modules/
 
 .vscode/
+.idea/
 .pylintrc
 
 .venv/

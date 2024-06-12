@@ -1,10 +1,11 @@
 #landing-splash {
     background: url("../../images/background.gif") center;
     background-size: cover;
+    position: relative;
 }
 
 #landing-title {
-    color: whitesmoke;
+    color: whitesmoke !important;
 }
 
 #bg-src-link{
