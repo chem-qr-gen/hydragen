@@ -17,10 +17,6 @@ img#question-img {
     color: hsl(348, 100%, 61%);
 }
 /* ms graph styling */
-#msChart {
-    -webkit-filter: invert(var(--inversion));
-    filter: invert(var(--inversion))
-}
 
 .tabs ul {
     margin-left: 0px;

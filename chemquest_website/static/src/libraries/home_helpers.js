@@ -1,3 +1,31 @@
+// Get Chart colors
+//chartStyles structure: [
+//    1 backgroundColor, 2 borderColor, 3 barPercentage, 4 titleFont size, 
+//    5 bodyFont size, 6 hint color, 7 noHint color, 8 usedAllHints color,
+//    9 titleColor, 10 bodyColor, 11 gridColor
+//]
+function getChartStyles() {
+    const chartStyles = new Array(); 
+    const theme = document.documentElement.getAttribute('data-theme');
+    console.log(theme);
+    switch(theme) {
+        case 'auto':
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+                chartStyles.push('#000000','#000000', 0.5, 16, 16, '#009900', '#990000', "#996600", '#000000', '#000000', '#575d5e')
+            }
+            else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                chartStyles.push('#FFFFFF','#FFFFFF', 0.5, 16, 16, '#009900', '#990000', "#996600",'#FFFFFF', '#FFFFFF', '#dbdbdb')
+            }          
+        case 'light':
+            chartStyles.push('#000000','#000000', 0.5, 16, 16, '#009900', '#990000', "#996600", '#000000', '#000000', '#575d5e')
+        case 'dark':
+            chartStyles.push('#FFFFFF','#FFFFFF', 0.5, 16, 16, '#009900', '#990000', "#996600",'#FFFFFF', '#FFFFFF', '#dbdbdb')
+
+    }
+    console.log(chartStyles);
+    return chartStyles
+}
+
 // update the data in a chart
 const updateData = (chart, data) => {
     chart.data.labels = data.map(entry => entry.mz);
@@ -59,4 +87,6 @@ export {
     updateData,
     fillMsDataGaps,
     smiDrawerTheme,
+    getChartStyles
 };
+

@@ -7,6 +7,7 @@ function setTheme() {
 	if (cachedTheme) {
 		document.documentElement.dataset['theme'] = cachedTheme; //set theme to the cached theme
 	}
+	console.log(cachedTheme);
 	return cachedTheme;
 }
 

@@ -31,7 +31,7 @@ var Settings = {
                                     </input>
                                 </div>
                                 <div class="settings-control">
-                                    <input type="radio" id="theme2" name="theme-selector" value="light" onclick="setTheme(light)" checked >
+                                    <input type="radio" id="theme2" name="theme-selector" value="light" onclick="setTheme(light)">
                                         <img id="theme-preview2"></img>
                                     </input>
                                 </div>

@@ -4,7 +4,7 @@ import md5 from "md5";
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
-import { updateData, fillMsDataGaps, smiDrawerTheme } from "../libraries/home_helpers";
+import { updateData, fillMsDataGaps, smiDrawerTheme, getChartStyles} from "../libraries/home_helpers";
 
 
 var MCQ = {
@@ -151,6 +151,7 @@ var MCQ = {
         var questionData = await getNewQuestion();
 
         // chart initialisation
+        const chartStyles = getChartStyles();
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
@@ -160,33 +161,47 @@ var MCQ = {
                     datasets: [{
                         label: "Relative Abundance",
                         data: questionData.filledMsData.map(entry => entry.abundance),
-                        backgroundColor: Array(questionData.filledMsData.length).fill("#000000"),
-                        borderColor: Array(questionData.filledMsData.length).fill("#000000"),
-                        barPercentage: 0.5
+                        backgroundColor: Array(questionData.filledMsData.length).fill(chartStyles[0]),
+                        borderColor: Array(questionData.filledMsData.length).fill(chartStyles[1]),
+                        barPercentage: chartStyles[2]
                     }]
                 },
                 options: {
+                    scales: {
+                        x: {
+                            Color: chartStyles[11]
+                        },
+                        y: {
+                            Color: chartStyles[11]
+                        }
+                    },
                     plugins: {
                         legend: {
                             display: false
                         },
                         tooltip: {
                             titleFont: {
-                                size: 16
+                                size: chartStyles[3]
+                            },
+                            titleColor: {
+                                Color: chartStyles[9]
                             },
                             bodyFont: {
-                                size: 16
+                                size: chartStyles[4]
+                            },
+                            bodyColor: {
+                                Color: chartStyles[10]
                             },
                             callbacks: {
                                 label: (context) => {
                                     var mz = parseInt(context.label);
                                     var main_text = "Relative Abundance: " + context.parsed.y;
-                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#009900") {
+                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles[6]) {
                                         var hint = hintData.find(i => i.mz == mz);
                                         var hint_text = hint.hint_text;
-                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#990000") {
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles[7]) {
                                         var hint_text = "No hint available for this value."
-                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#996600") {
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles[8]) {
                                         var hint_text = "You have used all of your hints."
                                     } else {
                                         var hint_text = "Click to see a hint."
@@ -204,14 +219,14 @@ var MCQ = {
                             var hint = hintData.find(i => i.mz == mz);
                             
                             if (hintsUsed >= 3) {
-                                msChart.data.datasets[0].backgroundColor[index] = "#996600";
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles[7];
                             } else if (hint) {
-                                msChart.data.datasets[0].backgroundColor[index] = "#009900";
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles[5];
                                 hintsUsed++;
                                 $("#hints-used").text(hintsUsed);
                                 
                             } else {
-                                msChart.data.datasets[0].backgroundColor[index] = "#990000";
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles[6];
                             }
 
                             msChart.update();
