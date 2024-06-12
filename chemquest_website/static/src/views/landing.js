@@ -14,6 +14,7 @@ var Landing = {
                         <a class="button mx-1" id="loginButton" href="#!/login">Log In</a>
                         <a class="button mx-1" id="signupButton" href="#!/signup">Sign Up</a>
                     </div>
+                    <a id="bg-src-link" href="https://www.vecteezy.com/free-videos/science">Background Source: Science Stock Videos by Vecteezy</a>
                 </div>
             </div>
         </div>
