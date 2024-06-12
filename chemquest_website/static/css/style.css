@@ -34,7 +34,7 @@ html[data-theme="dark"] {
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
-    html:not([data-theme]) {
+    html[data-theme="auto"] {
         color-scheme: dark;
         --text-color: #ededed;
         --bg-color: #22242e;
@@ -44,8 +44,8 @@ html[data-theme="dark"] {
         --text-color-navbar: #d1d1d1;
     }
 }
-body, html{
-    min-height: 100vh;
+html, body{
+    height: 100%;
 }
 .content {
     height:100%;
@@ -55,7 +55,7 @@ body, html{
     background-color: var(--bg-color);
     height: 100%;
 }
-h1,h2,h3,h4,h5,p{
+h1,h2,h3,h4,h5,p,label{
     color: var(--text-color) !important; 
 }
 .field::after {

@@ -49,27 +49,7 @@ var Settings = {
     ),
     oncreate: () => {
         (function () {
-            const cachedTheme = localStorage.getItem('theme')
-            if (cachedTheme) {
-                document.documentElement.dataset['theme'] = cachedTheme;
-            }
-            const initialTheme = cachedTheme ?? 'auto';
-            const themePicker = document.getElementById('theme-input');
-            const a=themePicker.querySelector('input[checked]');
-            if (!(a===null)) {
-                a.removeAttribute('checked');
-            }
-            themePicker.querySelector(`input[value="${initialTheme}"]`).setAttribute('checked', ''); 
-            themePicker.addEventListener('change', (e) => {
-                const theme = e.target.value;
-                if (theme === 'auto') {
-                  delete document.documentElement.dataset['theme'];
-                  localStorage.removeItem('theme');
-                } else {
-                  document.documentElement.dataset['theme'] = theme;
-                  localStorage.setItem('theme', theme);
-                }
-            })
+            applyTheme();
         } )();
     }
 }

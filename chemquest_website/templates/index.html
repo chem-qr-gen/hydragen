@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html data-theme="">
 <head>
     <title>Hydragen</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,9 +12,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon16x16.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon32x32.png') }}">
     <script type="text/javascript" src="https://unpkg.com/smiles-drawer@2.1.7/dist/smiles-drawer.min.js"></script>
-
+    <script src="{{url_for('static', filename='src/libraries/settings_helpers.js')}}"></script>
 </head>
 <body>
     <p>Please wait, Mithril is loading...</p>
     <script src="{{url_for('static', filename='bin/app.js')}}"></script>
 </body>
+</html>

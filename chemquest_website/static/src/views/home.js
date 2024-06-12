@@ -54,7 +54,7 @@ var MCQ = {
                                         <input type="radio" name="answer" value="2"></input>
                                         <img id="radio-opt2" class="options"></img>
                                     </label>
-                                </div>m
+                                </div>
                                 <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="3"></input>
