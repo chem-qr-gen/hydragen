@@ -29,7 +29,7 @@ var MCQ = {
                                 </div>
                                 <div class="column hints-column">
                                     <h5>Hints</h5>
-                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents.</i></p>
+                                    <p><i>Click on a bar in the M chart to receive a hint about the fragments it usually represents.</i></p>
                                     <p><i>Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</i></p>
                                     <p><i>You have used <b><span id="hints-used">0</span> of 3</b> hints.</i></p>
                                 </div>
