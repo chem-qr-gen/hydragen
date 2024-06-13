@@ -12,8 +12,8 @@ function getChartStyles() {
     switch(theme) {
         case 'auto':
             if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-                _.backgroundColor = '#000000';
-                _.borderColor = '#000000';
+                _.backgroundColor = '#3f3f3f';
+                _.borderColor = '#3f3f3f';
                 _.barPeercentage = 0.5;
                 _.titleFontSize = 16;
                 _.titleColor = '#9da5cc';
@@ -22,14 +22,14 @@ function getChartStyles() {
                 _.hintColor = '#009900';
                 _.noHintColor = '#990000';
                 _.usedAllHintsColor = '#996600';
-                _.gridColor = '#9da5cc';
-                _.axisColor = '#212121';
-                _.tickColor = '#212121';
+                _.gridColor = '#383B4A';
+                _.axisColor = '#2a2a2a';
+                _.tickColor = '#454545';
             
             }
             else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                _.backgroundColor = '#FFFFFF';
-                _.borderColor = '#FFFFFF';
+                _.backgroundColor = '#b6b6b6';
+                _.borderColor = '#b6b6b6';
                 _.barPeercentage = 0.5;
                 _.titleFontSize = 16;
                 _.titleColor = '#9da5cc';
@@ -38,13 +38,14 @@ function getChartStyles() {
                 _.hintColor = '#009900';
                 _.noHintColor = '#990000';
                 _.usedAllHintsColor = '#996600';
-                _.gridColor = '#9da5cc';
-                _.axisColor = '#212121';
-                _.tickColor = '#212121';        
+                _.gridColor = '#666979';
+                _.axisColor = '#454545';
+                _.tickColor = '#c8c8c8';       
             }  
+            break;
         case 'light':
-            _.backgroundColor = '#000000';
-            _.borderColor = '#000000';
+            _.backgroundColor = '#3f3f3f';
+            _.borderColor = '#3f3f3f';
             _.barPeercentage = 0.5;
             _.titleFontSize = 16;
             _.titleColor = '#9da5cc';
@@ -54,12 +55,12 @@ function getChartStyles() {
             _.noHintColor = '#990000';
             _.usedAllHintsColor = '#996600';
             _.gridColor = '#383B4A';
-            _.axisColor = '#F5F5F5';
-            _.tickColor = '#F5F5F5';
-        
+            _.axisColor = '#2a2a2a';
+            _.tickColor = '#454545';
+            break;
         case 'dark':
-            _.backgroundColor = '#FFFFFF';
-            _.borderColor = '#FFFFFF';
+            _.backgroundColor = '#b6b6b6';
+            _.borderColor = '#b6b6b6';
             _.barPeercentage = 0.5;
             _.titleFontSize = 16;
             _.titleColor = '#9da5cc';
@@ -68,9 +69,10 @@ function getChartStyles() {
             _.hintColor = '#009900';
             _.noHintColor = '#990000';
             _.usedAllHintsColor = '#996600';
-            _.gridColor = '#9da5cc';
-            _.axisColor = '#212121';
-            _.tickColor = '#212121';
+            _.gridColor = '#666979';
+            _.axisColor = '#454545';
+            _.tickColor = '#c8c8c8';
+            break;
     }
     console.log(chartStyles);
     return chartStyles

@@ -153,6 +153,10 @@ var MCQ = {
         // chart initialisation
         const chartStyles = getChartStyles();
         console.log(chartStyles.backgroundColor);
+        console.log(chartStyles.borderColor);
+        console.log(chartStyles.gridColor);
+        console.log(chartStyles.axisColor);
+        console.log(chartStyles.tickColor);
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
@@ -163,36 +167,20 @@ var MCQ = {
                         label: "Relative Abundance",
                         data: questionData.filledMsData.map(entry => entry.abundance),
                         backgroundColor: Array(questionData.filledMsData.length).fill(chartStyles.backgroundColor),
-                        borderColor: Array(questionData.filledMsData.length).fill(chartStyles.borderColor),
+                        borderColor: Array(questionData.filledMsData.length).fill(chartStyles.axisColor),
                         barPercentage: chartStyles.barPercentage
                     }]
                 },
                 options: {
                     scales: {
                         x: {
-                            grid:{color: 
-                                function(context) {
-                                    if(context.tick.value > 0) {
-                                        return chartStyles.gridColor;
-                                    } 
-                                    else if (context.tick.value == 0) {
-                                        return chartStyles.axisColor;
-                                    }
-                                }            
-                            },
-                            ticks: {color: chartStyles.tickColor}
+                            grid:{color: chartStyles.gridColor },
+                            border:{color: chartStyles.axisColor},
+                            ticks: {color: chartStyles.tickColor},
                         },
                         y: {
-                            grid:{color:
-                                function(context) {
-                                    if(context.tick.value > 0) {
-                                        return chartStyles.gridColor;
-                                    } 
-                                    else if (context.tick.value == 0) {
-                                        return chartStyles.axisColor;
-                                    }
-                                }      
-                            }, 
+                            grid:{color: chartStyles.gridColor},
+                            border: {color: chartStyles.axisColor}, 
                             ticks: {color: chartStyles.tickColor}
                         }
                     },
