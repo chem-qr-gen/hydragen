@@ -16,20 +16,23 @@
     padding: 5%;
 
 }
+.field{
+    background-color: var(--field-bg-color);
+}
 .field::after {
     content: "";
     clear: both;
     display: table;
 }
 .settings-control{
-    float: left;
-    width: 19%;
-    border-style: solid;
-    border-color:darkorchid;
+    display:grid;
+    grid-template-columns: max-content max-content;
+    grid-gap:10px;
     border-width: 3px;
 }
-.theme-input{
-    border-style: solid;
+#theme-input{
+    display: flex;
+    flex-direction: column;
 }
 .theme1{
     background-color: black;

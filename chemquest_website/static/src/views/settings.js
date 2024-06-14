@@ -26,19 +26,22 @@ var Settings = {
                             </div>
                             <div id="theme-input">
                                 <div class="settings-control">
-                                    <input type="radio" id="theme1" name="theme-selector" value="auto" onclick="setTheme(auto)" >
-                                        <img id="theme-preview1"></img>
+                                    <input type="radio" id="theme1" name="theme-selector" value="auto"
+                                           onclick="setTheme(auto)">
                                     </input>
+                                    <p>System Default</p>
                                 </div>
                                 <div class="settings-control">
-                                    <input type="radio" id="theme2" name="theme-selector" value="light" onclick="setTheme(light)">
-                                        <img id="theme-preview2"></img>
+                                    <input type="radio" id="theme2" name="theme-selector" value="light"
+                                           onclick="setTheme(light)">
                                     </input>
+                                    <p>Light</p>
                                 </div>
                                 <div class="settings-control">
-                                    <input type="radio" id="theme3" name="theme-selector" value="dark" onclick="setTheme(dark)">
-                                        <img id="theme-preview3"></img>
+                                    <input type="radio" id="theme3" name="theme-selector" value="dark"
+                                           onclick="setTheme(dark)">
                                     </input>
+                                    <p>Dark</p>
                                 </div>
                             </div>
                         </div>

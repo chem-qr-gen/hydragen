@@ -20,6 +20,7 @@ html[data-theme="light"] {
     --hints-bg-color: #4690c2;
     --bg-color-navbar: #d1d1d1;
     --text-color-navbar: #1c1d26;
+    --field-bg-color: #dddddd;
 }
 
 /* Dark theme override */
@@ -31,6 +32,7 @@ html[data-theme="dark"] {
     --hints-bg-color: #3e454a;
     --bg-color-navbar: #1c1d26;
     --text-color-navbar: #d1d1d1;
+    --field-bg-color: #333a42;
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -42,6 +44,7 @@ html[data-theme="dark"] {
         --hints-bg-color: #3e454a;
         --bg-color-navbar: #1c1d26;
         --text-color-navbar: #d1d1d1;
+        --field-bg-color: #333a42;
     }
 }
 html, body{
