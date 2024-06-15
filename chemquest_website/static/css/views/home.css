@@ -70,3 +70,15 @@ img#question-img {
 .chartContainer {
     width: 75%;
 }
+
+
+/* Skip button styles */
+.move-on {
+    color: var(--text-color);
+}
+.skip {
+    content: "Skip"
+}
+.next {
+    content: "Next"
+}

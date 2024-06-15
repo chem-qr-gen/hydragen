@@ -14,6 +14,66 @@ var MCQ = {
             <div class="container-wrapper">
                 <PtableSidebar />
                 <div class="container">
+                    <div class="column-left">
+                       <div class="title-block">
+                        <h1>Mass Spectrometry Practice</h1>
+                       </div> 
+                       <div class="chartContainer">
+                            <canvas id="msChart">
+                                <p>Loading...</p>
+                            </canvas>
+                       </div>
+                       <div class="switch-container">
+                            <button class="switch-graph">
+
+                            </button>   
+                       </div>
+                    </div>
+                    <div class="column-right">
+                        <div class="answer-topbar">
+                            <div class="hint-container">
+                                <div class="hint-display">
+
+                                </div>
+                                <div class="hint-tooltip">
+
+                                </div>
+                            </div>
+                            <div class="skip-container">
+
+                            </div>
+                        </div>
+                        <div class="answer">
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="0"></input>
+                                    <img id="radio-opt0" class="options"></img>
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="1"></input>
+                                    <img id="radio-opt1" class="options"></img>
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="2"></input>
+                                    <img id="radio-opt2" class="options"></img>
+                                </label>
+                            </div>
+                            <div class="control column">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="3"></input>
+                                    <img id="radio-opt3" class="options"></img>
+                                </label>
+                            </div>   
+                        </div>
+                    </div>
+
+
+
+
                     <div class="block">
                         <h1>Mass Spectrometry Practice</h1>
                     </div>
@@ -29,7 +89,7 @@ var MCQ = {
                                 </div>
                                 <div class="column hints-column">
                                     <h5>Hints</h5>
-                                    <p><i>Click on a bar in the M chart to receive a hint about the fragments it usually represents.</i></p>
+                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents.</i></p>
                                     <p><i>Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</i></p>
                                     <p><i>You have used <b><span id="hints-used">0</span> of 3</b> hints.</i></p>
                                 </div>
@@ -152,11 +212,6 @@ var MCQ = {
 
         // chart initialisation
         const chartStyles = getChartStyles();
-        console.log(chartStyles.backgroundColor);
-        console.log(chartStyles.borderColor);
-        console.log(chartStyles.gridColor);
-        console.log(chartStyles.axisColor);
-        console.log(chartStyles.tickColor);
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
