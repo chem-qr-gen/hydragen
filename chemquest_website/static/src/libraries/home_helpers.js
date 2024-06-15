@@ -38,8 +38,8 @@ function getChartStyles() {
                 _.hintColor = '#009900';
                 _.noHintColor = '#990000';
                 _.usedAllHintsColor = '#996600';
-                _.gridColor = '#666979';
-                _.axisColor = '#454545';
+                _.gridColor = '#454545';
+                _.axisColor = '#666979';
                 _.tickColor = '#c8c8c8';       
             }  
             break;
@@ -69,29 +69,45 @@ function getChartStyles() {
             _.hintColor = '#009900';
             _.noHintColor = '#990000';
             _.usedAllHintsColor = '#996600';
-            _.gridColor = '#666979';
-            _.axisColor = '#454545';
+            _.gridColor = '#454545';
+            _.axisColor = '#666979';
             _.tickColor = '#c8c8c8';
             break;
     }
     console.log(chartStyles);
     return chartStyles
 }
-
+function switchGraph() {
+    $(".ptable").toggleClass("invisible");
+    console.log('graph toggled!')
+    $(".chartContainer").toggleClass("invisible");
+    return;
+}
 // Update Hint indicator color
 function getHintColor(hintsUsed) {
+    console.log(hintsUsed);
+    console.log($("#hints-danger-level"));
     switch (hintsUsed) {
-        case 3 || 2: {
-            $("#hints-danger-level").className = "red-text"
+        case (3 || 2): {
+            $("#hints-danger-level").removeClass("yellow-text");
+            $("#hints-danger-level").removeClass("green-text");
+            $("#hints-danger-level").addClass("red-text");
         }
+        console.log(2);
         break;
         case 1: {
-            $("#hints-danger-level").className = "yellow-text"
+            $("#hints-danger-level").removeClass("red-text");
+            $("#hints-danger-level").removeClass("green-text");
+            $("#hints-danger-level").addClass("yellow-text")
         }
+        console.log(1);
         break;
         case 0: {
-            $("#hints-danger-level").className = "green-text"
+            $("#hints-danger-level").removeClass("yellow-text");
+            $("#hints-danger-level").removeClass("red-text");
+            $("#hints-danger-level").addClass("green-text");
         }
+        console.log(0);
     }
     return;
 }
@@ -154,6 +170,7 @@ var smiDrawerTheme = {
 }
 
 export {
+    switchGraph,
     updateData,
     fillMsDataGaps,
     smiDrawerTheme,

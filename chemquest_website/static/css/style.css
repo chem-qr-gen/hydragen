@@ -7,7 +7,9 @@
 input.button {
     transition: all 0.25s;
 }
-
+:root {
+    --padding: 10px
+}
 /* Themes */
 
 /* Light theme */
@@ -78,6 +80,10 @@ h1,h2,h3,h4,h5,p,label{
     clear: both;
     display: table;
 }
+.invisible {
+    display: none;
+}
+
 
 
 /* For testing purposes, disable upon use */

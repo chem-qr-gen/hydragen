@@ -4,7 +4,7 @@ import md5 from "md5";
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
-import { updateData, fillMsDataGaps, smiDrawerTheme, getChartStyles, getHintColor} from "../libraries/home_helpers";
+import { updateData, fillMsDataGaps, smiDrawerTheme, getChartStyles, getHintColor, switchGraph} from "../libraries/home_helpers";
 
 
 var MCQ = {
@@ -13,25 +13,29 @@ var MCQ = {
             <Navbar />
             <div class="container-wrapper">
                 <div class="container">
-                    <form class="block is-relative" id="msQuestionForm">\
+                    <form class="block is-relative" id="msQuestionForm">
                         <input type="hidden" id="csrf_token"></input>
                         <div class="column-left">
-                        <div class="title-block">
-                            <h1>Mass Spectrometry Practice</h1>
-                        </div> 
-                        <div class="chartContainer">
-                        <p>Identify the compound that would give this mass spectrum.</p>
+                            <div class="title-block">
+                                <h1>Mass Spectrometry Practice</h1>
+                            </div> 
+                            <div class="chartContainer">
+                            <p>Identify the compound that would give this mass spectrum.</p>
                                 <canvas id="msChart">
                                     <p>Loading...</p>
                                 </canvas>
-                        </div>
-                            <div class="switch-container">
-                                <button class="switch-graph">
-                                    Switch
-                                </button>   
                             </div>
-                        </div>
-                        <PtableSidebar/>
+                            <PtableSidebar/>
+                            <div class="switch-container">
+                                <label class="switch-graph-label">
+                                <input id="switch-graph" type="checkbox"></input>   
+                                <span id="switch-graph-display"></span>
+                                </label>
+                            </div>
+                            <div class="feedback">
+                                <h4 id="question-feedback"></h4>
+                            </div>   
+                        </div>                     
                         <div class="column-right">
                             <div class="answer-topbar">
                                 <div class="hint-container">
@@ -43,36 +47,39 @@ var MCQ = {
                                        
                                 </div>
                                 <div class="skip-container">
-                                    <button class="move-on skip button"></button>
+                                    <button class="move-on skip button" id="next"></button>
                                 </div>
                             </div>
-                                <div class="answer"> 
-                                    <div class="control column">
+                            <div class="answer"> 
+                                <div class="control column mcq-options">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="0"></input>
+                                    <img id="radio-opt0" class="options"></img>
+                                </label>
+                                </div>
+                                <div class="control column mcq-options">
                                     <label class="radio">
-                                        <input type="radio" name="answer" value="0"></input>
-                                        <img id="radio-opt0" class="options"></img>
+                                        <input type="radio" name="answer" value="1"></input>
+                                        <img id="radio-opt1" class="options"></img>
                                     </label>
-                                    </div>
-                                    <div class="control column">
-                                        <label class="radio">
-                                            <input type="radio" name="answer" value="1"></input>
-                                            <img id="radio-opt1" class="options"></img>
-                                        </label>
-                                    </div>
-                                    <div class="control column">
-                                        <label class="radio">
-                                            <input type="radio" name="answer" value="2"></input>
-                                            <img id="radio-opt2" class="options"></img>
-                                        </label>
-                                    </div>
-                                    <div class="control column">
-                                        <label class="radio">
-                                            <input type="radio" name="answer" value="3"></input>
-                                            <img id="radio-opt3" class="options"></img>
-                                        </label>
-                                    </div>   
-                                </div>                                
+                                </div>
+                                <div class="control column mcq-options">
+                                    <label class="radio">
+                                        <input type="radio" name="answer" value="2"></input>
+                                        <img id="radio-opt2" class="options"></img>
+                                    </label>
+                                </div>
+                                <div class="control column mcq-options">
+                                    <label class="radio">
+                                        <input type="radio" name="answer" value="3"></input>
+                                        <img id="radio-opt3" class="options"></img>
+                                    </label>
+                                </div>   
                             </div>
+                            <div class="control submit-container">
+                                <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
+                            </div>                                                   
+                        </div>
                         <div class="is-overlay mcq-overlay is-hidden">
                             <h2>Loading...</h2>
                         </div>
@@ -82,6 +89,11 @@ var MCQ = {
         </div>
     ),
     oncreate: async () => {
+        $("#switch-graph").on("click", async () =>{
+            switchGraph();
+        }
+        );
+
         m.request({
             method: "GET",
             url: "/get_csrf_token"
@@ -238,6 +250,7 @@ var MCQ = {
                 }
             }
         );
+        
         
         $("#next").on("click", async () => {
             // remove disabled from submit button

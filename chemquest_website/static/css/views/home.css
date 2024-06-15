@@ -55,20 +55,16 @@ img#question-img {
     background-clip: content-box;
 }
 
-.chartContainer {
-    width: 75%;
-}
-
 
 /* Skip button styles */
 .move-on {
     color: var(--text-color);
 }
 .skip {
-    content: "Skip"
+    content: "Skip";
 }
 .next {
-    content: "Next"
+    content: "Next";
 }
 
 /* Hints Styles*/
@@ -87,11 +83,11 @@ img#question-img {
     box-sizing: border-box;
 }
 .column-left {
-    width: 85%;
+    width: 80%;
     float:left
 }
 .column-right {
-    width: 15%;
+    width: 20%;
     float: left;
 
 }
@@ -106,7 +102,8 @@ img#question-img {
 
 /* Hint tooltip style */
 .answer-topbar {
-    height: 5%
+    height: 5%;
+    padding: var(--padding);
 }
 .hint-display {
     position: relative;
@@ -114,7 +111,7 @@ img#question-img {
 }
 .hint-display .tooltip{
     visibility: hidden;
-    width: 120px;
+    width: 40vh;
     background-color: black;
     color: #fff;
     text-align: center;
@@ -125,9 +122,12 @@ img#question-img {
     left: 50%;
     margin-left: -60px;
     z-index: 2;
+    opacity: 0%;
 }
 .hint-display:hover .tooltip{
     visibility: visible;
+    opacity: 100%;
+    transition: opacity 0.25s;
 }
 /* MCQ column */
 .column-right, #msQuestionForm, .container, .column-left{
@@ -136,10 +136,9 @@ img#question-img {
 .answer {
     height: 86%;
 }
-.control {
-    --moleculePadding: 10px;
-    padding: var(--moleculePadding);
-    --maxHeight: calc(100%/4);
+.mcq-options {
+    padding: var(--padding);
+    --maxHeight: calc(100%/4 - var(--padding));
     height: var(--maxHeight);
 }
 .radio {
@@ -163,6 +162,19 @@ img#question-img {
     filter: invert(var(--inversion));
 }
 /* MSChart Styling */
-.chartContainer {
-    width:100%
+.chartContainer, .ptable {
+    width:90%;
+}
+
+.feedback {
+    float:right;
+    width: 50%;
+    text-align: right;
+    margin-right: 15%;
+}
+#switch-graph-display {
+    content: "toggle between graph and periodic table";
+}
+.switch-graph-label {
+    content: "toggle between graph and periodic table";
 }

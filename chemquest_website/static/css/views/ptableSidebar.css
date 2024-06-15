@@ -31,3 +31,14 @@
 .ptable-sidebar-closed .ptable-pulltab {
     right: 0;
 }
+
+/* ptable Styling */
+.ptable {
+    width: 100%;
+}
+.ptable img{
+    display: block;
+    object-fit: contain;
+    width: 75%;
+    margin: auto;
+} 
