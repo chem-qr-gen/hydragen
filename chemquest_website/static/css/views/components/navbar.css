@@ -5,3 +5,15 @@
 .navbar-item {
     color: var(--text-color-navbar);
 }
+.navbar {
+    height: 7.5vh;
+}
+#settings-logo {
+    height: 100%;
+}
+.navbar-end {
+    height:100%;
+}
+#navbarContent {
+    height:100%;
+}

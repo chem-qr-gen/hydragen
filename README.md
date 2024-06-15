@@ -34,3 +34,5 @@ $ yarn run build
 $ cd ../..
 $ poetry run gunicorn -w 4 -b 0.0.0.0:5001 chemquest_website:app
 ```
+Known Issues
+msChart theme remains the same if user is using system default and changes browser theme without reloading the page 

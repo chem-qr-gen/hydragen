@@ -78,6 +78,24 @@ function getChartStyles() {
     return chartStyles
 }
 
+// Update Hint indicator color
+function getHintColor(hintsUsed) {
+    switch (hintsUsed) {
+        case 3 || 2: {
+            $("#hints-danger-level").className = "red-text"
+        }
+        break;
+        case 1: {
+            $("#hints-danger-level").className = "yellow-text"
+        }
+        break;
+        case 0: {
+            $("#hints-danger-level").className = "green-text"
+        }
+    }
+    return;
+}
+
 // update the data in a chart
 const updateData = (chart, data) => {
     chart.data.labels = data.map(entry => entry.mz);
@@ -139,6 +157,7 @@ export {
     updateData,
     fillMsDataGaps,
     smiDrawerTheme,
-    getChartStyles
+    getChartStyles,
+    getHintColor
 };
 

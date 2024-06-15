@@ -3,8 +3,9 @@ function checkTheme(themeName) {
 }
 
 function setTheme() {
-	const cachedTheme = localStorage.getItem('theme');  //attempt to retrieve theme from cache
-	if (!(cachedTheme)) {
+	var cachedTheme = localStorage.getItem('theme');  //attempt to retrieve theme from cache
+	console.log(cachedTheme);
+	if (cachedTheme === null) {
 		cachedTheme = 'auto';
 	}
 	document.documentElement.dataset['theme'] = cachedTheme;

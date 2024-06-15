@@ -35,19 +35,7 @@ img#question-img {
     display: block;
 }
 
-/* MCQ form styling */
-.mcq-overlay {
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
-/* molecule styling */
-.options {
-    -webkit-filter: invert(var(--inversion));
-    filter: invert(var(--inversion));
-}
 /* hints instruction column styling */
 .hints-column {
     background: var(--hints-bg-color);
@@ -81,4 +69,100 @@ img#question-img {
 }
 .next {
     content: "Next"
+}
+
+/* Hints Styles*/
+.green-text {
+    color: var(--safe-color);
+}
+.yellow-text {
+    color: var(--warning-color);
+}
+.red-text {
+    color: var(--danger-color);
+}
+
+/* New Styles */
+* {
+    box-sizing: border-box;
+}
+.column-left {
+    width: 85%;
+    float:left
+}
+.column-right {
+    width: 15%;
+    float: left;
+
+}
+.hint-container {
+    float: left;
+    width: 80%;
+}
+.skip-container {
+    float: left;
+    width: 20%;
+}
+
+/* Hint tooltip style */
+.answer-topbar {
+    height: 5%
+}
+.hint-display {
+    position: relative;
+    display: inline-block;
+}
+.hint-display .tooltip{
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+    z-index: 2;
+}
+.hint-display:hover .tooltip{
+    visibility: visible;
+}
+/* MCQ column */
+.column-right, #msQuestionForm, .container, .column-left{
+    height: 99%;
+}
+.answer {
+    height: 86%;
+}
+.control {
+    --moleculePadding: 10px;
+    padding: var(--moleculePadding);
+    --maxHeight: calc(100%/4);
+    height: var(--maxHeight);
+}
+.radio {
+    height: 100%;
+
+}
+.control img {
+    height: 100%;
+}
+/* MCQ form styling */
+.mcq-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* molecule styling */
+.options {
+    -webkit-filter: invert(var(--inversion));
+    filter: invert(var(--inversion));
+}
+/* MSChart Styling */
+.chartContainer {
+    width:100%
 }

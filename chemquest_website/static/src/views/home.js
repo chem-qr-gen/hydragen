@@ -4,7 +4,7 @@ import md5 from "md5";
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
-import { updateData, fillMsDataGaps, smiDrawerTheme, getChartStyles} from "../libraries/home_helpers";
+import { updateData, fillMsDataGaps, smiDrawerTheme, getChartStyles, getHintColor} from "../libraries/home_helpers";
 
 
 var MCQ = {
@@ -12,130 +12,71 @@ var MCQ = {
         <div class="content">
             <Navbar />
             <div class="container-wrapper">
-                <PtableSidebar />
                 <div class="container">
-                    <div class="column-left">
-                       <div class="title-block">
-                        <h1>Mass Spectrometry Practice</h1>
-                       </div> 
-                       <div class="chartContainer">
-                            <canvas id="msChart">
-                                <p>Loading...</p>
-                            </canvas>
-                       </div>
-                       <div class="switch-container">
-                            <button class="switch-graph">
-
-                            </button>   
-                       </div>
-                    </div>
-                    <div class="column-right">
-                        <div class="answer-topbar">
-                            <div class="hint-container">
-                                <div class="hint-display">
-
-                                </div>
-                                <div class="hint-tooltip">
-
-                                </div>
-                            </div>
-                            <div class="skip-container">
-
-                            </div>
-                        </div>
-                        <div class="answer">
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="0"></input>
-                                    <img id="radio-opt0" class="options"></img>
-                                </label>
-                            </div>
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="1"></input>
-                                    <img id="radio-opt1" class="options"></img>
-                                </label>
-                            </div>
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="2"></input>
-                                    <img id="radio-opt2" class="options"></img>
-                                </label>
-                            </div>
-                            <div class="control column">
-                                <label class="radio">
-                                    <input type="radio" name="answer" value="3"></input>
-                                    <img id="radio-opt3" class="options"></img>
-                                </label>
-                            </div>   
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="block">
-                        <h1>Mass Spectrometry Practice</h1>
-                    </div>
-                    <form class="block is-relative" id="msQuestionForm">
+                    <form class="block is-relative" id="msQuestionForm">\
                         <input type="hidden" id="csrf_token"></input>
-                        <div class="field">
-                            <p>Identify the compound that would give this mass spectrum.</p>
-                            <div class="columns">
-                                <div class="column chartContainer">
-                                    <canvas id="msChart">
-                                        <p>Loading...</p>
-                                    </canvas>
-                                </div>
-                                <div class="column hints-column">
-                                    <h5>Hints</h5>
-                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents.</i></p>
-                                    <p><i>Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</i></p>
-                                    <p><i>You have used <b><span id="hints-used">0</span> of 3</b> hints.</i></p>
-                                </div>
+                        <div class="column-left">
+                        <div class="title-block">
+                            <h1>Mass Spectrometry Practice</h1>
+                        </div> 
+                        <div class="chartContainer">
+                        <p>Identify the compound that would give this mass spectrum.</p>
+                                <canvas id="msChart">
+                                    <p>Loading...</p>
+                                </canvas>
+                        </div>
+                            <div class="switch-container">
+                                <button class="switch-graph">
+                                    Switch
+                                </button>   
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="columns">
-                                <div class="control column">
+                        <PtableSidebar/>
+                        <div class="column-right">
+                            <div class="answer-topbar">
+                                <div class="hint-container">
+                                    <div class="hint-display">
+                                        <strong class="green-text" id="hints-danger-level"><span id="hints-used">3</span>/3 Hints Left</strong> 
+                                        <span class="tooltip" id="tooltip-text">Click on a bar in the MS chart to receive a hint about the fragments it usually represents.
+                                        Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</span>
+                                    </div>
+                                       
+                                </div>
+                                <div class="skip-container">
+                                    <button class="move-on skip button"></button>
+                                </div>
+                            </div>
+                                <div class="answer"> 
+                                    <div class="control column">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="0"></input>
                                         <img id="radio-opt0" class="options"></img>
                                     </label>
-                                </div>
-                                <div class="control column">
-                                    <label class="radio">
-                                        <input type="radio" name="answer" value="1"></input>
-                                        <img id="radio-opt1" class="options"></img>
-                                    </label>
-                                </div>
-                                <div class="control column">
-                                    <label class="radio">
-                                        <input type="radio" name="answer" value="2"></input>
-                                        <img id="radio-opt2" class="options"></img>
-                                    </label>
-                                </div>
-                                <div class="control column">
-                                    <label class="radio">
-                                        <input type="radio" name="answer" value="3"></input>
-                                        <img id="radio-opt3" class="options"></img>
-                                    </label>
-                                </div>
+                                    </div>
+                                    <div class="control column">
+                                        <label class="radio">
+                                            <input type="radio" name="answer" value="1"></input>
+                                            <img id="radio-opt1" class="options"></img>
+                                        </label>
+                                    </div>
+                                    <div class="control column">
+                                        <label class="radio">
+                                            <input type="radio" name="answer" value="2"></input>
+                                            <img id="radio-opt2" class="options"></img>
+                                        </label>
+                                    </div>
+                                    <div class="control column">
+                                        <label class="radio">
+                                            <input type="radio" name="answer" value="3"></input>
+                                            <img id="radio-opt3" class="options"></img>
+                                        </label>
+                                    </div>   
+                                </div>                                
                             </div>
-                            <h4 id="question-feedback"></h4>
-                        </div>
-                        <div class="field is-grouped">
-                            <div class="control">
-                                <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
-                            </div>
-                            <div class="control">
-                                <span class="button" id="next">Next Question</span>
-                            </div>
-                        </div>
                         <div class="is-overlay mcq-overlay is-hidden">
                             <h2>Loading...</h2>
                         </div>
-                    </form>
+                    </form> 
                 </div>
             </div>
         </div>
@@ -154,7 +95,9 @@ var MCQ = {
             url: "/get_hints"
         });
         var hintsUsed = 0;
-        $("#hints-used").text(hintsUsed);
+        $("#hints-used").text(3 - hintsUsed);
+        getHintColor(hintsUsed);
+        
 
         // setup SMILES drawer
         var drawer = new SmiDrawer({
@@ -283,8 +226,8 @@ var MCQ = {
                             } else if (hint) {
                                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
                                 hintsUsed++;
-                                $("#hints-used").text(hintsUsed);
-                                
+                                $("#hints-used").text(3 - hintsUsed);
+                                getHintColor(hintsUsed);
                             } else {
                                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.noHintColor;
                             }
@@ -305,6 +248,9 @@ var MCQ = {
                 $(element).prop("checked", false);
                 $(element).parent().parent().removeClass("radio-selected");
             });
+            // reset skip button
+            $(".move-on").removeClass("next");
+            $(".move-on").addClass("skip");
 
             // reset the feedback text
             $("#question-feedback").removeClass("is-success is-danger");
@@ -313,7 +259,8 @@ var MCQ = {
             // reset hint data
             msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
             hintsUsed = 0;
-            $("#hints-used").text(hintsUsed);
+            $("#hints-used").text(3 - hintsUsed);
+            getHintColor(hintsUsed);
 
             // show loading overlay
             $(".mcq-overlay").removeClass("is-hidden");
@@ -327,13 +274,15 @@ var MCQ = {
         var isCorrect;
 
         $("#msQuestionForm").on("submit", () => {
-            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {
-                $("#question-feedback").removeClass("is-danger");
+            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {    //Answer is correct
+                $("#question-feedback").removeClass("is-danger");                           //Change Feedback
                 $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
+                $(".move-on").addClass("next");                                             //Change skip button text
+                $(".move-on").removeClass("skip")
                 isCorrect = true;
-            } else {
-                $("#question-feedback").removeClass("is-success");
+            } else {                                                                        //Answer Incorrect
+                $("#question-feedback").removeClass("is-success");                          //Change Feedback
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
                 isCorrect = false;
