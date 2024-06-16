@@ -3,20 +3,20 @@
     display: flex;
     top: 0;
     right: 0;
-    width: 60%;
+    width: 75%;
     height: 100%;
     background-color: #dbdbdb;
     transition: all 0.25s ease-in-out;
     z-index: 1;
 }
 .ptable-sidebar-closed .ptable-sidebar {
-    right: -60%;
+    right: -75%;
 }
 
 .ptable-pulltab {
     position: absolute;
     top: 50%;
-    right: 60%;
+    right: 75%;
     transform: translateY(-50%);
     padding: 8px;
     border-radius: 8px 0 0 8px;
