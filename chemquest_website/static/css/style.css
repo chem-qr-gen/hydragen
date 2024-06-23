@@ -25,6 +25,7 @@ html[data-theme="light"] {
     --safe-color: #00a832; 
     --warning-color: #cfa902;
     --danger-color: #d10000;
+    --field-bg-color: #dddddd;
 }
 
 /* Dark theme override */
@@ -39,6 +40,7 @@ html[data-theme="dark"] {
     --safe-color: #00a832; 
     --warning-color: #cfa902;
     --danger-color: #d10000;
+    --field-bg-color: #333a42;
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -53,6 +55,7 @@ html[data-theme="dark"] {
         --safe-color: #00a832; 
         --warning-color: #cfa902;
         --danger-color: #d10000;
+        --field-bg-color: #333a42;
     }
 }
 * {
