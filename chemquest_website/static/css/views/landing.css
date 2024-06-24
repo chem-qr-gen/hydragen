@@ -1,5 +1,6 @@
 #landing-splash {
-    background: url("../../images/background.gif") center;
+    content: url("../../images/landing.gif") center;
+    background: url("../../images/landing.gif") center;
     background-size: cover;
     position: relative;
 }
