@@ -162,8 +162,23 @@ img#question-img {
     filter: invert(var(--inversion));
 }
 /* MSChart Styling */
+.chartPTableContainer{
+    position: relative;
+    width: 90%;
+    height: 80%;
+    border: 1px solid #4690c2;
+}
+
 .chartContainer, .ptable {
-    width:90%;
+    position: absolute;
+    width:100%;
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.hide{
+    opacity: 0;
+    z-index: -1;
 }
 
 .feedback {
@@ -172,9 +187,64 @@ img#question-img {
     text-align: right;
     margin-right: 15%;
 }
+
+
+/* switch graph styling */
+.switch-container, #switch-graph-display{
+    position: absolute;
+    --switch-width: 150px;
+}
+.switch-container {
+    bottom: 2vh;
+    left: 2vw;
+}
 #switch-graph-display {
-    content: "toggle between graph and periodic table";
+    color: var(--button-text-color);
+    /* box-shadow: #b018eb 0px 0px 1px 5px; */
+    display: inline-block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--button-color);
+    transition: .4s;
+    width: var(--switch-width);
+    height: 26px;
+    border-radius: 4px;
+}
+#switch-graph-display::before {
+    position: absolute;
+    content: "Periodic Table";
+    text-align: center;
+    height: 26px;
+    width: var(--switch-width);
+    background-color: var(--button-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 4px;
+}
+  
+#switch-graph:checked + #switch-graph-display {
+    background-color: #2196F3;
+    /* box-shadow: #2196F3 0px 0px 1px 5px; */
+}
+
+  
+#switch-graph:checked + #switch-graph-display:before {
+    /* --transform-dist: calc(var(--switch-width)/3);
+    -webkit-transform: translateX(var(--transform-dist));
+    -ms-transform: translateX(var(--transform-dist));
+    transform: translateX(var(--transform-dist)); */
+    content: "Graph"
 }
 .switch-graph-label {
-    content: "toggle between graph and periodic table";
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+#switch-graph{
+    opacity: 0;
+    width: 0;
+    height: 0;
 }

@@ -26,6 +26,8 @@ html[data-theme="light"] {
     --warning-color: #cfa902;
     --danger-color: #d10000;
     --field-bg-color: #dddddd;
+    --button-color: #00d1b2;
+    --button-text-color: #fff;
 }
 
 /* Dark theme override */
@@ -41,6 +43,8 @@ html[data-theme="dark"] {
     --warning-color: #cfa902;
     --danger-color: #d10000;
     --field-bg-color: #333a42;
+    --button-color: #00d1b2; 
+    --button-text-color: #fff;
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -56,6 +60,8 @@ html[data-theme="dark"] {
         --warning-color: #cfa902;
         --danger-color: #d10000;
         --field-bg-color: #333a42;
+        --button-color: #00d1b2;
+        --button-text-color: #fff;
     }
 }
 * {
