@@ -164,8 +164,8 @@ img#question-img {
 /* MSChart Styling */
 .chartPTableContainer{
     position: relative;
-    width: 100%;
-    height: 90%;
+    width: 90%;
+    height: 80%;
     border: 1px solid #4690c2;
 }
 
