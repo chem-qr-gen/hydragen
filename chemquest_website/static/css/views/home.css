@@ -59,12 +59,19 @@ img#question-img {
 /* Skip button styles */
 .move-on {
     color: var(--text-color);
+    height: 40px;
+    width: 60px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0px;
+    background-color: transparent;
 }
 .skip {
-    content: "Skip";
+    background-image: url("../../images/skip-light.svg");
 }
 .next {
-    content: "Next";
+    background-image: url("../../images/next-light.svg");
 }
 
 /* Hints Styles*/
@@ -174,7 +181,20 @@ img#question-img {
 }
 #switch-graph-display {
     content: "toggle between graph and periodic table";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: blue;
+    
 }
 .switch-graph-label {
     content: "toggle between graph and periodic table";
+}
+
+/* Loading Screen */
+.mcq-overlay {
+    width: 100vw;
+    height: 100vh;
+    left: calc(-50vw + 50%);
 }
