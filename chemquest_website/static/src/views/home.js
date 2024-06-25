@@ -18,20 +18,25 @@ var MCQ = {
                         <div class="column-left">
                             <div class="title-block">
                                 <h1>Mass Spectrometry Practice</h1>
-                            </div> 
-                            <div class="chartContainer">
-                            <p>Identify the compound that would give this mass spectrum.</p>
-                                <canvas id="msChart">
-                                    <p>Loading...</p>
-                                </canvas>
                             </div>
-                            <PtableSidebar/>
+
+                            <div class="chartPTableContainer">
+                              <div class="chartContainer">
+                              <p>Identify the compound that would give this mass spectrum.</p>
+                                  <canvas id="msChart">
+                                      <p>Loading...</p>
+                                  </canvas>
+                              </div>
+                              <PtableSidebar/>
+                            </div>
+
                             <div class="switch-container">
                                 <label class="switch-graph-label">
                                 <input id="switch-graph" type="checkbox"></input>   
                                 <span id="switch-graph-display"></span>
                                 </label>
                             </div>
+
                             <div class="feedback">
                                 <h4 id="question-feedback"></h4>
                             </div>   
