@@ -59,19 +59,12 @@ img#question-img {
 /* Skip button styles */
 .move-on {
     color: var(--text-color);
-    height: 40px;
-    width: 60px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 0px;
-    background-color: transparent;
 }
 .skip {
-    background-image: url("../../images/skip-light.svg");
+    content: "Skip";
 }
 .next {
-    background-image: url("../../images/next-light.svg");
+    content: "Next";
 }
 
 /* Hints Styles*/
@@ -169,8 +162,23 @@ img#question-img {
     filter: invert(var(--inversion));
 }
 /* MSChart Styling */
+.chartPTableContainer{
+    position: relative;
+    width: 90%;
+    height: 80%;
+    border: 1px solid #4690c2;
+}
+
 .chartContainer, .ptable {
-    width:90%;
+    position: absolute;
+    width:100%;
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.hide{
+    opacity: 0;
+    z-index: -1;
 }
 
 .feedback {
@@ -239,11 +247,4 @@ img#question-img {
     opacity: 0;
     width: 0;
     height: 0;
-}
-
-/* Loading Screen */
-.mcq-overlay {
-    width: 100vw;
-    height: 100vh;
-    left: calc(-50vw + 50%);
 }

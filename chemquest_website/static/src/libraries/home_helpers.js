@@ -78,9 +78,16 @@ function getChartStyles() {
     return chartStyles
 }
 function switchGraph() {
-    $(".ptable").toggleClass("invisible");
+    $(".ptable").toggleClass("hide");
+    // if ($(".ptable").classList.contains("hide")){
+    //   $(".ptable").classList.remove("hide")
+    // }
+    // else{
+    //   $(".ptable").classList.add("hide")
+    // }
+
     console.log('graph toggled!')
-    $(".chartContainer").toggleClass("invisible");
+    $(".chartContainer").toggleClass("hide");
     return;
 }
 // Update Hint indicator color
