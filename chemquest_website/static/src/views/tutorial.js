@@ -230,7 +230,8 @@ var Tutorial = {
                 cancelIcon: {
                     enabled: true
                 },
-                scrollTo: true
+                scrollTo: true,
+                cancelIcon: false
             }
         });
 
@@ -244,6 +245,13 @@ var Tutorial = {
                 on: "left"
             },
             buttons: [
+                {
+                    action() {
+                        return this.cancel();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Skip'
+                },
                 {
                     action() {
                         return this.next();
@@ -262,6 +270,13 @@ var Tutorial = {
                 on: "left"
             },
             buttons: [
+                {
+                    action() {
+                        return this.cancel();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Skip'
+                },
                 {
                     action() {
                         return this.back();
@@ -287,6 +302,13 @@ var Tutorial = {
                 on: "top"
             },
             buttons: [
+                {
+                    action() {
+                        return this.cancel();
+                    },
+                    classes: 'shepherd-button-secondary',
+                    text: 'Skip'
+                },
                 {
                     action() {
                         return this.back();
