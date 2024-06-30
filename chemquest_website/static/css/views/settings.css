@@ -1,0 +1,39 @@
+#settings-logo{
+    content: url("../../images/settings-light.svg");
+    max-height: 50px;
+}
+.settings-input{
+    float: left;
+    width: 2.5%;
+    padding: 10px;
+}
+.settings-field{
+    float: left;
+    width: 90%;
+    padding: 10px;
+}
+.settings-block{
+    padding: 5%;
+
+}
+.field{
+    background-color: var(--field-bg-color);
+}
+.field::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+.settings-control{
+    display:grid;
+    grid-template-columns: max-content max-content;
+    grid-gap:10px;
+    border-width: 3px;
+}
+#theme-input{
+    display: flex;
+    flex-direction: column;
+}
+.theme1{
+    background-color: black;
+}

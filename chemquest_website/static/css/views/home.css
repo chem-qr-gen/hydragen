@@ -16,6 +16,7 @@ img#question-img {
     display: block;
     color: hsl(348, 100%, 61%);
 }
+/* ms graph styling */
 
 .tabs ul {
     margin-left: 0px;
@@ -34,17 +35,15 @@ img#question-img {
     display: block;
 }
 
-/* MCQ form styling */
-.mcq-overlay {
-    background-color: rgba(255, 255, 255, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+/* hints instruction column styling */
+.hints-column {
+    background: var(--hints-bg-color);
+    width: 25%
 }
 
-
 /* radio button styling */
-[type=radio] { 
+[name=answer] { 
     position: absolute;
     opacity: 0;
     width: 0;
@@ -54,4 +53,198 @@ img#question-img {
 .radio-selected {
     background-color: silver;
     background-clip: content-box;
+}
+
+
+/* Skip button styles */
+.move-on {
+    color: var(--text-color);
+}
+.skip {
+    content: "Skip";
+}
+.next {
+    content: "Next";
+}
+
+/* Hints Styles*/
+.green-text {
+    color: var(--safe-color);
+}
+.yellow-text {
+    color: var(--warning-color);
+}
+.red-text {
+    color: var(--danger-color);
+}
+
+/* New Styles */
+* {
+    box-sizing: border-box;
+}
+.column-left {
+    width: 80%;
+    float:left
+}
+.column-right {
+    width: 20%;
+    float: left;
+
+}
+.hint-container {
+    float: left;
+    width: 80%;
+}
+.skip-container {
+    float: left;
+    width: 20%;
+}
+
+/* Hint tooltip style */
+.answer-topbar {
+    height: 5%;
+    padding: var(--padding);
+}
+.hint-display {
+    position: relative;
+    display: inline-block;
+}
+.hint-display .tooltip{
+    visibility: hidden;
+    width: 40vh;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+    z-index: 2;
+    opacity: 0%;
+}
+.hint-display:hover .tooltip{
+    visibility: visible;
+    opacity: 100%;
+    transition: opacity 0.25s;
+}
+/* MCQ column */
+.column-right, #msQuestionForm, .container, .column-left{
+    height: 99%;
+}
+.answer {
+    height: 86%;
+}
+.mcq-options {
+    padding: var(--padding);
+    --maxHeight: calc(100%/4 - var(--padding));
+    height: var(--maxHeight);
+}
+.radio {
+    height: 100%;
+
+}
+.control img {
+    height: 100%;
+}
+/* MCQ form styling */
+.mcq-overlay {
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* molecule styling */
+.options {
+    -webkit-filter: invert(var(--inversion));
+    filter: invert(var(--inversion));
+}
+/* MSChart Styling */
+.chartPTableContainer{
+    position: relative;
+    width: 90%;
+    height: 80%;
+    border: 1px solid #4690c2;
+}
+
+.chartContainer, .ptable {
+    position: absolute;
+    width:100%;
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.hide{
+    opacity: 0;
+    z-index: -1;
+}
+
+.feedback {
+    float:right;
+    width: 50%;
+    text-align: right;
+    margin-right: 15%;
+}
+
+
+/* switch graph styling */
+.switch-container, #switch-graph-display{
+    position: absolute;
+    --switch-width: 150px;
+}
+.switch-container {
+    bottom: 2vh;
+    left: 2vw;
+}
+#switch-graph-display {
+    color: var(--button-text-color);
+    /* box-shadow: #b018eb 0px 0px 1px 5px; */
+    display: inline-block;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--button-color);
+    transition: .4s;
+    width: var(--switch-width);
+    height: 26px;
+    border-radius: 4px;
+}
+#switch-graph-display::before {
+    position: absolute;
+    content: "Periodic Table";
+    text-align: center;
+    height: 26px;
+    width: var(--switch-width);
+    background-color: var(--button-color);
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 4px;
+}
+  
+#switch-graph:checked + #switch-graph-display {
+    background-color: #2196F3;
+    /* box-shadow: #2196F3 0px 0px 1px 5px; */
+}
+
+  
+#switch-graph:checked + #switch-graph-display:before {
+    /* --transform-dist: calc(var(--switch-width)/3);
+    -webkit-transform: translateX(var(--transform-dist));
+    -ms-transform: translateX(var(--transform-dist));
+    transform: translateX(var(--transform-dist)); */
+    content: "Graph"
+}
+.switch-graph-label {
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+#switch-graph{
+    opacity: 0;
+    width: 0;
+    height: 0;
 }

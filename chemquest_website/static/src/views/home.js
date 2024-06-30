@@ -4,7 +4,7 @@ import md5 from "md5";
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
-import { updateData, fillMsDataGaps, smiDrawerTheme } from "../libraries/home_helpers";
+import { updateData, fillMsDataGaps, smiDrawerTheme, getChartStyles, getHintColor, switchGraph} from "../libraries/home_helpers";
 
 
 var MCQ = {
@@ -12,75 +12,93 @@ var MCQ = {
         <div class="content">
             <Navbar />
             <div class="container-wrapper">
-                <PtableSidebar />
                 <div class="container">
-                    <div class="block">
-                        <h1>Mass Spectrometry Practice</h1>
-                    </div>
                     <form class="block is-relative" id="msQuestionForm">
                         <input type="hidden" id="csrf_token"></input>
-                        <div class="field">
-                            <p>Identify the compound that would give this mass spectrum.</p>
-                            <div class="columns">
-                                <div class="column is-three-quarters">
-                                    <canvas id="msChart">
-                                        <p>Loading...</p>
-                                    </canvas>
+                        <div class="column-left">
+                            <div class="title-block">
+                                <h1>Mass Spectrometry Practice</h1>
+                            </div>
+
+                            <div class="chartPTableContainer">
+                              <div class="chartContainer">
+                              <p>Identify the compound that would give this mass spectrum.</p>
+                                  <canvas id="msChart">
+                                      <p>Loading...</p>
+                                  </canvas>
+                              </div>
+                              <PtableSidebar/>
+                            </div>
+
+                            <div class="switch-container">
+                                <label class="switch-graph-label">
+                                <input id="switch-graph" type="checkbox"></input>   
+                                <span id="switch-graph-display"></span>
+                                </label>
+                            </div>
+
+                            <div class="feedback">
+                                <h4 id="question-feedback"></h4>
+                            </div>   
+                        </div>                     
+                        <div class="column-right">
+                            <div class="answer-topbar">
+                                <div class="hint-container">
+                                    <div class="hint-display">
+                                        <strong class="green-text" id="hints-danger-level"><span id="hints-used">3</span>/3 Hints Left</strong> 
+                                        <span class="tooltip" id="tooltip-text">Click on a bar in the MS chart to receive a hint about the fragments it usually represents.
+                                        Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</span>
+                                    </div>
+                                       
                                 </div>
-                                <div class="column is-one-quarter has-background-grey-lighter">
-                                    <h5>Hints</h5>
-                                    <p><i>Click on a bar in the MS chart to receive a hint about the fragments it usually represents.</i></p>
-                                    <p><i>Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</i></p>
-                                    <p><i>You have used <b><span id="hints-used">0</span> of 3</b> hints.</i></p>
+                                <div class="skip-container">
+                                    <button class="move-on skip button" id="next"></button>
                                 </div>
                             </div>
-                        </div>
-                        <div class="field">
-                            <div class="columns">
-                                <div class="control column">
-                                    <label class="radio">
-                                        <input type="radio" name="answer" value="0"></input>
-                                        <img id="radio-opt0"></img>
-                                    </label>
+                            <div class="answer"> 
+                                <div class="control column mcq-options">
+                                <label class="radio">
+                                    <input type="radio" name="answer" value="0"></input>
+                                    <img id="radio-opt0" class="options"></img>
+                                </label>
                                 </div>
-                                <div class="control column">
+                                <div class="control column mcq-options">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="1"></input>
-                                        <img id="radio-opt1"></img>
+                                        <img id="radio-opt1" class="options"></img>
                                     </label>
                                 </div>
-                                <div class="control column">
+                                <div class="control column mcq-options">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="2"></input>
-                                        <img id="radio-opt2"></img>
+                                        <img id="radio-opt2" class="options"></img>
                                     </label>
                                 </div>
-                                <div class="control column">
+                                <div class="control column mcq-options">
                                     <label class="radio">
                                         <input type="radio" name="answer" value="3"></input>
-                                        <img id="radio-opt3"></img>
+                                        <img id="radio-opt3" class="options"></img>
                                     </label>
-                                </div>
+                                </div>   
                             </div>
-                            <h4 id="question-feedback"></h4>
-                        </div>
-                        <div class="field is-grouped">
-                            <div class="control">
+                            <div class="control submit-container">
                                 <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
-                            </div>
-                            <div class="control">
-                                <span class="button" id="next">Next Question</span>
-                            </div>
+                            </div>                                                   
                         </div>
                         <div class="is-overlay mcq-overlay is-hidden">
                             <h2>Loading...</h2>
                         </div>
-                    </form>
+                    </form> 
                 </div>
             </div>
         </div>
     ),
     oncreate: async () => {
+        $("#switch-graph").on("click", async () =>{
+            switchGraph();
+        }
+        );
+
         m.request({
             method: "GET",
             url: "/get_csrf_token"
@@ -94,7 +112,9 @@ var MCQ = {
             url: "/get_hints"
         });
         var hintsUsed = 0;
-        $("#hints-used").text(hintsUsed);
+        $("#hints-used").text(3 - hintsUsed);
+        getHintColor(hintsUsed);
+        
 
         // setup SMILES drawer
         var drawer = new SmiDrawer({
@@ -151,6 +171,7 @@ var MCQ = {
         var questionData = await getNewQuestion();
 
         // chart initialisation
+        const chartStyles = getChartStyles();
         var msChart = new Chart(
             document.getElementById("msChart"),
             {
@@ -160,33 +181,47 @@ var MCQ = {
                     datasets: [{
                         label: "Relative Abundance",
                         data: questionData.filledMsData.map(entry => entry.abundance),
-                        backgroundColor: Array(questionData.filledMsData.length).fill("#000000"),
-                        borderColor: Array(questionData.filledMsData.length).fill("#000000"),
-                        barPercentage: 0.5
+                        backgroundColor: Array(questionData.filledMsData.length).fill(chartStyles.backgroundColor),
+                        borderColor: Array(questionData.filledMsData.length).fill(chartStyles.axisColor),
+                        barPercentage: chartStyles.barPercentage
                     }]
                 },
                 options: {
+                    scales: {
+                        x: {
+                            grid:{color: chartStyles.gridColor },
+                            border:{color: chartStyles.axisColor},
+                            ticks: {color: chartStyles.tickColor},
+                        },
+                        y: {
+                            grid:{color: chartStyles.gridColor},
+                            border: {color: chartStyles.axisColor}, 
+                            ticks: {color: chartStyles.tickColor}
+                        }
+                    },
                     plugins: {
                         legend: {
                             display: false
                         },
                         tooltip: {
                             titleFont: {
-                                size: 16
+                                size: chartStyles.titleFontSize
                             },
+                            titleColor: chartStyles.titleColor,
                             bodyFont: {
-                                size: 16
+                                size: chartStyles.bodyFontSize
                             },
+                            bodyColor: chartStyles.bodyColor,
                             callbacks: {
                                 label: (context) => {
                                     var mz = parseInt(context.label);
                                     var main_text = "Relative Abundance: " + context.parsed.y;
-                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#009900") {
+                                    if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles.hintColor) {
                                         var hint = hintData.find(i => i.mz == mz);
                                         var hint_text = hint.hint_text;
-                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#990000") {
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles.noHintColor) {
                                         var hint_text = "No hint available for this value."
-                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == "#996600") {
+                                    } else if (msChart.data.datasets[0].backgroundColor[context.dataIndex] == chartStyles.usedAllHintsColor) {
                                         var hint_text = "You have used all of your hints."
                                     } else {
                                         var hint_text = "Click to see a hint."
@@ -204,14 +239,14 @@ var MCQ = {
                             var hint = hintData.find(i => i.mz == mz);
                             
                             if (hintsUsed >= 3) {
-                                msChart.data.datasets[0].backgroundColor[index] = "#996600";
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles.usedAllHintsColor;
                             } else if (hint) {
-                                msChart.data.datasets[0].backgroundColor[index] = "#009900";
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
                                 hintsUsed++;
-                                $("#hints-used").text(hintsUsed);
-                                
+                                $("#hints-used").text(3 - hintsUsed);
+                                getHintColor(hintsUsed);
                             } else {
-                                msChart.data.datasets[0].backgroundColor[index] = "#990000";
+                                msChart.data.datasets[0].backgroundColor[index] = chartStyles.noHintColor;
                             }
 
                             msChart.update();
@@ -220,6 +255,7 @@ var MCQ = {
                 }
             }
         );
+        
         
         $("#next").on("click", async () => {
             // remove disabled from submit button
@@ -230,15 +266,19 @@ var MCQ = {
                 $(element).prop("checked", false);
                 $(element).parent().parent().removeClass("radio-selected");
             });
+            // reset skip button
+            $(".move-on").removeClass("next");
+            $(".move-on").addClass("skip");
 
             // reset the feedback text
             $("#question-feedback").removeClass("is-success is-danger");
             $("#question-feedback").text("");
 
             // reset hint data
-            msChart.data.datasets[0].backgroundColor = ['rgba(0, 0, 0, 1)'];
+            msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
             hintsUsed = 0;
-            $("#hints-used").text(hintsUsed);
+            $("#hints-used").text(3 - hintsUsed);
+            getHintColor(hintsUsed);
 
             // show loading overlay
             $(".mcq-overlay").removeClass("is-hidden");
@@ -252,13 +292,15 @@ var MCQ = {
         var isCorrect;
 
         $("#msQuestionForm").on("submit", () => {
-            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {
-                $("#question-feedback").removeClass("is-danger");
+            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {    //Answer is correct
+                $("#question-feedback").removeClass("is-danger");                           //Change Feedback
                 $("#question-feedback").addClass("is-success");
                 $("#question-feedback").text("Correct! Well done!");
+                $(".move-on").addClass("next");                                             //Change skip button text
+                $(".move-on").removeClass("skip")
                 isCorrect = true;
-            } else {
-                $("#question-feedback").removeClass("is-success");
+            } else {                                                                        //Answer Incorrect
+                $("#question-feedback").removeClass("is-success");                          //Change Feedback
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text("Incorrect, try again.");
                 isCorrect = false;

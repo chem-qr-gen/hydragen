@@ -4,7 +4,7 @@ var Navbar = {
     view: () => (
         <nav class="navbar">
             <div class="navbar-brand">
-                <div class="navbar-item is-size-5" href="#!/home"><b>Hydragen.io</b></div>
+                <a class="navbar-item is-size-5" href="#!/home"><b><span class="brand">Hydragen.io</span></b></a>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarContent">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -15,6 +15,7 @@ var Navbar = {
                 <div class="navbar-end">
                     <a class="navbar-item" href="#!/signup" id="signupLink">Sign Up</a>
                     <a class="navbar-item" href="#!/login" id="loginLink">Log In</a>
+                    <a class="navbar-item" href="#!/settings" id="settingsLink"><img id="settings-logo"></img></a>
                     <div class="navbar-item has-dropdown is-hoverable" id="usernameLink" style="display: none;">
                         <a class="navbar-link">Logged in as </a>
                         <div class="navbar-dropdown">
