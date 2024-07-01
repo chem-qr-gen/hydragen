@@ -1,7 +1,3 @@
-#settings-logo{
-    content: url("../../images/settings-light.svg");
-    max-height: 50px;
-}
 .settings-input{
     float: left;
     width: 2.5%;

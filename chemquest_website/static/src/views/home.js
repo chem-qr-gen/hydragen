@@ -30,12 +30,7 @@ var MCQ = {
                               <PtableSidebar/>
                             </div>
 
-                            <div class="switch-container">
-                                <label class="switch-graph-label">
-                                <input id="switch-graph" type="checkbox"></input>   
-                                <span id="switch-graph-display"></span>
-                                </label>
-                            </div>
+                            <button id="switch-graph" class="button is-primary">Periodic Table</button>
 
                             <div class="feedback">
                                 <h4 id="question-feedback"></h4>
