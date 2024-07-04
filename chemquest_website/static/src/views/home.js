@@ -78,7 +78,10 @@ var MCQ = {
                             </div>
                             <div class="control submit-container">
                                 <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
-                            </div>                                                   
+                            </div>
+                            <div>
+                                <button class="button" id="next">Next Question</button>
+                            </div>
                         </div>
                         <div class="is-overlay mcq-overlay is-hidden">
                             <h2>Loading...</h2>
