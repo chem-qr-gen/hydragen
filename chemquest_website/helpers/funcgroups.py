@@ -21,20 +21,23 @@ funcgroups_mols = Box({
 
 class FuncGroupCounter:
     
-    def __init__(self, fgs: dict):
+    def __init__(self, fgs: dict = funcgroups_mols):
         self.fgs = fgs
 
-    def count(self, mol: Chem.Mol, fgs: list) -> dict:
+    def count(self, mol: Chem.Mol, fgs: str | list) -> dict:
         """
         Counts the number of different functional groups in a molecule.
 
         Args:
             mol (Chem.Mol): RDKit molecule object to count functional groups from.
-            fgs (list): List of functional group names to count.
+            fgs (str | list): Functional group(s) to count.
 
         Returns:
             dict: Dictionary containing the count of each functional group.
         """
+        if isinstance(fgs, str):
+            return len(mol.GetSubstructMatches(self.fgs[fgs]))
+        
         count = {}
         for fg in fgs:
             count[fg] = len(mol.GetSubstructMatches(self.fgs[fg]))
@@ -50,7 +53,7 @@ class FuncGroupCounter:
         Returns:
             dict: Dictionary containing the count of each functional group.
         """
-        return {fg: len(mol.GetSubstructMatches(self.fgs[fg])) for fg in self.fgs}
+        return {fg: len(mol.GetSubstructMatches(self.fgs[fg])) for fg in self.fgs.keys()}
 
 
 def calculate_difficulty(mol: Chem.Mol, fgs: dict = funcgroups_mols, base_difficulty: int = 750) -> int:
