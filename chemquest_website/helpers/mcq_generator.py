@@ -9,6 +9,7 @@ from chemquest_website.helpers.funcgroups import FuncGroupCounter, funcgroups_mo
 
 
 # Functional group-based option generation
+# TODO: add more of these
 
 def generate_option_halide(mol: Chem.Mol) -> list[Chem.Mol]:
     halide_matches = mol.GetSubstructMatches(funcgroups_mols.halide)
@@ -145,4 +146,6 @@ def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[str]:
     
     # Pick random options from the top few
     top_options = random.sample(top_smiles, num_options)
+    # remove the similarity values
+    top_options = [smiles for smiles, _ in top_options]
     return top_options
