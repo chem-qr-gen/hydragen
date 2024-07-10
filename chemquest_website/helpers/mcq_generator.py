@@ -67,6 +67,11 @@ def generate_option_ester(mol: Chem.Mol) -> list[Chem.Mol]:
     products = rxn2.RunReactants((mol,))
     ester_mols += [p[0] for p in products]
 
+    # replace ester with an amide
+    rxn3 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1](=[O:2])[N][C:4]")
+    products = rxn3.RunReactants((mol,))
+    ester_mols += [p[0] for p in products]
+
     return ester_mols
 
 
@@ -80,7 +85,21 @@ def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[Chem.Mol]:
     methyl_ester_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)OC"))
     ethyl_ester_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)OCC"))
 
-    return list(methyl_ester_mols) + list(ethyl_ester_mols)
+    # replace acid with an amide
+    amide_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)N"))
+
+    return list(methyl_ester_mols) + list(ethyl_ester_mols) + list(amide_mols)
+
+def generate_option_nitrile(mol: Chem.Mol) -> list[Chem.Mol]:
+    nitrile_matches = mol.GetSubstructMatches(funcgroups_mols.nitrile)
+
+    if not nitrile_matches:
+        return []
+    
+    # replace nitrile with a terminal alkyne
+    alkyne_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.nitrile, Chem.MolFromSmiles("C#C"))
+
+    return list(alkyne_mols)
 
 
 

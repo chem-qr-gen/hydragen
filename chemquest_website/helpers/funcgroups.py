@@ -15,6 +15,7 @@ funcgroups_mols = Box({
     "ether": Chem.MolFromSmarts("[OD2]([#6])[#6]"),
     "amine": Chem.MolFromSmarts("[NX3;H2,H1;!$(NC=O)]"),
     "imine": Chem.MolFromSmarts("[$([CX3]([#6])[#6]),$([CX3H][#6])]=[$([NX2][#6]),$([NX2H])]"),
+    "nitrile": Chem.MolFromSmarts("[NX1]#[CX2]"),
     "nitro": Chem.MolFromSmarts("[$([NX3](=O)=O),$([NX3+](=O)[O-])][!#8]"),
     "halide": Chem.MolFromSmarts("[F,Cl,Br,I]"),
 })
