@@ -11,7 +11,7 @@ from chemquest_website.helpers.funcgroups import FuncGroupCounter, funcgroups_mo
 # Functional group-based option generation
 # TODO: add more of these
 
-def generate_option_halide(mol: Chem.Mol) -> list[str]:
+def generate_option_halide(mol: Chem.Mol) -> list[dict]:
     halide_matches = mol.GetSubstructMatches(funcgroups_mols.halide)
 
     if not halide_matches:
@@ -34,7 +34,7 @@ def generate_option_halide(mol: Chem.Mol) -> list[str]:
     return options
 
 
-def generate_option_carbonyl(mol: Chem.Mol) -> list[str]:
+def generate_option_carbonyl(mol: Chem.Mol) -> list[dict]:
     carbonyl_matches = mol.GetSubstructMatches(funcgroups_mols.ketone) + mol.GetSubstructMatches(funcgroups_mols.aldehyde)
 
     if not carbonyl_matches:
@@ -50,7 +50,7 @@ def generate_option_carbonyl(mol: Chem.Mol) -> list[str]:
     return options
 
 
-def generate_option_ether(mol: Chem.Mol) -> list[str]:
+def generate_option_ether(mol: Chem.Mol) -> list[dict]:
     ether_matches = mol.GetSubstructMatches(funcgroups_mols.ether)
 
     if not ether_matches:
@@ -67,7 +67,7 @@ def generate_option_ether(mol: Chem.Mol) -> list[str]:
     return options
 
 
-def generate_option_ester(mol: Chem.Mol) -> list[str]:
+def generate_option_ester(mol: Chem.Mol) -> list[dict]:
     ester_matches = mol.GetSubstructMatches(funcgroups_mols.ester)
 
     if not ester_matches:
@@ -100,7 +100,7 @@ def generate_option_ester(mol: Chem.Mol) -> list[str]:
     return options
 
 
-def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[str]:
+def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[dict]:
     acid_matches = mol.GetSubstructMatches(funcgroups_mols.carboxylic_acid)
 
     if not acid_matches:
@@ -127,7 +127,7 @@ def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[str]:
 
     return options
 
-def generate_option_nitrile(mol: Chem.Mol) -> list[str]:
+def generate_option_nitrile(mol: Chem.Mol) -> list[dict]:
     nitrile_matches = mol.GetSubstructMatches(funcgroups_mols.nitrile)
 
     if not nitrile_matches:
@@ -146,7 +146,7 @@ def generate_option_nitrile(mol: Chem.Mol) -> list[str]:
 
 # Overall MCQ option generation
 
-def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[str]:
+def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[dict]:
     options_raw = []
 
     options_raw += generate_option_halide(mol)
@@ -205,5 +205,7 @@ def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[str]:
     # Pick random options from the top few
     top_options = random.sample(top_smiles, num_options)
     # remove the similarity values
-    top_options = [smiles for smiles, _ in top_options]
+    top_options = [
+        {"smiles": smiles, "explanation": "similarity-algo"}
+         for smiles, _ in top_options]
     return top_options
