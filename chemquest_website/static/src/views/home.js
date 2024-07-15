@@ -47,7 +47,7 @@ var MCQ = {
                                        
                                 </div>
                                 <div class="skip-container">
-                                    <button class="move-on skip button" id="next"></button>
+                                    <button class="move-on skip button" type="button" id="next">Next Question</button>
                                 </div>
                             </div>
                             <div class="answer"> 
@@ -78,9 +78,6 @@ var MCQ = {
                             </div>
                             <div class="control submit-container">
                                 <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
-                            </div>
-                            <div>
-                                <button class="button" id="next">Next Question</button>
                             </div>
                         </div>
                         <div class="is-overlay mcq-overlay is-hidden">
@@ -142,15 +139,18 @@ var MCQ = {
                 method: "GET",
                 url: "/generate_mcq",
                 params: {input_smiles: data["smiles"]}
-            }).then(response => response.map(i => i["SMILES"]));
+            });
 
             // insert the correct answer randomly into the options
-            var correctAnswer = Math.floor(Math.random() * 3); 
-            mcqAnswers.splice(correctAnswer, 0, data["smiles"]);
+            var correctAnswerIndex = Math.floor(Math.random() * 3); 
+            mcqAnswers.splice(correctAnswerIndex, 0, {
+                "smiles": data["smiles"],
+                "explanation": "correct"
+            });
 
             // generate the structure images for display based on the SMILES MCQ options
             for (var index = 0; index < mcqAnswers.length; index++) {
-                drawer.draw(mcqAnswers[index], "#radio-opt" + index);
+                drawer.draw(mcqAnswers[index]["smiles"], "#radio-opt" + index);
             }
 
             // create a unique hash id from the timestamp and SMILES of the correct answer
@@ -162,7 +162,7 @@ var MCQ = {
                 rawData: data,
                 filledMsData: filledMsData,
                 mcqAnswers: mcqAnswers,
-                correctAnswer: correctAnswer
+                correctAnswer: correctAnswerIndex
             }
         };
 
