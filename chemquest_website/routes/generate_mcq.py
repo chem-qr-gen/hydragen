@@ -60,6 +60,6 @@ def generate_mcq():
     
     # Get choices for the question
     choices = generate_mcq_options(Chem.MolFromSmiles(input_smiles))
-    choices_processed = [{"SMILES": smiles} for smiles in choices]
+    choices_processed = [{"SMILES": smiles, "explanation": explanation} for smiles, explanation in choices]
     
     return choices_processed

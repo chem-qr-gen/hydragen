@@ -165,7 +165,7 @@ def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[dict]:
         return sample
     
 
-def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[str]:
+def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[dict]:
     """
     Generates MCQ options for mass spectrometry questions based on molecular weight and a similarity algorithm.
     This is the "backup" for when the functional group-based generation does not provide enough options.
