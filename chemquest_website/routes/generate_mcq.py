@@ -58,8 +58,4 @@ def generate_mcq():
     '''Returns a set of 3 random similar molecules to the input SMILES. For use in MCQ questions.'''
     input_smiles = request.args.get('input_smiles')
     
-    # Get choices for the question
-    choices = generate_mcq_options(Chem.MolFromSmiles(input_smiles))
-    choices_processed = [{"SMILES": smiles} for smiles in choices]
-    
-    return choices_processed
+    return generate_mcq_options(Chem.MolFromSmiles(input_smiles))

@@ -11,7 +11,7 @@ from chemquest_website.helpers.funcgroups import FuncGroupCounter, funcgroups_mo
 # Functional group-based option generation
 # TODO: add more of these
 
-def generate_option_halide(mol: Chem.Mol) -> list[Chem.Mol]:
+def generate_option_halide(mol: Chem.Mol) -> list[dict]:
     halide_matches = mol.GetSubstructMatches(funcgroups_mols.halide)
 
     if not halide_matches:
@@ -19,14 +19,22 @@ def generate_option_halide(mol: Chem.Mol) -> list[Chem.Mol]:
     
     # replace halide with an alcohol
     alcohol_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.halide, Chem.MolFromSmiles("O"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "halide-alcohol"}
+         for m in alcohol_mols
+    ]
 
     # replace halide with an amine
     amine_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.halide, Chem.MolFromSmiles("N"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "halide-amine"}
+         for m in amine_mols
+    ]
 
-    return list(alcohol_mols) + list(amine_mols)
+    return options
 
 
-def generate_option_carbonyl(mol: Chem.Mol) -> list[Chem.Mol]:
+def generate_option_carbonyl(mol: Chem.Mol) -> list[dict]:
     carbonyl_matches = mol.GetSubstructMatches(funcgroups_mols.ketone) + mol.GetSubstructMatches(funcgroups_mols.aldehyde)
 
     if not carbonyl_matches:
@@ -34,11 +42,15 @@ def generate_option_carbonyl(mol: Chem.Mol) -> list[Chem.Mol]:
     
     # replace carbonyl with a methyl group
     alkyl_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("C=O"), Chem.MolFromSmiles("C(C)"))
-    
-    return alkyl_mols
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "carbonyl-methyl"}
+         for m in alkyl_mols
+    ]
+
+    return options
 
 
-def generate_option_ether(mol: Chem.Mol) -> list[Chem.Mol]:
+def generate_option_ether(mol: Chem.Mol) -> list[dict]:
     ether_matches = mol.GetSubstructMatches(funcgroups_mols.ether)
 
     if not ether_matches:
@@ -47,11 +59,15 @@ def generate_option_ether(mol: Chem.Mol) -> list[Chem.Mol]:
     # replace ether with an alcohol
     rxn = rdChemReactions.ReactionFromSmarts("[C:1][O:2][C:3]>>[C:1]([O:2])[C:3]")
     products = rxn.RunReactants((mol,))
+    options = [
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ether-alcohol"}
+         for p in products
+    ]
 
-    return [p[0] for p in products]
+    return options
 
 
-def generate_option_ester(mol: Chem.Mol) -> list[Chem.Mol]:
+def generate_option_ester(mol: Chem.Mol) -> list[dict]:
     ester_matches = mol.GetSubstructMatches(funcgroups_mols.ester)
 
     if not ester_matches:
@@ -60,22 +76,31 @@ def generate_option_ester(mol: Chem.Mol) -> list[Chem.Mol]:
     # flip ester
     rxn1 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1][O:2][C:4](=[O:3])")
     products = rxn1.RunReactants((mol,))
-    ester_mols = [p[0] for p in products]
+    options = [
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ester-flip"}
+         for p in products
+    ]
 
     # replace ester with a ketone + alcohol
     rxn2 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1](=[O:2])[C:4][O:3]")
     products = rxn2.RunReactants((mol,))
-    ester_mols += [p[0] for p in products]
+    options += [
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ester-ketone-alcohol"}
+         for p in products
+    ]
 
     # replace ester with an amide
     rxn3 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1](=[O:2])[N][C:4]")
     products = rxn3.RunReactants((mol,))
-    ester_mols += [p[0] for p in products]
+    options += [
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ester-amide"}
+         for p in products
+    ]
 
-    return ester_mols
+    return options
 
 
-def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[Chem.Mol]:
+def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[dict]:
     acid_matches = mol.GetSubstructMatches(funcgroups_mols.carboxylic_acid)
 
     if not acid_matches:
@@ -83,14 +108,26 @@ def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[Chem.Mol]:
     
     # replace acid with an ester
     methyl_ester_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)OC"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "acid-ester"}
+         for m in methyl_ester_mols
+    ]
     ethyl_ester_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)OCC"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "acid-ester"}
+         for m in ethyl_ester_mols
+    ]
 
     # replace acid with an amide
     amide_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)N"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "acid-amide"}
+         for m in amide_mols
+    ]
 
-    return list(methyl_ester_mols) + list(ethyl_ester_mols) + list(amide_mols)
+    return options
 
-def generate_option_nitrile(mol: Chem.Mol) -> list[Chem.Mol]:
+def generate_option_nitrile(mol: Chem.Mol) -> list[dict]:
     nitrile_matches = mol.GetSubstructMatches(funcgroups_mols.nitrile)
 
     if not nitrile_matches:
@@ -98,14 +135,18 @@ def generate_option_nitrile(mol: Chem.Mol) -> list[Chem.Mol]:
     
     # replace nitrile with a terminal alkyne
     alkyne_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.nitrile, Chem.MolFromSmiles("C#C"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": "nitrile-alkyne"}
+         for m in alkyne_mols
+    ]
 
-    return list(alkyne_mols)
+    return options
 
 
 
 # Overall MCQ option generation
 
-def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[str]:
+def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[dict]:
     options_raw = []
 
     options_raw += generate_option_halide(mol)
@@ -115,18 +156,16 @@ def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[str]:
     options_raw += generate_option_carboxylic_acid(mol)
 
     if len(options_raw) >= num_options:
-        sample_raw = random.sample(options_raw, num_options)
-        sample = [Chem.MolToSmiles(m) for m in sample_raw]
+        sample = random.sample(options_raw, num_options)
         return sample
     
     else:
         extra_options = generate_backup_options(mol, num_options - len(options_raw))
-        options = [Chem.MolToSmiles(m) for m in options_raw]
-        sample = random.sample(extra_options + options, num_options)
+        sample = random.sample(extra_options + options_raw, num_options)
         return sample
     
 
-def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[str]:
+def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[dict]:
     """
     Generates MCQ options for mass spectrometry questions based on molecular weight and a similarity algorithm.
     This is the "backup" for when the functional group-based generation does not provide enough options.
@@ -166,5 +205,7 @@ def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[str]:
     # Pick random options from the top few
     top_options = random.sample(top_smiles, num_options)
     # remove the similarity values
-    top_options = [smiles for smiles, _ in top_options]
+    top_options = [
+        {"smiles": smiles, "explanation": "similarity-algo"}
+         for smiles, _ in top_options]
     return top_options
