@@ -47,7 +47,7 @@ var MCQ = {
                                        
                                 </div>
                                 <div class="skip-container">
-                                    <button class="move-on skip button" type="button" id="next">Next Question</button>
+                                    <button class="move-on skip button" type="button" id="next"></button>
                                 </div>
                             </div>
                             <div class="answer"> 
