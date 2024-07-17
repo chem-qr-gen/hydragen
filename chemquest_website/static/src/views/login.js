@@ -58,9 +58,18 @@ var Login = {
                     "password": $("#passwordInput").val()
                 }
             }).then(response => {
+                // Check if user has visited site before
+                var first_visit = false;
+                var URL = "#!/tutorial"
+                if(localStorage.getItem('was_visited')){
+                    var URL = "#!/home";
+                }
+                first_visit = true;
+                localStorage.setItem('was_visited', 1);
+                console.log(first_visit);
                 alert(response.msg);
                 localStorage.setItem('jwt', response.access_token); // log in the user
-                location.href = "#!/home" // redirect to homepage
+                location.href = URL // redirect to homepage
             }).catch(e => {
                 if (e.code === 401) { // unauthorized - probably invalid username/password
                     alert(e.response.msg);
