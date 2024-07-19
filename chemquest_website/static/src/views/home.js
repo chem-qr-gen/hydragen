@@ -301,7 +301,7 @@ var MCQ = {
                 $("#question-feedback").removeClass("is-success");                          //Change Feedback
                 $("#question-feedback").addClass("is-danger");
                 $("#question-feedback").text(
-                    "Incorrect, try again. Explanation placeholder: " + questionData.mcqAnswers[$("input[name='answer']:checked").val()].explanation 
+                    "Incorrect, try again. Explanation placeholder: " + questionData.mcqAnswers[$("input[name='answer']:checked").val()].explanation[0] 
                 );
                 isCorrect = false;
             }

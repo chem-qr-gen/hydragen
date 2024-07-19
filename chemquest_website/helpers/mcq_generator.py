@@ -10,6 +10,8 @@ from chemquest_website.helpers.funcgroups import FuncGroupCounter, funcgroups_mo
 
 # Functional group-based option generation
 # TODO: add more of these
+# converting amine/alcohol to halide seems like an obvious choice
+# converting primary alcohols and amines to methyl secondary alcohols/amines (flip carbon and O/N)
 
 def generate_option_halide(mol: Chem.Mol) -> list[dict]:
     halide_matches = mol.GetSubstructMatches(funcgroups_mols.halide)
@@ -20,14 +22,14 @@ def generate_option_halide(mol: Chem.Mol) -> list[dict]:
     # replace halide with an alcohol
     alcohol_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.halide, Chem.MolFromSmiles("O"))
     options = [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "halide-alcohol"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["halide-alcohol"]}
          for m in alcohol_mols
     ]
 
     # replace halide with an amine
     amine_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.halide, Chem.MolFromSmiles("N"))
     options += [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "halide-amine"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["halide-amine"]}
          for m in amine_mols
     ]
 
@@ -43,7 +45,7 @@ def generate_option_carbonyl(mol: Chem.Mol) -> list[dict]:
     # replace carbonyl with a methyl group
     alkyl_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("C=O"), Chem.MolFromSmiles("C(C)"))
     options = [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "carbonyl-methyl"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["carbonyl-methyl"]}
          for m in alkyl_mols
     ]
 
@@ -60,7 +62,7 @@ def generate_option_ether(mol: Chem.Mol) -> list[dict]:
     rxn = rdChemReactions.ReactionFromSmarts("[C:1][O:2][C:3]>>[C:1]([O:2])[C:3]")
     products = rxn.RunReactants((mol,))
     options = [
-        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ether-alcohol"}
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["ether-alcohol"]}
          for p in products
     ]
 
@@ -77,7 +79,7 @@ def generate_option_ester(mol: Chem.Mol) -> list[dict]:
     rxn1 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1][O:2][C:4](=[O:3])")
     products = rxn1.RunReactants((mol,))
     options = [
-        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ester-flip"}
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["ester-flip"]}
          for p in products
     ]
 
@@ -85,7 +87,7 @@ def generate_option_ester(mol: Chem.Mol) -> list[dict]:
     rxn2 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1](=[O:2])[C:4][O:3]")
     products = rxn2.RunReactants((mol,))
     options += [
-        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ester-ketone-alcohol"}
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["ester-ketone-alcohol"]}
          for p in products
     ]
 
@@ -93,7 +95,7 @@ def generate_option_ester(mol: Chem.Mol) -> list[dict]:
     rxn3 = rdChemReactions.ReactionFromSmarts("[C:1](=[O:2])[O:3][C:4]>>[C:1](=[O:2])[N][C:4]")
     products = rxn3.RunReactants((mol,))
     options += [
-        {"smiles": Chem.MolToSmiles(p[0]), "explanation": "ester-amide"}
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["ester-amide"]}
          for p in products
     ]
 
@@ -109,19 +111,19 @@ def generate_option_carboxylic_acid(mol: Chem.Mol) -> list[dict]:
     # replace acid with an ester
     methyl_ester_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)OC"))
     options = [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "acid-ester"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["acid-ester"]}
          for m in methyl_ester_mols
     ]
     ethyl_ester_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)OCC"))
     options += [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "acid-ester"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["acid-ester"]}
          for m in ethyl_ester_mols
     ]
 
     # replace acid with an amide
     amide_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.carboxylic_acid, Chem.MolFromSmiles("C(=O)N"))
     options += [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "acid-amide"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["acid-amide"]}
          for m in amide_mols
     ]
 
@@ -136,7 +138,7 @@ def generate_option_nitrile(mol: Chem.Mol) -> list[dict]:
     # replace nitrile with a terminal alkyne
     alkyne_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.nitrile, Chem.MolFromSmiles("C#C"))
     options = [
-        {"smiles": Chem.MolToSmiles(m), "explanation": "nitrile-alkyne"}
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["nitrile-alkyne"]}
          for m in alkyne_mols
     ]
 
@@ -155,13 +157,16 @@ def generate_mcq_options(mol: Chem.Mol, num_options: int = 3) -> list[dict]:
     options_raw += generate_option_ester(mol)
     options_raw += generate_option_carboxylic_acid(mol)
 
-    if len(options_raw) >= num_options:
-        sample = random.sample(options_raw, num_options)
+    options = merge_duplicate_options(options_raw)
+
+    if len(options) >= num_options:
+        sample = random.sample(options, num_options)
         return sample
     
     else:
-        extra_options = generate_backup_options(mol, num_options - len(options_raw))
-        sample = random.sample(extra_options + options_raw, num_options)
+        extra_options = generate_backup_options(mol, num_options)
+        options_merged = merge_duplicate_options(extra_options + options)
+        sample = random.sample(options_merged, num_options)
         return sample
     
 
@@ -206,6 +211,28 @@ def generate_backup_options(mol: Chem.Mol, num_options: int) -> list[dict]:
     top_options = random.sample(top_smiles, num_options)
     # remove the similarity values
     top_options = [
-        {"smiles": smiles, "explanation": "similarity-algo"}
+        {"smiles": smiles, "explanation": ["similarity-algo"]}
          for smiles, _ in top_options]
     return top_options
+
+
+def merge_duplicate_options(options_raw: list[dict]) -> list[dict]:
+    """
+    Merges duplicate options in the list of raw options. Combines the eligible explanations, and discards low-priority explanations (e.g. similarity-algo).
+    """
+
+    options = []
+    for option in options_raw:
+        # add option if it's not already in the list
+        if option["smiles"] not in [o["smiles"] for o in options]:
+            options.append(option)
+        else:
+            # skip if the option is a similarity algorithm option (an actual explanation is more valuable)
+            if option["explanation"] == ["similarity-algo"]:
+                continue
+            
+            # find the existing option and merge the explanations
+            existing_option = next(o for o in options if o["smiles"] == option["smiles"])
+            existing_option["explanation"] += option["explanation"]
+
+    return options
