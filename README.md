@@ -1,6 +1,6 @@
-# Chemquest
+# Hydragen
 
-<https://chemquest.fly.dev>
+<https://hydragen.fly.dev>
 
 An automatic question generator for organic chemistry.
 
@@ -20,7 +20,7 @@ $ poetry install
 $ cd chemquest_website/static
 $ yarn install
 $ yarn run watch
-$ cd ../..
+# In a separate console window (in the main folder):
 $ poetry run flask --app=chemquest_website --debug run
 ```
 
@@ -31,7 +31,7 @@ $ poetry install
 $ cd chemquest_website/static
 $ yarn install
 $ yarn run build
-$ cd ../..
+# In a separate console window (in the main folder):
 $ poetry run gunicorn -w 4 -b 0.0.0.0:5001 chemquest_website:app
 ```
 Known Issues
