@@ -5,6 +5,7 @@
 @import "views/settings.css";
 @import "views/components/navbar.css";
 @import "views/profile.css";
+@import "views/login.css";
 
 input.button {
     transition: all 0.25s;
@@ -26,7 +27,7 @@ html[data-theme="light"] {
     --text-color-navbar: #1c1d26;
     --safe-color: #00a832; 
     --warning-color: #cfa902;
-    --danger-color: #d10000;
+    --danger-color: #dc0000;
     --field-bg-color: #dddddd;
     --button-color: #00d1b2;
     --button-text-color: #fff;
@@ -43,7 +44,7 @@ html[data-theme="dark"] {
     --text-color-navbar: #d1d1d1;
     --safe-color: #00a832; 
     --warning-color: #cfa902;
-    --danger-color: #d10000;
+    --danger-color: #f00000;
     --field-bg-color: #333a42;
     --button-color: #00d1b2; 
     --button-text-color: #fff;
@@ -60,7 +61,7 @@ html[data-theme="dark"] {
         --text-color-navbar: #d1d1d1;
         --safe-color: #00a832; 
         --warning-color: #cfa902;
-        --danger-color: #d10000;
+        --danger-color: #f00000;
         --field-bg-color: #333a42;
         --button-color: #00d1b2;
         --button-text-color: #fff;

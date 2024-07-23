@@ -30,8 +30,7 @@ var Profile = {
             // TODO: display user profile
         }
         else { // no user logged in, redirect to login page
-            alert("Please log in to view your profile!");
-            location.href = "#!/login";
+            location.href = "#!/login?message=not_signed_in";
         }
     }
 }

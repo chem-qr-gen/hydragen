@@ -1,0 +1,13 @@
+.login-block{
+    padding: 5%;
+}
+
+.login-field{
+    float: left;
+    width: 90%;
+    padding: 10px;
+}
+
+#profile-unauthorised{
+    color: var(--danger-color) !important;
+}
