@@ -4,6 +4,8 @@
 @import "views/ptableSidebar.css";
 @import "views/settings.css";
 @import "views/components/navbar.css";
+@import "views/profile.css";
+
 input.button {
     transition: all 0.25s;
 }
@@ -83,6 +85,9 @@ html, body{
 }
 h1,h2,h3,h4,h5,p,label{
     color: var(--text-color) !important; 
+}
+.field{
+    background-color: var(--field-bg-color);
 }
 .field::after {
     content: "";
