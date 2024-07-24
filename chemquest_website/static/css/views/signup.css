@@ -1,0 +1,10 @@
+#signup-container{
+    padding: 5%;
+}
+
+#signupForm-inputs{
+    background-color: var(--field-bg-color);
+    float: left;
+    width: 100%;
+    padding: 10px;
+}

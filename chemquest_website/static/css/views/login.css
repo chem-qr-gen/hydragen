@@ -1,0 +1,18 @@
+.login-block{
+    padding: 5%;
+}
+
+#loginForm-inputs{
+    background-color: var(--field-bg-color);
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.login-field{
+    padding: 10px;
+}
+
+#profile-unauthorised{
+    color: var(--danger-color) !important;
+}
