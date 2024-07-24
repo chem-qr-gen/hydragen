@@ -10,11 +10,11 @@ img#question-img {
 }
 #question-feedback.is-success {
     display: block;
-    color: hsl(141, 53%, 53%)
+    color: hsl(141, 53%, 53%) !important;
 }
 #question-feedback.is-danger {
     display: block;
-    color: hsl(348, 100%, 61%);
+    color: hsl(348, 100%, 61%) !important;
 }
 /* ms graph styling */
 
@@ -62,9 +62,19 @@ img#question-img {
 }
 .skip {
     content: "Skip";
+    background: url("../../images/skip-light.svg") left no-repeat;
+    background-size: contain;
+    width: 60px;
+    height: 50px;
+    border: none;
 }
 .next {
     content: "Next";
+    background: url("../../images/next-light.svg") left no-repeat; 
+    background-size: contain;
+    width: 60px;
+    height: 50px;
+    border: none;
 }
 
 /* Hints Styles*/
@@ -165,8 +175,7 @@ img#question-img {
 .chartPTableContainer{
     position: relative;
     width: 90%;
-    height: 80%;
-    border: 1px solid #4690c2;
+    height: 86%;
 }
 
 .chartContainer, .ptable {
@@ -190,7 +199,7 @@ img#question-img {
 
 
 /* switch graph styling */
-.switch-container, #switch-graph-display{
+/* .switch-container, #switch-graph-display{
     position: absolute;
     --switch-width: 150px;
 }
@@ -200,7 +209,7 @@ img#question-img {
 }
 #switch-graph-display {
     color: var(--button-text-color);
-    /* box-shadow: #b018eb 0px 0px 1px 5px; */
+    /* box-shadow: #b018eb 0px 0px 1px 5px; 
     display: inline-block;
     top: 0;
     left: 0;
@@ -226,7 +235,7 @@ img#question-img {
   
 #switch-graph:checked + #switch-graph-display {
     background-color: #2196F3;
-    /* box-shadow: #2196F3 0px 0px 1px 5px; */
+    /* box-shadow: #2196F3 0px 0px 1px 5px; 
 }
 
   
@@ -234,7 +243,7 @@ img#question-img {
     /* --transform-dist: calc(var(--switch-width)/3);
     -webkit-transform: translateX(var(--transform-dist));
     -ms-transform: translateX(var(--transform-dist));
-    transform: translateX(var(--transform-dist)); */
+    transform: translateX(var(--transform-dist)); 
     content: "Graph"
 }
 .switch-graph-label {
@@ -247,4 +256,4 @@ img#question-img {
     opacity: 0;
     width: 0;
     height: 0;
-}
+} */

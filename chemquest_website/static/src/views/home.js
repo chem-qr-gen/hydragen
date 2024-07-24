@@ -30,12 +30,7 @@ var MCQ = {
                               <PtableSidebar/>
                             </div>
 
-                            <div class="switch-container">
-                                <label class="switch-graph-label">
-                                <input id="switch-graph" type="checkbox"></input>   
-                                <span id="switch-graph-display"></span>
-                                </label>
-                            </div>
+                            <button id="switch-graph" class="button is-primary">Periodic Table</button>
 
                             <div class="feedback">
                                 <h4 id="question-feedback"></h4>
@@ -52,7 +47,7 @@ var MCQ = {
                                        
                                 </div>
                                 <div class="skip-container">
-                                    <button class="move-on skip button" id="next"></button>
+                                    <button class="move-on skip button" type="button" id="next"></button>
                                 </div>
                             </div>
                             <div class="answer"> 
@@ -83,7 +78,7 @@ var MCQ = {
                             </div>
                             <div class="control submit-container">
                                 <input class="button is-primary" type="submit" id="submit" value="Submit Answer"></input>
-                            </div>                                                   
+                            </div>
                         </div>
                         <div class="is-overlay mcq-overlay is-hidden">
                             <h2>Loading...</h2>
@@ -144,15 +139,18 @@ var MCQ = {
                 method: "GET",
                 url: "/generate_mcq",
                 params: {input_smiles: data["smiles"]}
-            }).then(response => response.map(i => i["SMILES"]));
+            });
 
             // insert the correct answer randomly into the options
-            var correctAnswer = Math.floor(Math.random() * 3); 
-            mcqAnswers.splice(correctAnswer, 0, data["smiles"]);
+            var correctAnswerIndex = Math.floor(Math.random() * 3); 
+            mcqAnswers.splice(correctAnswerIndex, 0, {
+                "smiles": data["smiles"],
+                "explanation": "correct"
+            });
 
             // generate the structure images for display based on the SMILES MCQ options
             for (var index = 0; index < mcqAnswers.length; index++) {
-                drawer.draw(mcqAnswers[index], "#radio-opt" + index);
+                drawer.draw(mcqAnswers[index]["smiles"], "#radio-opt" + index);
             }
 
             // create a unique hash id from the timestamp and SMILES of the correct answer
@@ -164,7 +162,7 @@ var MCQ = {
                 rawData: data,
                 filledMsData: filledMsData,
                 mcqAnswers: mcqAnswers,
-                correctAnswer: correctAnswer
+                correctAnswer: correctAnswerIndex
             }
         };
 
@@ -255,43 +253,31 @@ var MCQ = {
                 }
             }
         );
-        
-        
-        $("#next").on("click", async () => {
-            // remove disabled from submit button
-            $("#submit").prop("disabled", false);
-
-            // reset the option buttons
-            $("input[name='answer']").each((index, element) => {
-                $(element).prop("checked", false);
-                $(element).parent().parent().removeClass("radio-selected");
-            });
-            // reset skip button
-            $(".move-on").removeClass("next");
-            $(".move-on").addClass("skip");
-
-            // reset the feedback text
-            $("#question-feedback").removeClass("is-success is-danger");
-            $("#question-feedback").text("");
-
-            // reset hint data
-            msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
-            hintsUsed = 0;
-            $("#hints-used").text(3 - hintsUsed);
-            getHintColor(hintsUsed);
-
-            // show loading overlay
-            $(".mcq-overlay").removeClass("is-hidden");
-
-            // get new question data and remove loading overlay
-            questionData = await getNewQuestion();
-            $(".mcq-overlay").addClass("is-hidden");
-            updateData(msChart, questionData.filledMsData);
-        });
 
         var isCorrect;
 
         $("#msQuestionForm").on("submit", () => {
+            
+
+            // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
+            // TODO: add number of hints used
+            m.request({
+                method: "POST",
+                url: "/record_attempt",
+                headers: localStorage.getItem("jwt") ? {"Authorization": "Bearer " + localStorage.getItem("jwt")} : {},
+                body: {
+                    "_csrf_token": $("#csrf_token").val(),
+                    "hashId": questionData.hashId,
+                    "qid": questionData.rawData.qid,
+                    "options": questionData.mcqAnswers,
+                    "answer": $("input[name='answer']:checked").val(),
+                    "isCorrect": isCorrect
+                }
+            });
+            return false;
+        });
+
+        $("#submit").on("click", async() => {
             if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {    //Answer is correct
                 $("#question-feedback").removeClass("is-danger");                           //Change Feedback
                 $("#question-feedback").addClass("is-success");
@@ -310,23 +296,39 @@ var MCQ = {
             if (isCorrect) {
                 $("#submit").prop("disabled", true);
             }
+        });
 
-            // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
-            // TODO: add number of hints used
-            m.request({
-                method: "POST",
-                url: "/record_attempt",
-                headers: localStorage.getItem("jwt") ? {"Authorization": "Bearer " + localStorage.getItem("jwt")} : {},
-                body: {
-                    "_csrf_token": $("#csrf_token").val(),
-                    "hashId": questionData.hashId,
-                    "qid": questionData.rawData.qid,
-                    "options": questionData.mcqAnswers,
-                    "answer": $("input[name='answer']:checked").val(),
-                    "isCorrect": isCorrect
-                }
+        $("#next").on("click", async () => {
+            // remove disabled from submit button
+            $("#submit").prop("disabled", false);
+
+            // reset the option buttons
+            $("input[name='answer']").each((index, element) => {
+                $(element).prop("checked", false);
+                $(element).parent().parent().removeClass("radio-selected");
             });
-            return false;
+            // reset skip button
+            $("#next").removeClass("next");
+            $("#next").addClass("skip");
+
+            // reset the feedback text
+            $("#question-feedback").removeClass("is-success is-danger");
+            console.log("removing text");
+            $("#question-feedback").text("a");
+
+            // reset hint data
+            msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
+            hintsUsed = 0;
+            $("#hints-used").text(3 - hintsUsed);
+            getHintColor(hintsUsed);
+
+            // show loading overlay
+            $(".mcq-overlay").removeClass("is-hidden");
+
+            // get new question data and remove loading overlay
+            questionData = await getNewQuestion();
+            $(".mcq-overlay").addClass("is-hidden");
+            updateData(msChart, questionData.filledMsData);
         });
     }
 }

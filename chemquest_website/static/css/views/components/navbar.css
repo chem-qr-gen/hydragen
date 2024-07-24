@@ -2,14 +2,23 @@
     background-color: var(--bg-color-navbar);
     color: var(--text-color-navbar);
 }
+/* navbar items, except those in dropdown lists */
 .navbar-item {
     color: var(--text-color-navbar);
 }
-.navbar {
-    height: 7.5vh;
+/* navbar link ("logged in as x") except when dropdown is open (because then it has a white background) */
+:not(.navbar-item.has-dropdown:hover) > .navbar-link {
+    color: var(--text-color-navbar);
 }
-#settings-logo {
-    height: 100%;
+/* dropdown lists */
+.navbar-dropdown {
+    background-color: var(--bg-color-navbar);
+    color: var(--text-color-navbar);
+}
+
+#settings-logo{
+    content: url("../../../images/settings-light.svg");
+    max-height: 40px;
 }
 .navbar-end {
     height:100%;

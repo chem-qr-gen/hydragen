@@ -1,0 +1,12 @@
+.profile-block{
+    padding: 5%;
+}
+.profile-field{
+    float: left;
+    width: 90%;
+    padding: 10px;
+}
+.profile-label{
+    font-size: 18px;
+    font-weight: 600;
+}
