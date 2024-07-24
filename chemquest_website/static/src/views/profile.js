@@ -12,12 +12,28 @@ var Profile = {
                         <h1>Profile</h1>
                         <div class="field profile-field">
                             <p>
-                                <span class="profile-label">Username: </span>
+                                <span className="profile-label">Username: </span>
                                 <span id="usernameSpan"></span>
                             </p>
                             <p>
-                                <span class="profile-label">Rating: </span>
+                                <span className="profile-label">Rating: </span>
                                 <span id="ratingSpan"></span>
+                            </p>
+                            <p>
+                                <span className="profile-label">Email: </span>
+                                <span id="emailSpan"></span>
+                            </p>
+                            <p>
+                                <span className="profile-label">Gender: </span>
+                                <span id="genderSpan"></span>
+                            </p>
+                            <p>
+                                <span className="profile-label">Country: </span>
+                                <span id="countrySpan"></span>
+                            </p>
+                            <p>
+                                <span className="profile-label">Region: </span>
+                                <span id="regionSpan"></span>
                             </p>
                         </div>
                     </div>
@@ -34,6 +50,10 @@ var Profile = {
             }).then(response => { // display data
                 $("#usernameSpan").text(response.username);
                 $("#ratingSpan").text(response.elo);
+                $("#emailSpan").text(response.email);
+                $("#genderSpan").text(response.gender);
+                $("#countrySpan").text(response.country);
+                $("#regionSpan").text(response.region)
             })
         }
         else { // no user logged in, redirect to login page

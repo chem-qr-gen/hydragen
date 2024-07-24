@@ -9,13 +9,13 @@ var Signup = {
         <div class="content">
             <Navbar />
             <div class="container-wrapper">
-                <div class="container">
+                <div class="container" id="signup-container">
                     <div class="block">
                         <h1>Sign Up</h1>
                     </div>
                     <form class="block" id="signupForm" data-parsley-validate>
                         <input type="hidden" id="csrf_token"></input>
-                        <div class="columns is-mobile is-multiline">
+                        <div class="columns is-mobile is-multiline" id="signupForm-inputs">
                             <div class="field column is-half pt-0">
                                 <label class="label">Username</label>
                                 <div class="control">
@@ -69,10 +69,8 @@ var Signup = {
                                 </div>
                             </div>
                         </div>
-                        <div class="field">
-                            <div class="control">
-                                <input type="submit" class="button is-link" id="signupButton" value="Sign Up"></input>
-                            </div>
+                        <div class="control">
+                            <input type="submit" class="button is-link" id="signupButton" value="Sign Up"></input>
                         </div>
                     </form>
                 </div>

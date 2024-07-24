@@ -12,6 +12,11 @@ def get_profile():
         user_dict = conn.execute(
             users_table.select().where(users_table.c.username == username)
         ).fetchone()
+    user_dict = user_dict._asdict()
 
     elo = user_dict["elo"] if "elo" in user_dict else 1000.0
-    return {"username": username, "elo": elo}
+    email = user_dict["email"]
+    gender = user_dict["gender"]
+    country = user_dict["country"]
+    region = user_dict["region"]
+    return {"username": username, "elo": elo, "email": email, "gender": gender, "country": country, "region": region}

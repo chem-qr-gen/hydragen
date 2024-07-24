@@ -6,6 +6,7 @@
 @import "views/components/navbar.css";
 @import "views/profile.css";
 @import "views/login.css";
+@import "views/signup.css";
 
 input.button {
     transition: all 0.25s;

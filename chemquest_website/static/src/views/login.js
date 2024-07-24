@@ -13,16 +13,18 @@ var Login = {
                         <h1>Log In</h1>
                         <form class="block" id="loginForm" data-parsley-validate>
                             <input type="hidden" id="csrf_token"></input>
-                            <div class="field login-field">
-                                <label class="label">Username</label>
-                                <div class="control">
-                                    <input class="input" type="text" id="usernameInput" required></input>
+                            <div id="loginForm-inputs">
+                                <div class="field login-field">
+                                    <label class="label">Username</label>
+                                    <div class="control">
+                                        <input class="input" type="text" id="usernameInput" required></input>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field login-field">
-                                <label class="label">Password</label>
-                                <div class="control">
-                                    <input class="input" type="password" id="passwordInput" required></input>
+                                <div class="field login-field">
+                                    <label class="label">Password</label>
+                                    <div class="control">
+                                        <input class="input" type="password" id="passwordInput" required></input>
+                                    </div>
                                 </div>
                             </div>
                             <div class="control">
