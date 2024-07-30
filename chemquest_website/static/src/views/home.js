@@ -47,7 +47,7 @@ var MCQ = {
                                        
                                 </div>
                                 <div class="skip-container">
-                                    <button class="move-on skip button" type="button" id="next">Next Question</button>
+                                    <button class="move-on skip button" type="button" id="next"></button>
                                 </div>
                             </div>
                             <div class="answer"> 
@@ -253,63 +253,11 @@ var MCQ = {
                 }
             }
         );
-        
-        
-        $("#next").on("click", async () => {
-            // remove disabled from submit button
-            $("#submit").prop("disabled", false);
-
-            // reset the option buttons
-            $("input[name='answer']").each((index, element) => {
-                $(element).prop("checked", false);
-                $(element).parent().parent().removeClass("radio-selected");
-            });
-            // reset skip button
-            $(".move-on").removeClass("next");
-            $(".move-on").addClass("skip");
-
-            // reset the feedback text
-            $("#question-feedback").removeClass("is-success is-danger");
-            $("#question-feedback").text("");
-
-            // reset hint data
-            msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
-            hintsUsed = 0;
-            $("#hints-used").text(3 - hintsUsed);
-            getHintColor(hintsUsed);
-
-            // show loading overlay
-            $(".mcq-overlay").removeClass("is-hidden");
-
-            // get new question data and remove loading overlay
-            questionData = await getNewQuestion();
-            $(".mcq-overlay").addClass("is-hidden");
-            updateData(msChart, questionData.filledMsData);
-        });
 
         var isCorrect;
 
         $("#msQuestionForm").on("submit", () => {
-            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {    //Answer is correct
-                $("#question-feedback").removeClass("is-danger");                           //Change Feedback
-                $("#question-feedback").addClass("is-success");
-                $("#question-feedback").text("Correct! Well done!");
-                $(".move-on").addClass("next");                                             //Change skip button text
-                $(".move-on").removeClass("skip")
-                isCorrect = true;
-            } else {                                                                        //Answer Incorrect
-                $("#question-feedback").removeClass("is-success");                          //Change Feedback
-                $("#question-feedback").addClass("is-danger");
-                $("#question-feedback").text(
-                    "Incorrect, try again. Explanation placeholder: " + questionData.mcqAnswers[$("input[name='answer']:checked").val()].explanation[0] 
-                );
-                isCorrect = false;
-            }
-
-            // disable the submit button if the answer is correct
-            if (isCorrect) {
-                $("#submit").prop("disabled", true);
-            }
+            
 
             // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
             // TODO: add number of hints used
@@ -327,6 +275,60 @@ var MCQ = {
                 }
             });
             return false;
+        });
+
+        $("#submit").on("click", async() => {
+            if (questionData.correctAnswer == $("input[name='answer']:checked").val()) {    //Answer is correct
+                $("#question-feedback").removeClass("is-danger");                           //Change Feedback
+                $("#question-feedback").addClass("is-success");
+                $("#question-feedback").text("Correct! Well done!");
+                $(".move-on").addClass("next");                                             //Change skip button text
+                $(".move-on").removeClass("skip")
+                isCorrect = true;
+            } else {                                                                        //Answer Incorrect
+                $("#question-feedback").removeClass("is-success");                          //Change Feedback
+                $("#question-feedback").addClass("is-danger");
+                $("#question-feedback").text("Incorrect, try again.");
+                isCorrect = false;
+            }
+
+            // disable the submit button if the answer is correct
+            if (isCorrect) {
+                $("#submit").prop("disabled", true);
+            }
+        });
+
+        $("#next").on("click", async () => {
+            // remove disabled from submit button
+            $("#submit").prop("disabled", false);
+
+            // reset the option buttons
+            $("input[name='answer']").each((index, element) => {
+                $(element).prop("checked", false);
+                $(element).parent().parent().removeClass("radio-selected");
+            });
+            // reset skip button
+            $("#next").removeClass("next");
+            $("#next").addClass("skip");
+
+            // reset the feedback text
+            $("#question-feedback").removeClass("is-success is-danger");
+            console.log("removing text");
+            $("#question-feedback").text("a");
+
+            // reset hint data
+            msChart.data.datasets[0].backgroundColor = [chartStyles.backgroundColor];
+            hintsUsed = 0;
+            $("#hints-used").text(3 - hintsUsed);
+            getHintColor(hintsUsed);
+
+            // show loading overlay
+            $(".mcq-overlay").removeClass("is-hidden");
+
+            // get new question data and remove loading overlay
+            questionData = await getNewQuestion();
+            $(".mcq-overlay").addClass("is-hidden");
+            updateData(msChart, questionData.filledMsData);
         });
     }
 }

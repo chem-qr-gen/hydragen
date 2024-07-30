@@ -10,15 +10,6 @@
 }
 .settings-block{
     padding: 5%;
-
-}
-.field{
-    background-color: var(--field-bg-color);
-}
-.field::after {
-    content: "";
-    clear: both;
-    display: table;
 }
 .settings-control{
     display:grid;
