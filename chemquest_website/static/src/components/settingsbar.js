@@ -5,7 +5,7 @@ var Settingsbar = {
         <div class="settingsbar">
             <ul class="settingsbar-links-list">
                 <li><a href="#!/settings">General</a></li>
-                <li><a>Profile</a></li>
+                <li><a href="#!/settings/profile">Profile</a></li>
             </ul>
         </div>
     ),

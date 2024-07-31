@@ -36,6 +36,7 @@ var Profile = {
                                 <span id="profile-regionSpan"></span>
                             </p>
                         </div>
+                        <a class="button is-link" href="#!/settings/profile">Edit Profile</a>
                     </div>
                 </div>
             </div>

@@ -12,7 +12,8 @@ var Settings = {
                 <div class="container">
                     <div class="block settings-block">
                         <Settingsbar/>
-                        <h2>Graphics</h2>
+                        <h2>General Settings</h2>
+                        <h3>Graphics</h3>
                         <div class="field settings-field">
                             <div class="settings-label">
                                 <h4>Play Animations</h4>
