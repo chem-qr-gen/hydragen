@@ -45,7 +45,7 @@ var Signup = {
                                 <div class="control">
                                     <div class="select">
                                         <select id="genderInput" required>
-                                            <option>---</option>
+                                            <option disabled selected>---</option>
                                             <option>Male</option>
                                             <option>Female</option>
                                             <option>Other</option>
@@ -65,7 +65,7 @@ var Signup = {
                             <div class="field column is-one-third pt-0">
                                 <label class="label">Region</label>
                                 <div class="control">
-                                    <input class="input" type="text" id="regionInput" required></input>
+                                    <input class="input" type="text" id="regionInput"></input>
                                 </div>
                             </div>
                         </div>
