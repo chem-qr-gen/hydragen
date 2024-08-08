@@ -6,6 +6,7 @@ import Signup from "./views/signup";
 import Tutorial from "./views/tutorial";
 import Settings from "./views/settings";
 import Profile from "./views/profile";
+import settingsProfile from "./views/settingsProfile";
 
 var root = document.body;
 
@@ -16,5 +17,6 @@ m.route(root, '/landing', {
     '/home': Home,
     '/tutorial': Tutorial,
     '/settings': Settings,
+    '/settings/profile': settingsProfile,
     '/profile': Profile,
 })

@@ -15,3 +15,18 @@
     left: 3px;
     font-size: small;
 }
+
+#statistics-div{
+    background-color: var(--bg-color);
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: fit-content;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.statistics-label{
+    font-weight: 500;
+}

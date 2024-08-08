@@ -13,29 +13,30 @@ var Profile = {
                         <div class="field profile-field">
                             <p>
                                 <span className="profile-label">Username: </span>
-                                <span id="usernameSpan"></span>
+                                <span id="profile-usernameSpan"></span>
                             </p>
                             <p>
                                 <span className="profile-label">Rating: </span>
-                                <span id="ratingSpan"></span>
+                                <span id="profile-ratingSpan"></span>
                             </p>
                             <p>
                                 <span className="profile-label">Email: </span>
-                                <span id="emailSpan"></span>
+                                <span id="profile-emailSpan"></span>
                             </p>
                             <p>
                                 <span className="profile-label">Gender: </span>
-                                <span id="genderSpan"></span>
+                                <span id="profile-genderSpan"></span>
                             </p>
                             <p>
                                 <span className="profile-label">Country: </span>
-                                <span id="countrySpan"></span>
+                                <span id="profile-countrySpan"></span>
                             </p>
                             <p>
                                 <span className="profile-label">Region: </span>
-                                <span id="regionSpan"></span>
+                                <span id="profile-regionSpan"></span>
                             </p>
                         </div>
+                        <a class="button is-link" href="#!/settings/profile">Edit Profile</a>
                     </div>
                 </div>
             </div>
@@ -48,12 +49,12 @@ var Profile = {
                 url: "/get_profile",
                 headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
             }).then(response => { // display data
-                $("#usernameSpan").text(response.username);
-                $("#ratingSpan").text(response.elo);
-                $("#emailSpan").text(response.email);
-                $("#genderSpan").text(response.gender);
-                $("#countrySpan").text(response.country);
-                $("#regionSpan").text(response.region)
+                $("#profile-usernameSpan").text(response.username);
+                $("#profile-ratingSpan").text(response.elo);
+                $("#profile-emailSpan").text(response.email);
+                $("#profile-genderSpan").text(response.gender);
+                $("#profile-countrySpan").text(response.country);
+                $("#profile-regionSpan").text(response.region);
             })
         }
         else { // no user logged in, redirect to login page
