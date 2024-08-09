@@ -3,7 +3,7 @@ import m from "mithril";
 var CountryInput = {
     view: vnode => (
         <select id={vnode.attrs.id} required>
-            <option>---</option>
+            <option disabled selected>---</option>
             <option>Afghanistan</option>
             <option>Albania</option>
             <option>Algeria</option>

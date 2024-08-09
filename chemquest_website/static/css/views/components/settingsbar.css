@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+.settingsbar{
+    border-radius: 10px;
+    border: 1px solid var(--text-color);
+    height: fit-content;
+}
+
+.settingsbar-links-list{
+    display: flex;
+    padding: 5px 10px 5px 10px !important;
+    margin: 0 !important;
+    gap: 10px;
+}
+
+.settingsbar-links-list li{
+    padding: 5px 10px 5px 10px;
+    border-radius: 5px;
+    list-style-type: none;
+    margin: 0 !important;
+}
+
+.settingsbar-links-list li:hover{
+    background-color: var(--field-bg-color)
+}
+
+.settingsbar-links-list li a{
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text-color);
+    font-family: "Inter", sans-serif;
+    text-decoration: none;
+}

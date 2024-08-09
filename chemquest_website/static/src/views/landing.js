@@ -15,6 +15,19 @@ var Landing = {
                         <a class="button mx-1" id="signupButton" href="#!/signup">Sign Up</a>
                     </div>
                 </div>
+                <div>
+                    <div id="statistics-div">
+                        <h4>Statistics</h4>
+                        <p>
+                            <span className="statistics-label">Users: </span>
+                            <span id="statistics-numUsersSpan"></span>
+                        </p>
+                        <p>
+                            <span className="statistics-label">Attempts: </span>
+                            <span id="statistics-numAttemptsSpan"></span>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     ),
@@ -22,6 +35,14 @@ var Landing = {
         if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
             $("#loginButton, #signupButton").hide();
         }
+
+        m.request({ // get site statistics
+            method: "GET",
+            url: "/get_site_statistics"
+        }).then(response => { // display data
+            $("#statistics-numUsersSpan").text(response.users_count);
+            $("#statistics-numAttemptsSpan").text(response.attempts_count);
+        })
     }
 }
 

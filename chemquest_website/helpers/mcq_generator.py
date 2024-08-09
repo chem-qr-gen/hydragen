@@ -36,6 +36,100 @@ def generate_option_halide(mol: Chem.Mol) -> list[dict]:
     return options
 
 
+def generate_option_alcohol(mol: Chem.Mol) -> list[dict]:
+    alcohol_matches = mol.GetSubstructMatches(funcgroups_mols.alcohol)
+
+    if not alcohol_matches:
+        return []
+    
+    # replace alcohol with a halide
+    halide_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.alcohol, Chem.MolFromSmiles("F"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["alcohol-halide"]}
+         for m in halide_mols
+    ]
+
+    # replace alcohol with an amine
+    amine_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.alcohol, Chem.MolFromSmiles("N"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["alcohol-amine"]}
+         for m in amine_mols
+    ]
+
+    # add methyl to form an ether
+    ether_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.alcohol, Chem.MolFromSmiles("OC"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["alcohol-ether"]}
+         for m in ether_mols
+    ]
+
+    return options
+
+
+def generate_option_primary_o(mol: Chem.Mol) -> list[dict]:
+    primary_o_matches = mol.GetSubstructMatches("[CH2]O")
+
+    if not primary_o_matches:
+        return []
+    
+    # flip the alcohol or ether to form a different compound
+    rxn = rdChemReactions.ReactionFromSmarts("[C:1][O:2]>>[O:2][C:1]")
+    products = rxn.RunReactants((mol,))
+    options = [
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["primary-o-flip"]}
+         for p in products
+    ]
+
+    return options
+
+
+def generate_option_primary_amine(mol: Chem.Mol) -> list[dict]:
+    amine_matches = mol.GetSubstructMatches("NH2")
+
+    if not amine_matches:
+        return []
+    
+    # replace amine with an alcohol
+    alcohol_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("NH2"), Chem.MolFromSmiles("O"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["amine-alcohol"]}
+         for m in alcohol_mols
+    ]
+
+    # replace amine with a halide
+    halide_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("NH2"), Chem.MolFromSmiles("F"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["amine-halide"]}
+         for m in halide_mols
+    ]
+
+    return options
+
+
+def generate_option_secondary_amine(mol: Chem.Mol) -> list[dict]:
+    amine_matches = mol.GetSubstructMatches("[NC2]H")
+
+    if not amine_matches:
+        return []
+    
+    # flip the amine to form a different compound
+    rxn = rdChemReactions.ReactionFromSmarts("[C:1][N:2][C:3]>>[N:2][C:1][C:3]")
+    products = rxn.RunReactants((mol,))
+    options = [
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["secondary-amine-flip"]}
+         for p in products
+    ]
+
+    # replace amine with an ether
+    ether_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("[NC2]H"), Chem.MolFromSmiles("O"))
+    options += [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["secondary-amine-ether"]}
+         for m in ether_mols
+    ]
+
+    return options
+
+
 def generate_option_carbonyl(mol: Chem.Mol) -> list[dict]:
     carbonyl_matches = mol.GetSubstructMatches(funcgroups_mols.ketone) + mol.GetSubstructMatches(funcgroups_mols.aldehyde)
 
