@@ -1,0 +1,16 @@
+.custom-shepherd-step {
+    background-color: var(--bg-color-tour);
+    border: 1px solid;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /*color: var(--text-color)*/
+}
+
+.custom-shepherd-step .shepherd-text {
+  color: var(--text-color);
+}
+
+.custom-shepherd-button {
+    background-color: var(--button-color);
+    color: var(--text-color);
+    border-radius: 5px;
+}
