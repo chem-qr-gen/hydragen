@@ -14,7 +14,7 @@ var Landing = {
                 <div class="hero-body" id="title-container">
                     <p class="title" id="landing-title">Mass Spectrometry Practice Made Easy</p>
                     <div class="block">
-                        <a class="button is-primary mx-1" id="tryNowButton" href="#!/home">Try Now</a>
+                        <a class="button is-primary mx-1" id="tryNowButton" href="#!/tutorial">Try Now</a>
                         <a class="button mx-1" id="loginButton" href="#!/login">Log In</a>
                         <a class="button mx-1" id="signupButton" href="#!/signup">Sign Up</a>
                     </div>
@@ -47,6 +47,9 @@ var Landing = {
             $("#statistics-numUsersSpan").text(response.users_count);
             $("#statistics-numAttemptsSpan").text(response.attempts_count);
         })
+        $("#tryNowButton").on("Click", async () => {
+            localStorage.setItem("was_visited", 1);
+        }) 
     }
 }
 

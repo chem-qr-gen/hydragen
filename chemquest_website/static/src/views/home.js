@@ -18,15 +18,6 @@ import {applyFilter} from "../libraries/tutorial_helper";
 export var MCQ = {
   view: () => (
     <div className="content">
-      <div id="overlay" class="black-overlay show">
-        <div id="tutorial-text-box1" class="tutorial-text-box">
-          <h1 id="tutorial-text1" class="tutorial-text flash">Welcome to Hydragen</h1>
-        </div>
-        <div id="tutorial-text-box2" class="tutorial-text-box">
-          <h4 id="tutorial-text2" class="tutorial-text flash">Click Anywhere to Continue</h4>
-        </div>
-      </div>
-
       <div id="main-container">
         <Navbar/>
         <div className="container-wrapper">

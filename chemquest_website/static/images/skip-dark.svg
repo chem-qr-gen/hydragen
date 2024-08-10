@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="skip-light.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px" />
+  <defs
+     id="defs1">
+    <linearGradient
+       id="linearGradient2"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#3c78f3;stop-opacity:0;"
+         offset="0"
+         id="stop3" />
+      <stop
+         style="stop-color:#6046fe;stop-opacity:1;"
+         offset="1"
+         id="stop2" />
+    </linearGradient>
+    <rect
+       x="126.51737"
+       y="172.49783"
+       width="185.82239"
+       height="163.56393"
+       id="rect2" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2"
+       id="linearGradient3"
+       x1="169.75768"
+       y1="255.99998"
+       x2="414.22058"
+       y2="255.99998"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1"
+       transform="matrix(1.6464485,0,0,1.6464485,-176.95708,-165.49077)">
+      <path
+         id="path1"
+         style="fill:url(#linearGradient3);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:5;stroke-dasharray:none;paint-order:stroke fill markers"
+         inkscape:transform-center-x="-14.653198"
+         d="m 326.3026,175.02243 v 50.99415 H 169.75768 v 59.96484 H 326.3026 v 50.9961 L 414.22057,255.999 Z" />
+      <text
+         xml:space="preserve"
+         id="text2"
+         style="font-weight:300;font-size:40.6387px;font-family:'LT Wave';-inkscape-font-specification:'LT Wave, Light';letter-spacing:3.70359px;white-space:pre;shape-inside:url(#rect2);fill:#2dc5f6;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2.02955;stroke-dasharray:none;paint-order:stroke fill markers"
+         transform="matrix(2.7000817,0,0,2.7000817,-232.97227,-283.27645)"><tspan
+           x="126.51758"
+           y="210.08884"
+           id="tspan1">Skip</tspan></text>
+    </g>
+  </g>
+</svg>

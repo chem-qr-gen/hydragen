@@ -34,7 +34,9 @@ html[data-theme="light"] {
     --field-bg-color: #dddddd;
     --button-color: #00d1b2;
     --button-text-color: #fff;
-    --bg-color-tour: #32333F;
+    --bg-color-tour: #b4b5bc;
+    --skip-button-style: url("../../images/skip-light.svg");
+    --next-button-style: url("../../images/next-light.svg");
 }
 
 /* Dark theme override */
@@ -52,7 +54,9 @@ html[data-theme="dark"] {
     --field-bg-color: #333a42;
     --button-color: #00d1b2; 
     --button-text-color: #fff;
-    --bg-color-tour: #32333F
+    --bg-color-tour: #32333F;
+    --skip-button-style: url("../../images/skip-dark.svg");
+    --next-button-style: url("../../images/next-dark.svg");
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -70,6 +74,9 @@ html[data-theme="dark"] {
         --field-bg-color: #333a42;
         --button-color: #00d1b2;
         --button-text-color: #fff;
+        --bg-color-tour: #32333F;
+        --skip-button-style: url("../../images/skip-dark.svg");
+        --next-button-style: url("../../images/next-dark.svg");
     }
 }
 * {
