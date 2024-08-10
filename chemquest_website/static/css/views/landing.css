@@ -1,8 +1,16 @@
-#landing-splash {
+/* #landing-splash {
     content: url("../../images/landing.gif") center;
     background: url("../../images/landing.gif") center;
     background-size: cover;
     position: relative;
+} */
+
+.background-video {
+    position: absolute;
+    
+}
+#title-container {
+    z-index: 1;
 }
 
 #landing-title {
