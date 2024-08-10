@@ -1,5 +1,6 @@
 @import "views/landing.css";
 @import "views/home.css";
+@import "views/tour.css";
 @import "views/parsley_style.css";
 @import "views/ptableSidebar.css";
 @import "views/settings.css";
@@ -33,6 +34,7 @@ html[data-theme="light"] {
     --field-bg-color: #dddddd;
     --button-color: #00d1b2;
     --button-text-color: #fff;
+    --bg-color-tour: #32333F;
 }
 
 /* Dark theme override */
@@ -50,6 +52,7 @@ html[data-theme="dark"] {
     --field-bg-color: #333a42;
     --button-color: #00d1b2; 
     --button-text-color: #fff;
+    --bg-color-tour: #32333F
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
