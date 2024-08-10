@@ -263,10 +263,12 @@ export var Tutorial = {
               if (hintsUsed >= 3) {
                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.usedAllHintsColor;
               } else if (hint) {
-                msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
-                hintsUsed++;
-                $("#hints-used").text(3 - hintsUsed);
-                getHintColor(hintsUsed);
+                if (msChart.data.datasets[0].backgroundColor[index] != chartStyles.hintColor){ //have not yet selected this element for hint
+                  msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
+                  hintsUsed++;
+                  $("#hints-used").text(3 - hintsUsed);
+                  getHintColor(hintsUsed);
+                }
               } else {
                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.noHintColor;
               }
