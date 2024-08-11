@@ -310,6 +310,45 @@ function startTour() {
   tour.start();
 }
 
+function endTrial(){
+  var tour = new Shepherd.Tour({
+    useModalOverlay: true,
+    defaultStepOptions: {
+      classes: "custom-shepherd-step",
+      cancelIcon: {
+        enabled: false
+      },
+      scrollTo: true,
+    }
+  });
+
+  tour.addStep({
+    text: "Congratulations! You have finished the trial. Please Login / Sign up if you want to try out more about Hydragen.",
+    buttons: [
+      {
+        action() {
+          location.href = "#!/login"
+          tour.complete();
+        },
+        classes: 'custom-shepherd-button',
+        text: 'Login'
+      },
+      {
+        action() {
+          location.href = "#!/signup"
+          tour.complete();
+        },
+        classes: "custom-shepherd-button",
+        text: "Sign Up"
+      }
+    ],
+    id: 'end-tour'
+  });
+
+  tour.start();
+}
+
 export {
-  initiateTutorial
+  initiateTutorial,
+  endTrial
 }

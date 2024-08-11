@@ -12,7 +12,7 @@ import {
   getHintColor,
   switchGraph
 } from "../libraries/home_helpers";
-import {applyFilter, initiateTutorial} from "../libraries/tutorial_helper";
+import {applyFilter, endTrial, initiateTutorial} from "../libraries/tutorial_helper";
 
 
 export var Tutorial = {
@@ -116,6 +116,8 @@ export var Tutorial = {
     );
 
     initiateTutorial();
+
+    var questionsCompleted = 0;
 
 
     m.request({
@@ -263,10 +265,12 @@ export var Tutorial = {
               if (hintsUsed >= 3) {
                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.usedAllHintsColor;
               } else if (hint) {
-                msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
-                hintsUsed++;
-                $("#hints-used").text(3 - hintsUsed);
-                getHintColor(hintsUsed);
+                if (msChart.data.datasets[0].backgroundColor[index] != chartStyles.hintColor){ //have not yet selected this element for hint
+                  msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
+                  hintsUsed++;
+                  $("#hints-used").text(3 - hintsUsed);
+                  getHintColor(hintsUsed);
+                }
               } else {
                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.noHintColor;
               }
@@ -309,6 +313,11 @@ export var Tutorial = {
         $(".move-on").addClass("next");                                             //Change skip button text
         $(".move-on").removeClass("skip")
         isCorrect = true;
+        questionsCompleted++;
+        if (questionsCompleted >= 3){ //End tutorial when user completed 3 questions
+          // TODO: dix issue where user can still retry tutorial after refreshing the page
+          endTrial();
+        }
       } else {                                                                        //Answer Incorrect
         $("#question-feedback").removeClass("is-success");                          //Change Feedback
         $("#question-feedback").addClass("is-danger");
