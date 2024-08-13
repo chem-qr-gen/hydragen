@@ -35,8 +35,9 @@ html[data-theme="light"] {
     --button-color: #00d1b2;
     --button-text-color: #fff;
     --bg-color-tour: #b4b5bc;
-    --skip-button-style: url("../../images/skip-light.svg");
-    --next-button-style: url("../../images/next-light.svg");
+    --skip-button-style: url("/static/images/skip-light.svg");
+    --next-button-style: url("/static/images/next-light.svg");
+    --navbar-logo-style: url("/static/images/logo_horizontal_light.png");
 }
 
 /* Dark theme override */
@@ -55,8 +56,9 @@ html[data-theme="dark"] {
     --button-color: #00d1b2; 
     --button-text-color: #fff;
     --bg-color-tour: #32333F;
-    --skip-button-style: url("../../images/skip-dark.svg");
-    --next-button-style: url("../../images/next-dark.svg");
+    --skip-button-style: url("/static/images/skip-dark.svg");
+    --next-button-style: url("/static/images/next-dark.svg");
+    --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -75,8 +77,9 @@ html[data-theme="dark"] {
         --button-color: #00d1b2;
         --button-text-color: #fff;
         --bg-color-tour: #32333F;
-        --skip-button-style: url("../../images/skip-dark.svg");
-        --next-button-style: url("../../images/next-dark.svg");
+        --skip-button-style: url("/static/images/skip-dark.svg");
+        --next-button-style: url("/static/images/next-dark.svg");
+        --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
     }
 }
 * {

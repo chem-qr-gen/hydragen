@@ -1,5 +1,4 @@
 import m from "mithril";
-import Parsley from "parsleyjs";
 
 import Navbar from "../components/navbar";
 import Settingsbar from "../components/settingsbar";
