@@ -18,6 +18,7 @@ funcgroups_mols = Box({
     "nitrile": Chem.MolFromSmarts("[NX1]#[CX2]"),
     "nitro": Chem.MolFromSmarts("[$([NX3](=O)=O),$([NX3+](=O)[O-])][!#8]"),
     "halide": Chem.MolFromSmarts("[F,Cl,Br,I]"),
+    "sulfur": Chem.MolFromSmarts("[#16]"),
 })
 
 class FuncGroupCounter:
@@ -66,7 +67,7 @@ def calculate_difficulty(mol: Chem.Mol, fgs: dict = funcgroups_mols, base_diffic
     fg_counts = fg_counter.count_all(mol)
     difficulty = base_difficulty
     for fg, count in fg_counts.items():
-        if fg in ["imine", "nitro"]:
+        if fg in ["imine", "nitro", "sulfur"]:
             difficulty += count * 200
         else:
             difficulty += count * 100
