@@ -62,9 +62,9 @@ var Login = {
             }).then(response => {
                 // Check if user has visited site before
                 var first_visit = false;
-                var URL = "#!/tutorial"
+                var URL = '#!/tutorial';
                 if(localStorage.getItem('was_visited')){
-                    URL = "#!/home";
+                    URL = '#!/home';
                 }
                 first_visit = true;
                 localStorage.setItem('was_visited', 1);

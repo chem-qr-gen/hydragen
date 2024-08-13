@@ -2,6 +2,7 @@ import m from "mithril";
 import Parsley from "parsleyjs";
 
 import Navbar from "../components/navbar";
+import Settingsbar from "../components/settingsbar";
 
 var Settings = {
     view: () => (
@@ -10,7 +11,9 @@ var Settings = {
             <div class="container-wrapper">
                 <div class="container">
                     <div class="block settings-block">
-                        <h2>Graphics</h2>
+                        <Settingsbar/>
+                        <h2>General Settings</h2>
+                        <h3>Graphics</h3>
                         <div class="field settings-field">
                             <div class="settings-label">
                                 <h4>Play Animations</h4>
