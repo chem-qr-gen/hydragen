@@ -15,14 +15,19 @@ var Navbar = {
             </div>
             <div id="navbarContent" class="navbar-menu">
                 <div class="navbar-end">
-                    <a class="navbar-item" href="#!/signup" id="signupLink">Sign Up</a>
-                    <a class="navbar-item" href="#!/login" id="loginLink">Log In</a>
-                    <a class="navbar-item" href="#!/settings" id="settingsLink"><img id="settings-logo"></img></a>
+                    <a className="navbar-item" href="#!/signup" id="signupLink">Sign Up</a>
+                    <a className="navbar-item" href="#!/login" id="loginLink">Log In</a>
+                    <a className="navbar-item" href="#!/leaderboard" id="settingsLink">
+                        <span className="material-symbols-outlined navbar-icon">leaderboard</span>
+                    </a>
+                    <a className="navbar-item" href="#!/settings" id="settingsLink">
+                        <span className="material-symbols-outlined navbar-icon">settings</span>
+                    </a>
                     <div class="navbar-item has-dropdown is-hoverable" id="usernameLink" style="display: none;">
-                        <a class="navbar-link">Logged in as </a>
+                        <a className="navbar-link">Logged in as </a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item" href="#!/profile">Profile</a>
-                            <a class="navbar-item" href="#" id="logoutLink">Log Out</a>
+                            <a className="navbar-item" href="#!/profile">Profile</a>
+                            <a className="navbar-item" href="#" id="logoutLink">Log Out</a>
                         </div>
                     </div>
                 </div>

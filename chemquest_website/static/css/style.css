@@ -9,6 +9,7 @@
 @import "views/login.css";
 @import "views/signup.css";
 @import "views/components/settingsbar.css";
+@import "views/leaderboard.css";
 
 input.button {
     transition: all 0.25s;
@@ -82,6 +83,7 @@ html[data-theme="dark"] {
         --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
     }
 }
+
 * {
     box-sizing: border-box;
 }
@@ -89,6 +91,9 @@ html, body{
     height: 100%;
     padding: 0;
     margin: 0;
+}
+.landing-wrapper, .container-wrapper{
+    padding-top: 52px;
 }
 .container-wrapper {
     height:91vh;

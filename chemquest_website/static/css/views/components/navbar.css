@@ -1,3 +1,11 @@
+/* Keep Navbar on top */
+.navbar{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
 /* Hydragen logo in navbar */
 .navbar-brand, .navbar-menu {
     background-color: var(--bg-color-navbar);
@@ -22,10 +30,11 @@
     color: var(--text-color-navbar);
 }
 
-#settings-logo{
-    content: url("../../../images/settings-light.svg");
-    max-height: 40px;
+/* icons */
+.navbar-icon{
+    font-size: 36px;
 }
+
 .navbar-end {
     height:100%;
 }
