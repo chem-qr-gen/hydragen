@@ -316,6 +316,7 @@ export var Tutorial = {
         questionsCompleted++;
         if (questionsCompleted >= 3){ //End tutorial when user completed 3 questions
           // TODO: dix issue where user can still retry tutorial after refreshing the page
+          console.log("end trial");
           endTrial();
         }
       } else {                                                                        //Answer Incorrect
