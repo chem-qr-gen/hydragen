@@ -1,7 +1,13 @@
+/* Hydragen logo in navbar */
 .navbar-brand, .navbar-menu {
     background-color: var(--bg-color-navbar);
     color: var(--text-color-navbar);
 }
+.logo-horizontal {
+    content: var(--navbar-logo-style);
+    max-height: 2rem !important; /* override bulma */
+}
+
 /* navbar items, except those in dropdown lists */
 .navbar-item {
     color: var(--text-color-navbar);
