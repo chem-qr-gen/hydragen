@@ -51,6 +51,7 @@ var settingsProfile = {
         </div>
     ),
     oncreate: () => {
+      console.log("Test");
         if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
             m.request({ // get user data
                 method: "GET",
@@ -58,7 +59,8 @@ var settingsProfile = {
                 headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
             }).then(response => { // display data
                 // gender select
-                /*let genderInput = $("#genderInput");
+                let genderInput = $("#genderInput")[0];
+                // genderInput.selectedIndex = 1;
                 for (let i = 0; i < genderInput.options.length; i++){
                     if (genderInput.options[i].text === response.gender) {
                         genderInput.selectedIndex = i;
@@ -66,7 +68,7 @@ var settingsProfile = {
                     }
                 }
                 // country select
-                let countryInput = $("#countryInput");
+                let countryInput = $("#countryInput")[0];
                 for (let i = 0; i < countryInput.options.length; i++){
                     if (countryInput.options[i].text === response.country) {
                         countryInput.selectedIndex = i;
@@ -74,8 +76,8 @@ var settingsProfile = {
                     }
                 }
                 // region input
-                $("#regionInput").value = response.region;
-                */
+                $("#regionInput")[0].value = response.region;
+
             });
         }
         else { // no user logged in, redirect to login page
