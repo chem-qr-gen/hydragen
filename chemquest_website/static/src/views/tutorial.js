@@ -57,7 +57,7 @@ export var Tutorial = {
               <div className="column-right">
                 <div className="answer-topbar">
                   <div className="hint-container">
-                    <div id="hint-display"  className="hint-display">
+                    <div id="hint-display" className="hint-display">
                       <strong class="green-text" id="hints-danger-level"><span id="hints-used">3</span>/3 Hints
                         Left</strong>
                       <span class="tooltip" id="tooltip-text">Click on a bar in the MS chart to receive a hint about the fragments it usually represents.
@@ -69,7 +69,7 @@ export var Tutorial = {
                     <button class="move-on skip button" type="button" id="next"></button>
                   </div>
                 </div>
-                <div id = "answer" className="answer">
+                <div id="answer" className="answer">
                   <div className="control column mcq-options">
                     <label class="radio">
                       <input type="radio" name="answer" value="0"></input>
@@ -117,7 +117,15 @@ export var Tutorial = {
 
     initiateTutorial();
 
-    var questionsCompleted = 0;
+    // localStorage.setItem("tutorialQuestionsCompleted", 0); //reset no of trys (for testing only)
+    if (localStorage.getItem("tutorialQuestionsCompleted") === null) {
+      localStorage.setItem("tutorialQuestionsCompleted", 0);
+    }
+    ////End tutorial when user completed 3 questions (before)
+    if (parseInt(localStorage.getItem("tutorialQuestionsCompleted")) >= 3) {
+      console.log("end trial");
+      endTrial();
+    }
 
 
     m.request({
@@ -265,7 +273,7 @@ export var Tutorial = {
               if (hintsUsed >= 3) {
                 msChart.data.datasets[0].backgroundColor[index] = chartStyles.usedAllHintsColor;
               } else if (hint) {
-                if (msChart.data.datasets[0].backgroundColor[index] != chartStyles.hintColor){ //have not yet selected this element for hint
+                if (msChart.data.datasets[0].backgroundColor[index] != chartStyles.hintColor) { //have not yet selected this element for hint
                   msChart.data.datasets[0].backgroundColor[index] = chartStyles.hintColor;
                   hintsUsed++;
                   $("#hints-used").text(3 - hintsUsed);
@@ -313,9 +321,9 @@ export var Tutorial = {
         $(".move-on").addClass("next");                                             //Change skip button text
         $(".move-on").removeClass("skip")
         isCorrect = true;
-        questionsCompleted++;
-        if (questionsCompleted >= 3){ //End tutorial when user completed 3 questions
-          // TODO: dix issue where user can still retry tutorial after refreshing the page
+        localStorage.setItem("tutorialQuestionsCompleted", parseInt(localStorage.getItem("tutorialQuestionsCompleted")) + 1) //Add 1 completed questions
+        console.log(localStorage.getItem("tutorialQuestionsCompleted"));
+        if (parseInt(localStorage.getItem("tutorialQuestionsCompleted")) >= 3) { //End tutorial when user completed 3 questions
           console.log("end trial");
           endTrial();
         }
