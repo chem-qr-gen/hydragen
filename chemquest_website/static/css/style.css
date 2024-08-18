@@ -118,6 +118,12 @@ h1,h2,h3,h4,h5,p,label{
 .invisible {
     display: none;
 }
+thead{
+    background-color: var(--field-bg-color);
+}
+th{
+    color: var(--text-color) !important;
+}
 
 
 
