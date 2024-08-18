@@ -7,7 +7,7 @@ var Landing = {
     view: () => (
         <div class="content">
             <Navbar />
-            <div class="landing-wrapper">
+            <div class="unbounded-wrapper">
                 <div class="hero is-large" id="landing-splash">
                     <video autoplay muted loop plays-inline class="background-video">
                         <source src="../static/images/landing.mp4" type="video/mp4"></source>
