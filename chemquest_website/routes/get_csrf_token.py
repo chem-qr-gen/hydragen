@@ -1,6 +1,9 @@
-from chemquest_website import app, csrf
+from flask import abort
+
+from chemquest_website import app
 
 @app.route('/get_csrf_token')
 def get_csrf_token():
     '''CSRF token access point for CSRF protection.'''
-    return {'csrf_token': csrf._get_token()}
+    # return 404, deprecated functionality
+    abort(404)

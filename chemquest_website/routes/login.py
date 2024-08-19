@@ -1,8 +1,9 @@
+from box import Box
 from flask import request
+from flask_login import login_user
 from werkzeug.security import check_password_hash
-from flask_jwt_extended import create_access_token
 
-from chemquest_website import app, engine, meta
+from chemquest_website import app, engine, meta, User
 
 @app.route('/login', methods = ['POST'])
 def login():
@@ -14,12 +15,13 @@ def login():
         user = conn.execute(
             users_table.select().where(users_table.c.username == request.json["username"])
         ).fetchone()
-    # user = db.users.find_one({"username": request.json["username"]})
 
-    # check the password. if it's correct, return an access token. otherwise, return an error.
+    # check the password. if it's correct, login the user using flask-login. otherwise, return an error.
     if user:
-        user = user._mapping
-        if check_password_hash(user["password"], request.json["password"]):
-            access_token = create_access_token(user["username"])
-            return {"msg": "Login successful", "access_token": access_token}
+        user_dict = Box(user._mapping)
+        if check_password_hash(user_dict["password"], request.json["password"]):
+            user_obj = User(user_dict.username)
+            login_user(user_obj)
+            return {"msg": "Login successful"}
+        
     return {"msg": "Incorrect username or password"}, 401
