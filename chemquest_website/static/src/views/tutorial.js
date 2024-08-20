@@ -10,7 +10,7 @@ import {
   smiDrawerTheme,
   getChartStyles,
   getHintColor,
-  switchGraph
+  switchGraph, resizeContainer
 } from "../libraries/home_helpers";
 import {applyFilter, endTrial, initiateTutorial} from "../libraries/tutorial_helper";
 
@@ -114,6 +114,8 @@ export var Tutorial = {
         switchGraph();
       }
     );
+    resizeContainer();
+    window.addEventListener("resize", resizeContainer);
 
     initiateTutorial();
 

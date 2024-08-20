@@ -89,6 +89,11 @@ function switchGraph() {
   }
 }
 
+function resizeContainer() {
+  $("#main-container").css("width", document.documentElement.clientWidth)
+  $("#main-container").css("height", document.documentElement.clientHeight)
+}
+
 // Update Hint indicator color
 function getHintColor(hintsUsed) {
   console.log(hintsUsed);
@@ -177,6 +182,7 @@ var smiDrawerTheme = {
 
 export {
   switchGraph,
+  resizeContainer,
   updateData,
   fillMsDataGaps,
   smiDrawerTheme,
