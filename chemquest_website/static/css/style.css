@@ -96,13 +96,13 @@ html, body{
     padding-top: 52px;
 }
 .container-wrapper {
-    height:91vh;
+    height:91%;
 }
 .content {
     box-sizing: border-box;
     color: var(--text-color);
     background-color: var(--bg-color);
-    height: 100vh;
+    height: 100%;
 }
 h1,h2,h3,h4,h5,p,label{
     color: var(--text-color) !important; 
