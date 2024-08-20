@@ -32,6 +32,9 @@ def record_attempt():
                 ms_data_table.select().where(ms_data_table.c.qid == qid)
             ).fetchone()
 
+        if user_dict:
+            user_dict = user_dict._mapping
+
         if question_dict:
             question_dict = question_dict._mapping
 
