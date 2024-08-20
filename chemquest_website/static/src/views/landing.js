@@ -36,9 +36,18 @@ var Landing = {
         </div>
     ),
     oncreate: () => {
-        if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
-            $("#loginButton, #signupButton").hide();
-        }
+        // attempt to request /current_user to check if user is logged in
+        // if user is logged in, hide login and signup buttons
+        m.request({
+            method: "GET",
+            url: "/current_user"
+        }).then(response => {
+            if (response.username) {
+                $("#loginButton, #signupButton").hide();
+            }
+        }).catch(() => {
+            console.log("No user logged in");
+        });
 
         m.request({ // get site statistics
             method: "GET",
