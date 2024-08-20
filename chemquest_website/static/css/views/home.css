@@ -2,6 +2,10 @@
     position: relative;
 }
 
+#msQuestionForm{
+    padding-top: 3%;
+}
+
 img#question-img {
     max-height: 237px;
 }
