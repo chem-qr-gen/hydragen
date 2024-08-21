@@ -43,23 +43,20 @@ var Profile = {
         </div>
     ),
     oncreate: () => {
-        if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
-            m.request({ // get user data
-                method: "GET",
-                url: "/get_profile",
-                headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
-            }).then(response => { // display data
-                $("#profile-usernameSpan").text(response.username);
-                $("#profile-ratingSpan").text(response.elo);
-                $("#profile-emailSpan").text(response.email);
-                $("#profile-genderSpan").text(response.gender);
-                $("#profile-countrySpan").text(response.country);
-                $("#profile-regionSpan").text(response.region);
-            })
-        }
-        else { // no user logged in, redirect to login page
+        // this will throw a 403 (forbidden) if the user is not logged in
+        m.request({
+            method: "GET",
+            url: "/get_profile"
+        }).then(response => {
+            $("#profile-usernameSpan").text(response.username);
+            $("#profile-ratingSpan").text(response.elo);
+            $("#profile-emailSpan").text(response.email);
+            $("#profile-genderSpan").text(response.gender);
+            $("#profile-countrySpan").text(response.country);
+            $("#profile-regionSpan").text(response.region);
+        }).catch(() => { // if the user is not logged in, redirect to login page
             location.href = "#!/login?message=not_signed_in";
-        }
+        });
     }
 }
 

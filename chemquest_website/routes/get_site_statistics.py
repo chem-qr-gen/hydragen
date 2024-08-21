@@ -1,11 +1,9 @@
-from flask_jwt_extended import get_jwt_identity, jwt_required
 from sqlalchemy.orm import sessionmaker
 
 from chemquest_website import app, engine, meta
 from sqlalchemy import func
 
-@app.route('/get_site_statistics', methods=['GET'])
-@jwt_required(optional = True)
+@app.route('/get_site_statistics')
 def get_site_statistics():
     users_table = meta.tables["users"]
     attempts_table = meta.tables["attempts"]

@@ -1,11 +1,7 @@
-import random
-
 from flask import request
-from rdkit import Chem, DataStructs
-from rdkit.Chem import Descriptors, rdFingerprintGenerator
-from sqlalchemy import func
+from rdkit import Chem
 
-from chemquest_website import app, engine, meta
+from chemquest_website import app
 from chemquest_website.helpers.mcq_generator import generate_mcq_options
 
 

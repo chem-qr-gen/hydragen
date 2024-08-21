@@ -18,7 +18,6 @@ var Tutorial = {
                         <h1>Mass Spectrometry Practice</h1>
                     </div>
                     <form class="block is-relative" id="msQuestionForm">
-                        <input type="hidden" id="csrf_token"></input>
                         <div class="field">
                             <p>Identify the compound that would give this mass spectrum.</p>
                             <div class="columns">
@@ -81,13 +80,6 @@ var Tutorial = {
         </div>
     ),
     oncreate: async () => {
-        m.request({
-            method: "GET",
-            url: "/get_csrf_token"
-        }).then(response => {
-            $("#csrf_token").val(response.csrf_token);
-        });
-
         // get hint data from server side
         var hintData = await m.request({
             method: "GET",
@@ -403,9 +395,7 @@ var Tutorial = {
             m.request({
                 method: "POST",
                 url: "/record_attempt",
-                headers: localStorage.getItem("jwt") ? {"Authorization": "Bearer " + localStorage.getItem("jwt")} : {},
                 body: {
-                    "_csrf_token": $("#csrf_token").val(),
                     "hashId": questionData.hashId,
                     "qid": questionData.rawData.qid,
                     "options": questionData.mcqAnswers,

@@ -1,9 +1,9 @@
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_login import login_required, current_user
 
 from chemquest_website import app
 
 @app.route('/get_identity')
-@jwt_required()
+@login_required
 def get_identity():
     '''Returns the username of the current logged-in user, if logged in. Otherwise throws a 401.'''
-    return {"identity": get_jwt_identity()}
+    return {"identity": current_user.get_id()}

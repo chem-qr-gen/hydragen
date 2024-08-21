@@ -1,6 +1,6 @@
 import datetime
 from flask import request
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_login import current_user
 from sqlalchemy.dialects.postgresql import insert
 
 import chemquest_website.elo as elo
@@ -8,7 +8,6 @@ from chemquest_website import app, engine, meta
 
 # TODO: add number of hints to the calculation
 @app.route('/record_attempt', methods = ['POST'])
-@jwt_required(optional = True)
 def record_attempt():
     '''Record a question attempt made by the user, and relevant stats.'''
     hash_id = request.json['hashId']
@@ -19,8 +18,7 @@ def record_attempt():
     ms_data_table = meta.tables["ms_data"]
     attempts_table = meta.tables["attempts"]
 
-    jwt_identity = get_jwt_identity()
-    if jwt_identity:
+    if current_user.is_authenticated:
         
         # Check list of attempts to see if the question has already been attempted
         # If attempted, updates the attempt based on the number of wrong answers
@@ -28,11 +26,14 @@ def record_attempt():
         # Retrieve the user and question from the database
         with engine.connect() as conn:
             user_dict = conn.execute(
-                users_table.select().where(users_table.c.username == jwt_identity)
+                users_table.select().where(users_table.c.username == current_user.get_id())
             ).fetchone()
             question_dict = conn.execute(
                 ms_data_table.select().where(ms_data_table.c.qid == qid)
             ).fetchone()
+
+        if user_dict:
+            user_dict = user_dict._mapping
 
         if question_dict:
             question_dict = question_dict._mapping
@@ -64,7 +65,7 @@ def record_attempt():
             )
             attempt = {
                 "attempt_id": hash_id,
-                "username": jwt_identity,
+                "username": current_user.get_id(),
                 "qid": qid,
                 "timestamp": datetime.datetime.utcnow(),
                 "is_correct": [is_correct],
