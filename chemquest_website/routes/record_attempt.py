@@ -13,6 +13,7 @@ def record_attempt():
     hash_id = request.json['hashId']
     qid = request.json['qid']
     is_correct = request.json['isCorrect']
+    generateTimestamp = request.json["generate_timestamp"]
 
     users_table = meta.tables["users"]
     ms_data_table = meta.tables["ms_data"]
@@ -67,6 +68,7 @@ def record_attempt():
                 "attempt_id": hash_id,
                 "username": current_user.get_id(),
                 "qid": qid,
+                "generate_timestamp": generateTimestamp,
                 "timestamp": datetime.datetime.utcnow(),
                 "is_correct": [is_correct],
                 "player_old_elo": player_old_elo,
@@ -111,6 +113,7 @@ def record_attempt():
             attempt = {
                 "attempt_id": hash_id,
                 "qid": qid,
+                "generate_timestamp": generateTimestamp,
                 "timestamp": datetime.datetime.utcnow(),
                 "is_correct": [is_correct],
             }

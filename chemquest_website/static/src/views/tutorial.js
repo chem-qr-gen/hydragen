@@ -113,6 +113,7 @@ export var Tutorial = {
         switchGraph();
       }
     );
+    //Respond to window size changes
     resizeContainer();
     window.addEventListener("resize", resizeContainer);
 
@@ -151,6 +152,7 @@ export var Tutorial = {
         .siblings().removeClass("radio-selected");
     });
 
+    var generateTimestamp;
     const getNewQuestion = async () => {
       // get new question with SMILES, mass spec data, etc.
       var data = await m.request({
@@ -158,6 +160,9 @@ export var Tutorial = {
         url: "/ms_questions_new",
         params: {id: "random"}
       });
+
+      // get generation time (to be passed for record_attempt)
+      generateTimestamp = data['generate_timestamp'];
 
       // filled data for the mass spec graph
       var filledMsData = fillMsDataGaps(data['ms_data']);
@@ -299,7 +304,8 @@ export var Tutorial = {
           "qid": questionData.rawData.qid,
           "options": questionData.mcqAnswers,
           "answer": $("input[name='answer']:checked").val(),
-          "isCorrect": isCorrect
+          "isCorrect": isCorrect,
+          "generate_timestamp": generateTimestamp
         }
       });
       return false;
