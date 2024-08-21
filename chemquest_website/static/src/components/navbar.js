@@ -35,33 +35,27 @@ var Navbar = {
         </nav>
     ),
     oncreate: () => {
-        if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
-            m.request({ // get the username
-                method: "GET",
-                url: "/get_identity",
-                headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
-            }).then(response => {
-                // hide signup and login nav items
-                $("#signupLink").toggle();
-                $("#loginLink").toggle();
-                // show profile and logout nav items
-                $("#usernameLink").toggle();
+        m.request({ // get the current logged in user
+            method: "GET",
+            url: "/current_user"
+        }).then(response => {
+            // hide signup and login nav items
+            $("#signupLink").toggle();
+            $("#loginLink").toggle();
+            // show profile and logout nav items
+            $("#usernameLink").toggle();
 
-                // set the username in the navbar
-                $("#usernameLink .navbar-link").text("Logged in as " + response.identity);
-            });
-        }
+            // set the username in the navbar
+            $("#usernameLink .navbar-link").text("Logged in as " + response.username);
+        });
         
         // logout functionality
         $("#logoutLink").on("click", () => {
             m.request({
                 method: "GET",
-                url: "/logout",
-                headers: {
-                    "Authorization": "Bearer " + localStorage.getItem("jwt")
-                }
+                url: "/logout"
             }).then(() => {
-                localStorage.removeItem('jwt');
+                // reload the page after logging out
                 location.reload();
             })
         });

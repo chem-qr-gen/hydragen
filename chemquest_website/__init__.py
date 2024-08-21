@@ -1,11 +1,9 @@
 import tomllib
 
 from flask import Flask
-from flask_jwt_extended import JWTManager
 from flask_mail import Mail
-from flask_seasurf import SeaSurf
+from flask_login import LoginManager, UserMixin
 from sqlalchemy import create_engine, MetaData
-
 
 app = Flask(__name__)
 
@@ -16,13 +14,26 @@ app.config.from_mapping(cfg)
 #app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days = 1) # TODO: set up a JWT refresh token so the user is auto-logged out after inactivity.
 
 # initialise the various addons and other services needed
-jwt = JWTManager(app)
 mail = Mail(app)
-csrf = SeaSurf(app)
+login_manager = LoginManager(app)
 
 # initialise the database engine
 engine = create_engine(cfg["postgres_address"], isolation_level="AUTOCOMMIT", pool_pre_ping=True)
 meta = MetaData()
 meta.reflect(bind=engine)
+
+
+#flask-login user loader
+class User(UserMixin):
+    def __init__(self, username):
+        self.username = username
+
+    def get_id(self):
+        return self.username
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User(user_id) # TODO: figure out what this actually needs to be restricted to
+
 
 from chemquest_website.routes import *

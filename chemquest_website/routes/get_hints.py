@@ -1,5 +1,3 @@
-
-
 from chemquest_website import app, engine, meta
 
 @app.route('/get_hints')
