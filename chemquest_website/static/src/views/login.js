@@ -68,7 +68,7 @@ var Login = {
                 }
                 first_visit = true;
                 localStorage.setItem('was_visited', 1);
-                console.log(first_visit);
+                console.log("first visit = " + first_visit);
                 alert(response.msg);
                 localStorage.setItem('jwt', response.access_token); // log in the user
                 location.href = URL // redirect to homepage

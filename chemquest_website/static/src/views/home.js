@@ -106,6 +106,9 @@ export var MCQ = {
       }
     );
 
+    resizeContainer();
+    window.addEventListener("resize", resizeContainer);
+
     m.request({
       method: "GET",
       url: "/get_csrf_token"
