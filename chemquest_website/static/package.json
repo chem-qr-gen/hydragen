@@ -6,7 +6,7 @@
   "scripts": {
     "sass-watch": "sass --load-path=node_modules --watch scss:css",
     "watch": "webpack --mode development --devtool eval-source-map --watch",
-    "build": "sass scss:css && webpack --mode production --devtool source-map"
+    "build": "sass --load-path=node_modules scss:css && webpack --mode production --devtool source-map"
   },
   "author": "unriellistic",
   "license": "MPL-2.0",
