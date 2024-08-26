@@ -3,7 +3,7 @@ from flask import request
 from flask_login import current_user
 from sqlalchemy.dialects.postgresql import insert
 
-import chemquest_website.elo as elo
+import chemquest_website.helpers.elo as elo
 from chemquest_website import app, engine, meta
 
 # TODO: add number of hints to the calculation
