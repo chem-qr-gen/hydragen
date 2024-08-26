@@ -4,8 +4,9 @@
   "description": "An automatic question generator for organic chemistry.",
   "main": "index.js",
   "scripts": {
+    "sass-watch": "sass --load-path=node_modules --watch scss:css",
     "watch": "webpack --mode development --devtool eval-source-map --watch",
-    "build": "webpack --mode production --devtool source-map"
+    "build": "sass --load-path=node_modules scss:css && webpack --mode production --devtool source-map"
   },
   "author": "unriellistic",
   "license": "MPL-2.0",
@@ -14,11 +15,13 @@
     "@babel/plugin-transform-react-jsx": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "babel-loader": "^8.2.5",
+    "bulma": "^1.0.2",
     "chart.js": "^4.0.1",
     "jquery": "^3.6.3",
     "md5": "^2.3.0",
     "mithril": "^2.2.2",
     "parsleyjs": "^2.9.2",
+    "sass": "^1.77.8",
     "shepherd.js": "^11.2.0",
     "smiles-drawer": "^2.1.7",
     "webpack": "^5.74.0",
