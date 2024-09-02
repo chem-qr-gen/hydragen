@@ -14,7 +14,6 @@ var settingsProfile = {
                         <Settingsbar/>
                         <h2>Edit Profile</h2>
                         <form className="block" id="settingsProfileForm">
-                            <input type="hidden" id="csrf_token"></input>
                             <div className="field" id="settingsProfileForm-inputs">
                                 <div className="field pt-0">
                                     <label className="label">Gender</label>
@@ -56,66 +55,54 @@ var settingsProfile = {
         </div>
     ),
     oncreate: () => {
-        console.log("Test");
-        if (localStorage.getItem("jwt") !== null) { // if there is a user logged in
-            m.request({ // get csrf token
-                method: "GET",
-                url: "/get_csrf_token"
-            }).then(response => {
-                $("#csrf_token").val(response.csrf_token);
-            });
+        m.request({ // checks if there is a user logged in and gets user data
+            method: "GET",
+            url: "/get_profile"
+        }).then(response => {
+            // display data
 
-            m.request({ // get user data
-                method: "GET",
-                url: "/get_profile",
-                headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")}
-            }).then(response => { // display data
-                // gender select
-                let genderInput = $("#genderInput")[0];
-                // genderInput.selectedIndex = 1;
-                for (let i = 0; i < genderInput.options.length; i++){
-                    if (genderInput.options[i].text === response.gender) {
-                        genderInput.selectedIndex = i;
-                        break;
-                    }
+            // gender select
+            let genderInput = $("#genderInput")[0];
+            // genderInput.selectedIndex = 1;
+            for (let i = 0; i < genderInput.options.length; i++){
+                if (genderInput.options[i].text === response.gender) {
+                    genderInput.selectedIndex = i;
+                    break;
                 }
-                // country select
-                let countryInput = $("#countryInput")[0];
-                for (let i = 0; i < countryInput.options.length; i++){
-                    if (countryInput.options[i].text === response.country) {
-                        countryInput.selectedIndex = i;
-                        break;
-                    }
+            }
+            // country select
+            let countryInput = $("#countryInput")[0];
+            for (let i = 0; i < countryInput.options.length; i++){
+                if (countryInput.options[i].text === response.country) {
+                    countryInput.selectedIndex = i;
+                    break;
                 }
-                // region input
-                $("#regionInput")[0].value = response.region;
+            }
+            // region input
+            $("#regionInput")[0].value = response.region;
 
-                // submit form
-                $("#settingsProfileForm").parsley({
-                    trigger: "change",
-                    errorsWrapper: '<div class="parsley-errors-list"></ul>',
-                    errorTemplate: "<p></p>"
-                }).on("form:submit", () => {
-                    m.request({
-                        method: "POST",
-                        url: "/edit_profile",
-                        headers: {"Authorization": "Bearer " + localStorage.getItem("jwt")},
-                        body: {
-                            "_csrf_token": $("#csrf_token").val(),
-                            "gender": $("#genderInput option:selected").text(),
-                            "country": $("#countryInput option:selected").text(),
-                            "region": $("#regionInput").val()
-                        }
-                    }).then(response => {
-                        alert(response.msg)
-                        location.reload()
-                    })
-                });
+            // submit form
+            $("#settingsProfileForm").parsley({
+                trigger: "change",
+                errorsWrapper: '<div class="parsley-errors-list"></ul>',
+                errorTemplate: "<p></p>"
+            }).on("form:submit", () => {
+                m.request({
+                    method: "POST",
+                    url: "/edit_profile",
+                    body: {
+                        "gender": $("#genderInput option:selected").text(),
+                        "country": $("#countryInput option:selected").text(),
+                        "region": $("#regionInput").val()
+                    }
+                }).then(response => {
+                    alert(response.msg)
+                    location.reload()
+                })
             });
-        }
-        else { // no user logged in, redirect to login page
+        }).catch(() => {
             location.href = "#!/login?message=not_signed_in";
-        }
+        })
     }
 }
 
