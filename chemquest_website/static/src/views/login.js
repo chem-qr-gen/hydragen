@@ -37,6 +37,12 @@ var Login = {
         </div>
     ),
     oncreate: () => {
+        m.request({
+            method: "GET",
+            url: "/current_user"
+        }).then(response => { // if user logged in redirect to home
+            location.href = '#!/home';
+        })
 
         $("#loginForm").parsley({
             trigger: "change",
