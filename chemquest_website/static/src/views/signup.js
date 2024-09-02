@@ -77,6 +77,13 @@ var Signup = {
         </div>
     ),
     oncreate: () => {
+        m.request({
+            method: "GET",
+            url: "/current_user"
+        }).then(response => { // if user logged in redirect to home
+            location.href = '#!/home';
+        })
+
         // TODO: make the form dynamically check if username and email already exist (should be possible with parsley)
         $("#signupForm").parsley({
             trigger: "change",

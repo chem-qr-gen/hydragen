@@ -1,13 +1,13 @@
 from flask import request
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_login import current_user, login_required
 
 from chemquest_website import app, engine, meta
 
 @app.route('/edit_profile', methods=['POST'])
-@jwt_required(optional=True)
+@login_required
 def edit_profile():
     # edits profile of user
-    username = get_jwt_identity()
+    username = current_user.get_id()
     gender = request.json["gender"]
     country = request.json["country"]
     region = request.json["region"]
