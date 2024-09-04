@@ -10,9 +10,13 @@ var Settingsbar = {
         </div>
     ),
     oncreate: () => {
-        if (localStorage.getItem("jwt") === null) { // hide if not logged in
+        // if not logged in, hide settings bar
+        m.request({
+            method: "GET",
+            url: "/current_user"
+        }).catch(() => {
             $(".settingsbar").toggle();
-        }
+        });
     }
 };
 

@@ -1,11 +1,11 @@
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_login import current_user, login_required
 from chemquest_website import app, engine, meta
 
 @app.route('/get_profile', methods=['GET'])
-@jwt_required(optional=True)
+@login_required
 def get_profile():
     # Returns all the profile information of the user
-    username = get_jwt_identity()
+    username = current_user.get_id()
 
     users_table = meta.tables["users"]
     with engine.connect() as conn:

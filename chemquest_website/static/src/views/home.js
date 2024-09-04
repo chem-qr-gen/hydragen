@@ -10,7 +10,7 @@ import {
   smiDrawerTheme,
   getChartStyles,
   getHintColor,
-  switchGraph
+  switchGraph, resizeContainer
 } from "../libraries/home_helpers";
 import {applyFilter} from "../libraries/tutorial_helper";
 
@@ -23,7 +23,6 @@ export var MCQ = {
         <div className="container-wrapper">
           <div className="container">
             <form class="block is-relative" id="msQuestionForm">
-              <input type="hidden" id="csrf_token"></input>
               <div className="column-left">
                 <div className="title-block">
                   <h1>Mass Spectrometry Practice</h1>
@@ -105,16 +104,9 @@ export var MCQ = {
         switchGraph();
       }
     );
-
+    //Respond to window size changes
     resizeContainer();
     window.addEventListener("resize", resizeContainer);
-
-    m.request({
-      method: "GET",
-      url: "/get_csrf_token"
-    }).then(response => {
-      $("#csrf_token").val(response.csrf_token);
-    });
 
     // get hint data from server side
     var hintData = await m.request({
@@ -138,6 +130,7 @@ export var MCQ = {
         .siblings().removeClass("radio-selected");
     });
 
+    var generateTimestamp;
     const getNewQuestion = async () => {
       // get new question with SMILES, mass spec data, etc.
       var data = await m.request({
@@ -145,6 +138,9 @@ export var MCQ = {
         url: "/ms_questions_new",
         params: {id: "random"}
       });
+
+      // get generation time (to be passed for record_attempt)
+      generateTimestamp = data['generate_timestamp'];
 
       // filled data for the mass spec graph
       var filledMsData = fillMsDataGaps(data['ms_data']);
@@ -281,14 +277,13 @@ export var MCQ = {
       m.request({
         method: "POST",
         url: "/record_attempt",
-        headers: localStorage.getItem("jwt") ? {"Authorization": "Bearer " + localStorage.getItem("jwt")} : {},
         body: {
-          "_csrf_token": $("#csrf_token").val(),
           "hashId": questionData.hashId,
           "qid": questionData.rawData.qid,
           "options": questionData.mcqAnswers,
           "answer": $("input[name='answer']:checked").val(),
-          "isCorrect": isCorrect
+          "isCorrect": isCorrect,
+          "generate_timestamp": generateTimestamp
         }
       });
       return false;

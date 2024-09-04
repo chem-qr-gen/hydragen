@@ -14,7 +14,6 @@ var Signup = {
                         <h1>Sign Up</h1>
                     </div>
                     <form class="block" id="signupForm" data-parsley-validate>
-                        <input type="hidden" id="csrf_token"></input>
                         <div class="columns is-mobile is-multiline" id="signupForm-inputs">
                             <div class="field column is-half pt-0">
                                 <label class="label">Username</label>
@@ -80,10 +79,10 @@ var Signup = {
     oncreate: () => {
         m.request({
             method: "GET",
-            url: "/get_csrf_token"
-        }).then(response => {
-            $("#csrf_token").val(response.csrf_token);
-        });
+            url: "/current_user"
+        }).then(response => { // if user logged in redirect to home
+            location.href = '#!/home';
+        })
 
         // TODO: make the form dynamically check if username and email already exist (should be possible with parsley)
         $("#signupForm").parsley({
@@ -95,7 +94,6 @@ var Signup = {
                 method: "POST",
                 url: "/signup",
                 body: {
-                    "_csrf_token": $("#csrf_token").val(),
                     "username": $("#usernameInput").val(),
                     "email": $("#emailInput").val(),
                     "password": $("#passwordInput").val(),

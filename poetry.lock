@@ -88,23 +88,19 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
-name = "flask-jwt-extended"
-version = "4.5.2"
-description = "Extended JWT integration with Flask"
+name = "flask-login"
+version = "0.6.3"
+description = "User authentication and session management for Flask."
 optional = false
-python-versions = ">=3.7,<4"
+python-versions = ">=3.7"
 files = [
-    {file = "Flask-JWT-Extended-4.5.2.tar.gz", hash = "sha256:ba56245ba43b71c8ae936784b867625dce8b9956faeedec2953222e57942fb0b"},
-    {file = "Flask_JWT_Extended-4.5.2-py2.py3-none-any.whl", hash = "sha256:e0ef23d8c863746bd141046167073699e1a7b03c97169cbba70f05b8d9cd6b9e"},
+    {file = "Flask-Login-0.6.3.tar.gz", hash = "sha256:5e23d14a607ef12806c699590b89d0f0e0d67baeec599d75947bf9c147330333"},
+    {file = "Flask_Login-0.6.3-py3-none-any.whl", hash = "sha256:849b25b82a436bf830a054e74214074af59097171562ab10bfa999e6b78aae5d"},
 ]
 
 [package.dependencies]
-Flask = ">=2.0,<3.0"
-PyJWT = ">=2.0,<3.0"
-Werkzeug = ">=0.14"
-
-[package.extras]
-asymmetric-crypto = ["cryptography (>=3.3.1)"]
+Flask = ">=1.0.4"
+Werkzeug = ">=1.0.1"
 
 [[package]]
 name = "flask-mail"
@@ -118,20 +114,6 @@ files = [
 
 [package.dependencies]
 blinker = "*"
-Flask = "*"
-
-[[package]]
-name = "flask-seasurf"
-version = "1.1.1"
-description = "An updated CSRF extension for Flask."
-optional = false
-python-versions = "*"
-files = [
-    {file = "Flask-SeaSurf-1.1.1.tar.gz", hash = "sha256:54537008c769ac0ada8237877327c3e7ed74dcd8b01e74a9120ee0232c5951a9"},
-    {file = "Flask_SeaSurf-1.1.1-py3-none-any.whl", hash = "sha256:f70e58b3b5e8fa9a928fe6b8e7a01b953d67cb9b7bde1a54d1ec95e40fcc2ade"},
-]
-
-[package.dependencies]
 Flask = "*"
 
 [[package]]
@@ -575,23 +557,6 @@ files = [
 ]
 
 [[package]]
-name = "pyjwt"
-version = "2.7.0"
-description = "JSON Web Token implementation in Python"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "PyJWT-2.7.0-py3-none-any.whl", hash = "sha256:ba2b425b15ad5ef12f200dc67dd56af4e26de2331f965c5439994dad075876e1"},
-    {file = "PyJWT-2.7.0.tar.gz", hash = "sha256:bd6ca4a3c4285c1a2d4349e5a035fdf8fb94e04ccd0fcbe6ba289dae9cc3e074"},
-]
-
-[package.extras]
-crypto = ["cryptography (>=3.4.0)"]
-dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
-docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
-tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
-
-[[package]]
 name = "pylint"
 version = "2.17.4"
 description = "python code static checker"
@@ -903,4 +868,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "41204adfa144a4209b303a1a731f2fe1aed312b7116ebd5f1309a8028e2aa3cb"
+content-hash = "cd3c9f48528872fa405fafafb8b6d8df92e3aedf1d98c62d2fe2c458a3fa63a8"

@@ -12,7 +12,6 @@ var Login = {
                     <div class="block login-block">
                         <h1>Log In</h1>
                         <form class="block" id="loginForm" data-parsley-validate>
-                            <input type="hidden" id="csrf_token"></input>
                             <div id="loginForm-inputs">
                                 <div class="field login-field">
                                     <label class="label">Username</label>
@@ -38,13 +37,12 @@ var Login = {
         </div>
     ),
     oncreate: () => {
-
         m.request({
             method: "GET",
-            url: "/get_csrf_token"
-        }).then(response => {
-            $("#csrf_token").val(response.csrf_token);
-        });
+            url: "/current_user"
+        }).then(response => { // if user logged in redirect to home
+            location.href = '#!/home';
+        })
 
         $("#loginForm").parsley({
             trigger: "change",
@@ -55,28 +53,29 @@ var Login = {
                 method: "POST",
                 url: "/login",
                 body: {
-                    "_csrf_token": $("#csrf_token").val(),
                     "username": $("#usernameInput").val(),
                     "password": $("#passwordInput").val()
                 }
             }).then(response => {
                 // Check if user has visited site before
                 var first_visit = false;
-                var URL = '#!/tutorial';
+                var redirect_url;
                 if(localStorage.getItem('was_visited')){
-                    URL = '#!/home';
+                    redirect_url = '#!/home';
+                } else {
+                    redirect_url = '#!/tutorial';
                 }
                 first_visit = true;
                 localStorage.setItem('was_visited', 1);
                 console.log("first visit = " + first_visit);
                 alert(response.msg);
-                localStorage.setItem('jwt', response.access_token); // log in the user
-                location.href = URL // redirect to homepage
+                location.href = redirect_url // redirect to homepage
             }).catch(e => {
                 if (e.code === 401) { // unauthorized - probably invalid username/password
                     alert(e.response.msg);
                 }
             });
+            return false;
         });
     }
 }
