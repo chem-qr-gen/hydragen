@@ -24,7 +24,7 @@ var Signup = {
                             <div class="field column is-half pt-0">
                                 <label class="label">Email</label>
                                 <div class="control">
-                                    <input class="input" type="email" id="emailInput" required></input>
+                                    <input class="input" type="email" id="emailInput"></input>
                                 </div>
                             </div>
                             <div class="field column is-half pt-0">
