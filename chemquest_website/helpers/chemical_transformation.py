@@ -39,3 +39,22 @@ class ChemicalTransformer:
             return [result[0] for result in rxn_results]
         
         return cls(transform_function)
+    
+
+class MassSpecChemTransformer(ChemicalTransformer):
+    def __init__(self, transform_function: callable = None, explanation: str = None):
+        super().__init__(transform_function)
+        self.transform = lambda mol: (transform_function(mol), explanation)
+        
+    @classmethod
+    def from_substructs(cls, in_substruct: Chem.Mol | str, out_substruct: Chem.Mol | str, explanation: str):
+        return cls(ChemicalTransformer.from_substructs(in_substruct, out_substruct).transform, explanation)
+    
+    @classmethod
+    def from_reaction(cls, reaction: rdChemReactions.ChemicalReaction | str, explanation: str):
+        return cls(ChemicalTransformer.from_reaction(reaction).transform, explanation)
+    
+
+class OrgChemTransformer(ChemicalTransformer):
+    pass
+
