@@ -91,7 +91,7 @@ function startTour() {
   });
 
   tour.addStep({
-    text: "Welcome to Hydragen! Hygragen is an app where you can learn mass spectrometry in a fun and interactive way.",
+    text: "Welcome to Hydragen, where you can learn mass spectrometry in a fun and interactive way!",
     buttons: [
       {
         action() {
