@@ -83,9 +83,9 @@ function switchGraph() {
 
   // change text of the button to "Graph" if periodic table is active, and "Periodic Table" if graph is active
   if ($(".ptable").hasClass("hide")) {
-    $("#switch-graph").text("Periodic Table");
+    $("#switch-graph").text("View Periodic Table");
   } else {
-    $("#switch-graph").text("Graph");
+    $("#switch-graph").text("Back to Graph");
   }
 }
 

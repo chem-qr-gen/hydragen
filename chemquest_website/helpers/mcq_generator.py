@@ -12,7 +12,7 @@ from chemquest_website.helpers.funcgroups import FuncGroupCounter, funcgroups_mo
 # TODO: add more of these
 
 def generate_option_fluoride(mol: Chem.Mol) -> list[dict]:
-    fluoride_matches = mol.GetSubstructMatches("F")
+    fluoride_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("F"))
     if not fluoride_matches:
         return []
     
@@ -34,7 +34,7 @@ def generate_option_fluoride(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_chloride(mol: Chem.Mol) -> list[dict]:
-    chloride_matches = mol.GetSubstructMatches("Cl")
+    chloride_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("Cl"))
     if not chloride_matches:
         return []
     
@@ -83,7 +83,7 @@ def generate_option_alcohol(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_primary_o(mol: Chem.Mol) -> list[dict]:
-    primary_o_matches = mol.GetSubstructMatches("[CH2]O")
+    primary_o_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("[CH2]O"))
 
     if not primary_o_matches:
         return []
@@ -100,7 +100,7 @@ def generate_option_primary_o(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_primary_amine(mol: Chem.Mol) -> list[dict]:
-    amine_matches = mol.GetSubstructMatches("NH2")
+    amine_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("NH2"))
 
     if not amine_matches:
         return []
@@ -123,7 +123,7 @@ def generate_option_primary_amine(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_secondary_amine(mol: Chem.Mol) -> list[dict]:
-    amine_matches = mol.GetSubstructMatches("[NC2]H")
+    amine_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("[NC2]H"))
 
     if not amine_matches:
         return []
