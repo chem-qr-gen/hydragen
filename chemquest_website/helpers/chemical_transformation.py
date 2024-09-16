@@ -53,8 +53,3 @@ class MassSpecChemTransformer(ChemicalTransformer):
     @classmethod
     def from_reaction(cls, reaction: rdChemReactions.ChemicalReaction | str, explanation: str):
         return cls(ChemicalTransformer.from_reaction(reaction).transform, explanation)
-    
-
-class OrgChemTransformer(ChemicalTransformer):
-    pass
-
