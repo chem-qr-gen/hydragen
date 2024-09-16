@@ -1,7 +1,7 @@
 __pycache__/
 .python-version
 chemquest_website/static/bin/
-#chemquest_website/static/css/
+chemquest_website/static/css/
 
 chemquest_website/static/.pnp.*
 chemquest_website/static/.yarn/*
