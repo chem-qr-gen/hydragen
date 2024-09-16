@@ -10,24 +10,21 @@ from chemquest_website.helpers.funcgroups import FuncGroupCounter, funcgroups_mo
 
 # Functional group-based option generation
 # TODO: add more of these
-# converting amine/alcohol to halide seems like an obvious choice
-# converting primary alcohols and amines to methyl secondary alcohols/amines (flip carbon and O/N)
 
-def generate_option_halide(mol: Chem.Mol) -> list[dict]:
-    halide_matches = mol.GetSubstructMatches(funcgroups_mols.halide)
-
-    if not halide_matches:
+def generate_option_fluoride(mol: Chem.Mol) -> list[dict]:
+    fluoride_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("F"))
+    if not fluoride_matches:
         return []
     
     # replace halide with an alcohol
-    alcohol_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.halide, Chem.MolFromSmiles("O"))
+    alcohol_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("F"), Chem.MolFromSmiles("O"))
     options = [
         {"smiles": Chem.MolToSmiles(m), "explanation": ["halide-alcohol"]}
          for m in alcohol_mols
     ]
 
     # replace halide with an amine
-    amine_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.halide, Chem.MolFromSmiles("N"))
+    amine_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("F"), Chem.MolFromSmiles("N"))
     options += [
         {"smiles": Chem.MolToSmiles(m), "explanation": ["halide-amine"]}
          for m in amine_mols
@@ -36,13 +33,32 @@ def generate_option_halide(mol: Chem.Mol) -> list[dict]:
     return options
 
 
+def generate_option_chloride(mol: Chem.Mol) -> list[dict]:
+    chloride_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("Cl"))
+    if not chloride_matches:
+        return []
+    
+    # replace chloride with a thiol
+    thiol_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("Cl"), Chem.MolFromSmiles("S"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["halide-thiol"]}
+         for m in thiol_mols
+    ]
+
+    return options
+
+
+def generate_option_halide(mol: Chem.Mol) -> list[dict]:
+    return generate_option_fluoride(mol) + generate_option_chloride(mol)
+
+
 def generate_option_alcohol(mol: Chem.Mol) -> list[dict]:
     alcohol_matches = mol.GetSubstructMatches(funcgroups_mols.alcohol)
 
     if not alcohol_matches:
         return []
     
-    # replace alcohol with a halide
+    # replace alcohol with a fluoride
     halide_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.alcohol, Chem.MolFromSmiles("F"))
     options = [
         {"smiles": Chem.MolToSmiles(m), "explanation": ["alcohol-halide"]}
@@ -67,7 +83,7 @@ def generate_option_alcohol(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_primary_o(mol: Chem.Mol) -> list[dict]:
-    primary_o_matches = mol.GetSubstructMatches("[CH2]O")
+    primary_o_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("[CH2]O"))
 
     if not primary_o_matches:
         return []
@@ -84,7 +100,7 @@ def generate_option_primary_o(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_primary_amine(mol: Chem.Mol) -> list[dict]:
-    amine_matches = mol.GetSubstructMatches("NH2")
+    amine_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("NH2"))
 
     if not amine_matches:
         return []
@@ -107,7 +123,7 @@ def generate_option_primary_amine(mol: Chem.Mol) -> list[dict]:
 
 
 def generate_option_secondary_amine(mol: Chem.Mol) -> list[dict]:
-    amine_matches = mol.GetSubstructMatches("[NC2]H")
+    amine_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("[NC2]H"))
 
     if not amine_matches:
         return []
@@ -238,6 +254,20 @@ def generate_option_nitrile(mol: Chem.Mol) -> list[dict]:
 
     return options
 
+def generate_option_thiol(mol: Chem.Mol) -> list[dict]:
+    thiol_matches = mol.GetSubstructMatches(Chem.MolFromSmarts("SH"))
+
+    if not thiol_matches:
+        return []
+    
+    # replace thiol with a chloride
+    chloride_mols = rdmolops.ReplaceSubstructs(mol, Chem.MolFromSmarts("SH"), Chem.MolFromSmiles("Cl"))
+    options = [
+        {"smiles": Chem.MolToSmiles(m), "explanation": ["thiol-halide"]}
+         for m in chloride_mols
+    ]
+
+    return options
 
 
 # Overall MCQ option generation

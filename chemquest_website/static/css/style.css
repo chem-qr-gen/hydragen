@@ -1,15 +1,28 @@
-@import "views/landing.css";
-@import "views/home.css";
-@import "views/tour.css";
-@import "views/parsley_style.css";
-@import "views/ptableSidebar.css";
-@import "views/settings.css";
-@import "views/components/navbar.css";
-@import "views/profile.css";
-@import "views/login.css";
-@import "views/signup.css";
-@import "views/components/settingsbar.css";
-@import "views/leaderboard.css";
+/* Import Bulma framework and set colours */
+@use "bulma/sass" with (
+    $family-primary: "'Figtree', sans-serif",
+    $link: #6046fe,
+    $primary: #2dc5f6,
+    $info: #ea9a0c,
+
+);
+
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
+
+
+@import "views/landing.scss";
+@import "views/home.scss";
+@import "views/tour.scss";
+@import "views/parsley_style.scss";
+@import "views/ptableSidebar.scss";
+@import "views/settings.scss";
+@import "views/components/navbar.scss";
+@import "views/profile.scss";
+@import "views/login.scss";
+@import "views/signup.scss";
+@import "views/components/settingsbar.scss";
+@import "views/leaderboard.scss";
+
 
 input.button {
     transition: all 0.25s;

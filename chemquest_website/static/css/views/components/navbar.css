@@ -30,9 +30,14 @@
     color: var(--text-color-navbar);
 }
 
+
 /* icons */
-.navbar-icon{
+.navbar-icon {
     font-size: 36px;
+}
+#settings-logo {
+    content: url("/static/images/settings-light.svg");
+    max-height: 40px;
 }
 
 .navbar-end {

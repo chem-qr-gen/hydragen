@@ -1,6 +1,7 @@
 __pycache__/
 .python-version
 chemquest_website/static/bin/
+#chemquest_website/static/css/
 
 chemquest_website/static/.pnp.*
 chemquest_website/static/.yarn/*
@@ -20,7 +21,4 @@ node_modules/
 fly.toml
 fly.toml.old
 
-.gitsecret/keys/random_seed
-!*.secret
 chemquest_website/chemquest_config.toml
-chemquest_website/chemquest_config_SAMPLE.toml
