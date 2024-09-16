@@ -24,7 +24,7 @@ var Signup = {
                             <div class="field column is-half pt-0">
                                 <label class="label">Email</label>
                                 <div class="control">
-                                    <input class="input" type="email" id="emailInput" required></input>
+                                    <input class="input" type="email" id="emailInput"></input>
                                 </div>
                             </div>
                             <div class="field column is-half pt-0">
@@ -77,6 +77,13 @@ var Signup = {
         </div>
     ),
     oncreate: () => {
+        m.request({
+            method: "GET",
+            url: "/current_user"
+        }).then(response => { // if user logged in redirect to home
+            location.href = '#!/home';
+        })
+
         // TODO: make the form dynamically check if username and email already exist (should be possible with parsley)
         $("#signupForm").parsley({
             trigger: "change",

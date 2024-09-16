@@ -37,6 +37,12 @@ var Login = {
         </div>
     ),
     oncreate: () => {
+        m.request({
+            method: "GET",
+            url: "/current_user"
+        }).then(response => { // if user logged in redirect to home
+            location.href = '#!/home';
+        })
 
         $("#loginForm").parsley({
             trigger: "change",
@@ -61,7 +67,7 @@ var Login = {
                 }
                 first_visit = true;
                 localStorage.setItem('was_visited', 1);
-                console.log(first_visit);
+                console.log("first visit = " + first_visit);
                 alert(response.msg);
                 location.href = redirect_url // redirect to homepage
             }).catch(e => {

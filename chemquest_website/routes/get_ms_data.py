@@ -1,5 +1,5 @@
 import random
-
+import datetime
 from flask import redirect, request, url_for
 from sqlalchemy import func, select
 
@@ -27,4 +27,7 @@ def ms_questions_new():
 
     # question_response = db.ms_data.find_one({"qid": int(question_id)})
     # question_response.pop("_id") # remove the internal mongodb id from the returned JSON
+
+    #Record time of generation
+    question_response['generate_timestamp'] = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')
     return question_response

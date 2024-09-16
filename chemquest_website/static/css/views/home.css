@@ -1,5 +1,12 @@
+#main-container {
+    height: 100%
+}
 .container-wrapper {
     position: relative;
+}
+
+#msQuestionForm{
+    padding-top: 3%;
 }
 
 img#question-img {

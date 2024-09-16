@@ -10,7 +10,7 @@ import {
   smiDrawerTheme,
   getChartStyles,
   getHintColor,
-  switchGraph
+  switchGraph, resizeContainer
 } from "../libraries/home_helpers";
 import {applyFilter} from "../libraries/tutorial_helper";
 
@@ -105,6 +105,9 @@ export var MCQ = {
         switchGraph();
       }
     );
+    //Respond to window size changes
+    resizeContainer();
+    window.addEventListener("resize", resizeContainer);
 
     // get hint data from server side
     var hintData = await m.request({
@@ -128,6 +131,7 @@ export var MCQ = {
         .siblings().removeClass("radio-selected");
     });
 
+    var generateTimestamp;
     const getNewQuestion = async () => {
       // get new question with SMILES, mass spec data, etc.
       var data = await m.request({
@@ -135,6 +139,9 @@ export var MCQ = {
         url: "/ms_questions_new",
         params: {id: "random"}
       });
+
+      // get generation time (to be passed for record_attempt)
+      generateTimestamp = data['generate_timestamp'];
 
       // filled data for the mass spec graph
       var filledMsData = fillMsDataGaps(data['ms_data']);
@@ -276,7 +283,8 @@ export var MCQ = {
           "qid": questionData.rawData.qid,
           "options": questionData.mcqAnswers,
           "answer": $("input[name='answer']:checked").val(),
-          "isCorrect": isCorrect
+          "isCorrect": isCorrect,
+          "generate_timestamp": generateTimestamp
         }
       });
       return false;

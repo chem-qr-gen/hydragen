@@ -24,3 +24,18 @@
 .theme1{
     background-color: black;
 }
+#settingsProfileForm-inputs{
+    background-color: var(--field-bg-color);
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+#settingsProfileForm-inputs .select{
+    width: 40%;
+}
+#settingsProfileForm-inputs select{
+    width: 100%;
+}
+#settingsProfileForm-inputs input{
+    width: 40%;
+}
