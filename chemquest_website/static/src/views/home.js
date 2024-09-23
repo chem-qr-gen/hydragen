@@ -1,6 +1,7 @@
 import m from "mithril";
 import Chart from "chart.js/auto"
 import md5 from "md5";
+import JSConfetti from 'js-confetti';
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
@@ -268,6 +269,7 @@ export var MCQ = {
       }
     );
 
+    const jsConfetti = new JSConfetti();
     var isCorrect;
 
     $("#msQuestionForm").on("submit", () => {
@@ -298,11 +300,15 @@ export var MCQ = {
         $(".move-on").addClass("next");                                             //Change skip button text
         $(".move-on").removeClass("skip")
         isCorrect = true;
+        jsConfetti.addConfetti({
+          confettiColors: ["#ea9a0c", "#2dc5f6", "#6046fe"]
+        });
       } else {                                                                        //Answer Incorrect
         $("#question-feedback").removeClass("is-success");                          //Change Feedback
         $("#question-feedback").addClass("is-danger");
         $("#question-feedback").text("Incorrect, try again.");
         isCorrect = false;
+        $("#msQuestionForm").shake();
       }
 
       // disable the submit button if the answer is correct
