@@ -90,6 +90,9 @@ img#question-img {
 }
 
 /* Hints Styles*/
+.mschart-hint {
+    font-size: large;
+}
 .green-text {
     color: var(--safe-color);
 }
@@ -193,7 +196,7 @@ img#question-img {
 .chartPTableContainer{
     position: relative;
     width: 90%;
-    height: 86%;
+    height: 80%;
 }
 
 .chartContainer, .ptable {

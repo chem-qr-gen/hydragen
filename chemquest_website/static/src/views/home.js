@@ -1,6 +1,7 @@
 import m from "mithril";
 import Chart from "chart.js/auto"
 import md5 from "md5";
+import JSConfetti from 'js-confetti';
 
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
@@ -38,7 +39,16 @@ export var MCQ = {
                   <PtableSidebar/>
                 </div>
 
-                <button id="switch-graph" class="button is-primary">Periodic Table</button>
+                <div className="hint-container" style="width:100%; padding-bottom: 8px;">
+                  <div className="hint-display">
+                    <strong class="mschart-hint green-text" id="hints-danger-level"><span id="hints-used">3</span>/3 Hints
+                      Left</strong>
+                    <span class="tooltip" id="tooltip-text">Click on a bar in the MS chart to receive a hint about the fragments it usually represents.
+                                      Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</span>
+                  </div>
+                </div>
+
+                <button id="switch-graph" class="button is-primary">View Periodic Table</button>
 
                 <div className="feedback">
                   <h4 id="question-feedback"></h4>
@@ -46,15 +56,7 @@ export var MCQ = {
               </div>
               <div className="column-right">
                 <div className="answer-topbar">
-                  <div className="hint-container">
-                    <div className="hint-display">
-                      <strong class="green-text" id="hints-danger-level"><span id="hints-used">3</span>/3 Hints
-                        Left</strong>
-                      <span class="tooltip" id="tooltip-text">Click on a bar in the MS chart to receive a hint about the fragments it usually represents.
-                                        Note that not all peaks will have a corresponding hint, and that the hints are not necessarily correct for every molecule.</span>
-                    </div>
-
-                  </div>
+                  
                   <div className="skip-container">
                     <button class="move-on skip button" type="button" id="next"></button>
                   </div>
@@ -267,6 +269,7 @@ export var MCQ = {
       }
     );
 
+    const jsConfetti = new JSConfetti();
     var isCorrect;
 
     $("#msQuestionForm").on("submit", () => {
@@ -297,11 +300,15 @@ export var MCQ = {
         $(".move-on").addClass("next");                                             //Change skip button text
         $(".move-on").removeClass("skip")
         isCorrect = true;
+        jsConfetti.addConfetti({
+          confettiColors: ["#ea9a0c", "#2dc5f6", "#6046fe"]
+        });
       } else {                                                                        //Answer Incorrect
         $("#question-feedback").removeClass("is-success");                          //Change Feedback
         $("#question-feedback").addClass("is-danger");
         $("#question-feedback").text("Incorrect, try again.");
         isCorrect = false;
+        $("#msQuestionForm").shake();
       }
 
       // disable the submit button if the answer is correct
