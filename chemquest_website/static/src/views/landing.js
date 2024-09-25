@@ -7,11 +7,11 @@ var Landing = {
     view: () => (
         <div class="content">
             <Navbar />
+            <video autoplay muted loop plays-inline class="background-video">
+                <source src="../static/images/landing.mp4" type="video/mp4"></source>
+            </video>
             <div class="unbounded-wrapper">
                 <div class="hero is-large" id="landing-splash">
-                    <video autoplay muted loop plays-inline class="background-video">
-                        <source src="../static/images/landing.mp4" type="video/mp4"></source>
-                    </video>
                     <div class="hero-body" id="title-container">
                         <p class="title" id="landing-title">Mass Spectrometry Practice Made Easy</p>
                         <div class="block">
