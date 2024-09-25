@@ -1,9 +1,5 @@
 //Define Chart Styles
-//chartStyles: [
-//    0 backgroundColor, 1 borderColor, 2 barPercentage, 3 titleFont size,
-//    4 bodyFont size, 5 hint color, 6 noHint color, 7 usedAllHints color,
-//    8 titleColor, 9 bodyColor, 10 gridColor, 11 axis color, 12 tick color
-//]
+
 function getChartStyles() {
   const chartStyles = new Object();
   const theme = document.documentElement.getAttribute('data-theme');
@@ -12,7 +8,7 @@ function getChartStyles() {
   switch (theme) {
     case 'auto':
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-        _.backgroundColor = '#3f3f3f';
+        _.backgroundColor = '#1a1752';
         _.borderColor = '#3f3f3f';
         _.barPeercentage = 0.5;
         _.titleFontSize = 16;
@@ -22,9 +18,13 @@ function getChartStyles() {
         _.hintColor = '#009900';
         _.noHintColor = '#990000';
         _.usedAllHintsColor = '#996600';
-        _.gridColor = '#383B4A';
+        _.gridColor = '#4247618f';
         _.axisColor = '#2a2a2a';
         _.tickColor = '#454545';
+        _.labelColor = '#312000ff'
+        _.labelFontFamily = 'Montserrat'
+        _.labelFontSize = '16'
+        _.labelFontWeight = '600'
 
       } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         _.backgroundColor = '#b6b6b6';
@@ -40,6 +40,10 @@ function getChartStyles() {
         _.gridColor = '#454545';
         _.axisColor = '#666979';
         _.tickColor = '#c8c8c8';
+        _.labelColor = '#eec77eff'
+        _.labelFontFamily = 'Montserrat'
+        _.labelFontSize = '16'
+        _.labelFontWeight = '600'
       }
       break;
     case 'light':
@@ -53,9 +57,13 @@ function getChartStyles() {
       _.hintColor = '#009900';
       _.noHintColor = '#990000';
       _.usedAllHintsColor = '#996600';
-      _.gridColor = '#383B4A';
+      _.gridColor = '#4247618f';
       _.axisColor = '#2a2a2a';
       _.tickColor = '#454545';
+      _.labelColor = '#312000ff'
+      _.labelFontFamily = 'Montserrat'
+      _.labelFontSize = '16'
+      _.labelFontWeight = '600'
       break;
     case 'dark':
       _.backgroundColor = '#b6b6b6';
@@ -71,6 +79,10 @@ function getChartStyles() {
       _.gridColor = '#454545';
       _.axisColor = '#666979';
       _.tickColor = '#c8c8c8';
+      _.labelColor = '#eec77eff'
+      _.labelFontFamily = 'Montserrat'
+      _.labelFontSize = '16'
+      _.labelFontWeight = '600'
       break;
   }
   console.log(chartStyles);

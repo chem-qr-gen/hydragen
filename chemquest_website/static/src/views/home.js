@@ -203,11 +203,31 @@ export var MCQ = {
               grid: {color: chartStyles.gridColor},
               border: {color: chartStyles.axisColor},
               ticks: {color: chartStyles.tickColor},
+              title: {
+                display: true,
+                text: "m/z",
+                color: chartStyles.labelColor,
+                font: {
+                  family: chartStyles.labelFontFamily,
+                  size: chartStyles.labelFontSize,
+                  weight: chartStyles.labelFontWeight,             
+                },
+              },
             },
             y: {
               grid: {color: chartStyles.gridColor},
               border: {color: chartStyles.axisColor},
-              ticks: {color: chartStyles.tickColor}
+              ticks: {color: chartStyles.tickColor},
+              title: {
+                display: true,
+                text: "Relative Intensity",
+                color: chartStyles.labelColor,
+                font: {
+                  family: chartStyles.labelFontFamily,
+                  size: chartStyles.labelFontSize,
+                  weight: chartStyles.labelFontWeight,             
+                },
+              }
             }
           },
           plugins: {
