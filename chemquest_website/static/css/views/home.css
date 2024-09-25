@@ -198,7 +198,7 @@ img#question-img {
 
 .chartContainer, .ptable {
     position: absolute;
-    width:100%;
+    width: 90%;
     opacity: 1;
     transition: opacity 0.25s ease-in-out;
 }
