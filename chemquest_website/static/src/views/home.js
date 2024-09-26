@@ -273,22 +273,6 @@ export var MCQ = {
     var isCorrect;
 
     $("#msQuestionForm").on("submit", () => {
-
-
-      // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
-      // TODO: add number of hints used
-      m.request({
-        method: "POST",
-        url: "/record_attempt",
-        body: {
-          "hashId": questionData.hashId,
-          "qid": questionData.rawData.qid,
-          "options": questionData.mcqAnswers,
-          "answer": $("input[name='answer']:checked").val(),
-          "isCorrect": isCorrect,
-          "generate_timestamp": generateTimestamp
-        }
-      });
       return false;
     });
 
@@ -306,7 +290,23 @@ export var MCQ = {
       } else {                                                                        //Answer Incorrect
         $("#question-feedback").removeClass("is-success");                          //Change Feedback
         $("#question-feedback").addClass("is-danger");
-        $("#question-feedback").text("Incorrect, try again.");
+
+        // get the explanation tag for the chosen option
+        var explan = questionData.mcqAnswers[$("input[name='answer']:checked").val()]["explanation"];
+
+        // feedback based on type of error
+        if (explan.some(i => ["halide-alcohol", "halide-amine", "halide-thiol", "alcohol-halide", "amine-halide", "thiol-halide"].includes(i))) { // halides - look at M+2/M+4 peaks 
+          $("#question-feedback").text("Incorrect. Examine the peaks around the molecular ion.");
+        } else if (explan.some(i => ["primary-o-flip", "secondary-amine-flip", "carbonyl-methyl", "ether-alcohol", "ester-flip", "ester-ketone-alcohol"].includes(i))) { // MW is the same, but the structure is different
+          $("#question-feedback").text("Incorrect. Pay attention to the structure and fragment peaks.")
+        } else if (explan.some(i => ["alcohol-amine", "alcohol-ether", "amine-alcohol", "secondary-amine-ether", "ester-amide", "acid-ester", "acid-amide", "nitrile-alkyne"].includes(i))) { // MW is different
+          $("#question-feedback").text("Incorrect. Pay attention to the molecular ion peak.")
+        } else if (explan.includes("similarity-algo")) { // similarity algorithm
+          $("#question-feedback").text("Incorrect, but the correct structure is similar.")
+        } else { // fallback
+          $("#question-feedback").text("Incorrect, try again.");
+        }
+
         isCorrect = false;
         $("#msQuestionForm").shake();
       }
@@ -315,6 +315,21 @@ export var MCQ = {
       if (isCorrect) {
         $("#submit").prop("disabled", true);
       }
+
+      // submits the attempt to the server. Elo calculation and compiling of attempts for the same question are done server-side
+      // TODO: add number of hints used
+      m.request({
+        method: "POST",
+        url: "/record_attempt",
+        body: {
+          "hashId": questionData.hashId,
+          "qid": questionData.rawData.qid,
+          "options": questionData.mcqAnswers,
+          "answer": $("input[name='answer']:checked").val(),
+          "isCorrect": isCorrect,
+          "generate_timestamp": generateTimestamp
+        }
+      });
     });
 
     $("#next").on("click", async () => {
