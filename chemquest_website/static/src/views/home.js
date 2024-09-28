@@ -97,6 +97,7 @@ export var MCQ = {
                                 <h2>Loading...</h2>
                             </div>
                         </form>
+                        
                     </div>
                 </div>
             </div>
@@ -118,6 +119,23 @@ export var MCQ = {
         initMsQuestionSubmitBtn();
         initSubmitBtn(false);
         initNextBtn();
+        
+        // get the explanation tag for the chosen option
+        var explan = questionData.mcqAnswers[$("input[name='answer']:checked").val()]["explanation"];
+
+        // feedback based on type of error
+        if (explan.some(i => ["halide-alcohol", "halide-amine", "halide-thiol", "alcohol-halide", "amine-halide", "thiol-halide"].includes(i))) { // halides - look at M+2/M+4 peaks 
+          $("#question-feedback").text("Incorrect. Examine the peaks around the molecular ion.");
+        } else if (explan.some(i => ["primary-o-flip", "secondary-amine-flip", "carbonyl-methyl", "ether-alcohol", "ester-flip", "ester-ketone-alcohol"].includes(i))) { // MW is the same, but the structure is different
+          $("#question-feedback").text("Incorrect. Pay attention to the structure and fragment peaks.")
+        } else if (explan.some(i => ["alcohol-amine", "alcohol-ether", "amine-alcohol", "secondary-amine-ether", "ester-amide", "acid-ester", "acid-amide", "nitrile-alkyne"].includes(i))) { // MW is different
+          $("#question-feedback").text("Incorrect. Pay attention to the molecular ion peak.")
+        } else if (explan.includes("similarity-algo")) { // similarity algorithm
+          $("#question-feedback").text("Incorrect, but the correct structure is similar.")
+        } else { // fallback
+          $("#question-feedback").text("Incorrect, try again.");
+        }
+
     }
 }
 
