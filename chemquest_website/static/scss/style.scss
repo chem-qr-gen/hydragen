@@ -65,7 +65,7 @@ html[data-theme="dark"] {
     --safe-color: #00a832; 
     --warning-color: #cfa902;
     --danger-color: #f00000;
-    --field-bg-color: #333a42;
+    --field-bg-color: #292d37;
     --button-color: #00d1b2; 
     --button-text-color: #fff;
     --bg-color-tour: #32333F;
@@ -87,7 +87,7 @@ html[data-theme="dark"] {
         --safe-color: #00a832; 
         --warning-color: #cfa902;
         --danger-color: #f00000;
-        --field-bg-color: #333a42;
+        --field-bg-color: #292d37;
         --button-color: #00d1b2;
         --button-text-color: #fff;
         --bg-color-tour: #32333F;
@@ -123,6 +123,8 @@ h1,h2,h3,h4,h5,p,label{
 }
 .field{
     background-color: var(--field-bg-color);
+    border-radius: 25px;
+    padding: 2%
 }
 .field::after {
     content: "";

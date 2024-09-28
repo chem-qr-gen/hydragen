@@ -9,7 +9,8 @@ var Profile = {
             <div class="container-wrapper">
                 <div class="container">
                     <div class="block profile-block">
-                        <h1>Profile</h1>
+                        <h1 id="profile">Profile</h1>
+                        <a class="button is-link" href="#!/settings/profile" id="edit-profile">Edit Profile</a>
                         <div class="field profile-field">
                             <p>
                                 <span className="profile-label">Username: </span>
@@ -36,7 +37,7 @@ var Profile = {
                                 <span id="profile-regionSpan"></span>
                             </p>
                         </div>
-                        <a class="button is-link" href="#!/settings/profile">Edit Profile</a>
+                        
                     </div>
                 </div>
             </div>
