@@ -5,20 +5,14 @@ import md5 from "md5";
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
 import {
-    updateData,
-    fillMsDataGaps,
-    smiDrawerTheme,
-    getChartStyles,
-    getHintColor,
-    switchGraph,
-    resizeContainer,
     initHint,
     initOptionHighlight,
     initMsChart,
     initSubmitBtn,
     initNextBtn,
     initMsQuestionSubmitBtn
-} from "../libraries/home_helpers";
+} from "../libraries/home_template";
+import {switchGraph, resizeContainer} from "../libraries/home_helpers";
 import {applyFilter, endTrial, initiateTutorial} from "../libraries/tutorial_helper";
 
 

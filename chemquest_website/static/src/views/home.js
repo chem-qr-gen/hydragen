@@ -6,21 +6,14 @@ import JSConfetti from 'js-confetti';
 import Navbar from "../components/navbar";
 import PtableSidebar from "../components/ptableSidebar";
 import {
-    updateData,
-    fillMsDataGaps,
-    smiDrawerTheme,
-    getChartStyles,
-    getHintColor,
-    switchGraph,
-    resizeContainer,
     initNextBtn,
     initSubmitBtn,
     initMsChart,
     initHint,
     initOptionHighlight,
     initMsQuestionSubmitBtn
-} from "../libraries/home_helpers";
-
+} from "../libraries/home_template";
+import {switchGraph, resizeContainer } from "../libraries/home_helpers";
 
 export var MCQ = {
     view: () => (
