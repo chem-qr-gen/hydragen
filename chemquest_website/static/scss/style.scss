@@ -52,6 +52,7 @@ html[data-theme="light"] {
     --skip-button-style: url("/static/images/skip-light.svg");
     --next-button-style: url("/static/images/next-light.svg");
     --navbar-logo-style: url("/static/images/logo_horizontal_light.png");
+    --selected-color: linear-gradient(to right, #5f46fe8a, #8470ff3d, #8470ff0f, #290bec03, #543de900, #00000000);
 }
 
 /* Dark theme override */
@@ -73,6 +74,7 @@ html[data-theme="dark"] {
     --skip-button-style: url("/static/images/skip-dark.svg");
     --next-button-style: url("/static/images/next-dark.svg");
     --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
+    --selected-color: linear-gradient(to right, #5f46fe8a, #8470ff3d, #8470ff0f, #290bec03, #543de900, #00000000);
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -94,6 +96,7 @@ html[data-theme="dark"] {
         --skip-button-style: url("/static/images/skip-dark.svg");
         --next-button-style: url("/static/images/next-dark.svg");
         --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
+        --selected-color: linear-gradient(to right, #5f46fe8a, #8470ff3d, #8470ff0f, #290bec03, #543de900, #00000000);
     }
 }
 
@@ -137,7 +140,6 @@ thead{
 th{
     color: var(--text-color) !important;
 }
-
 
 
 /* For testing purposes, disable upon use */

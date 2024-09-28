@@ -63,7 +63,7 @@ img#question-img {
 }
 
 .radio-selected {
-    background-color: silver;
+    background: var(--selected-color);
     background-clip: content-box;
 }
 
@@ -108,7 +108,7 @@ img#question-img {
     box-sizing: border-box;
 }
 .column-left {
-    width: 80%;
+    width: 75%;
     float:left
 }
 .column-right {
@@ -188,14 +188,14 @@ img#question-img {
 }
 
 /* molecule styling */
-.options {
-    -webkit-filter: invert(var(--inversion));
-    filter: invert(var(--inversion));
-}
+// .options {
+//     -webkit-filter: invert(var(--inversion));
+//     filter: invert(var(--inversion));
+// }
 /* MSChart Styling */
 .chartPTableContainer{
     position: relative;
-    width: 90%;
+    width: 95%;
     height: 80%;
 }
 
