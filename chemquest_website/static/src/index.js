@@ -8,7 +8,7 @@ import Settings from "./views/settings";
 import Profile from "./views/profile";
 import settingsProfile from "./views/settingsProfile";
 import Leaderboard from "./views/leaderboard";
-import AudioPlayer from "./components/audioPlayer";
+import {AudioPlayer} from "./components/audioPlayer";
 
 var root = document.body;
 

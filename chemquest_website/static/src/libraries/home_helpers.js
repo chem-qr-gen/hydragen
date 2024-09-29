@@ -27,29 +27,24 @@ function resizeContainer() {
 
 // Update Hint indicator color
 function getHintColor(hintsUsed) {
-    console.log(hintsUsed);
-    console.log($("#hints-danger-level"));
     switch (hintsUsed) {
         case (3 || 2): {
             $("#hints-danger-level").removeClass("yellow-text");
             $("#hints-danger-level").removeClass("green-text");
             $("#hints-danger-level").addClass("red-text");
         }
-            console.log(2);
             break;
         case 1: {
             $("#hints-danger-level").removeClass("red-text");
             $("#hints-danger-level").removeClass("green-text");
             $("#hints-danger-level").addClass("yellow-text")
         }
-            console.log(1);
             break;
         case 0: {
             $("#hints-danger-level").removeClass("yellow-text");
             $("#hints-danger-level").removeClass("red-text");
             $("#hints-danger-level").addClass("green-text");
         }
-            console.log(0);
     }
     return;
 }

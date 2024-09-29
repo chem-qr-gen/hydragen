@@ -39,8 +39,6 @@ function initOptionHighlight() {
 
 const getNewQuestion = async () => {
     var theme = getTheme();
-    console.log(theme)
-    console.log(smiDrawerTheme);
     // setup SMILES drawer
     var drawer = new SmiDrawer({
         themes: smiDrawerTheme
@@ -239,9 +237,7 @@ function initSubmitBtn(isTutorial) {
             });
             if (isTutorial) {
                 localStorage.setItem("tutorialQuestionsCompleted", parseInt(localStorage.getItem("tutorialQuestionsCompleted")) + 1) //Add 1 completed questions
-                console.log(localStorage.getItem("tutorialQuestionsCompleted"));
                 if (parseInt(localStorage.getItem("tutorialQuestionsCompleted")) >= 3) { //End tutorial when user completed 3 questions
-                    console.log("end trial");
                     endTrial();
                 }
             }
@@ -271,7 +267,6 @@ function initNextBtn() {
 
         // reset the feedback text
         $("#question-feedback").removeClass("is-success is-danger");
-        console.log("removing text");
         $("#question-feedback").text("a");
 
         // reset hint data
