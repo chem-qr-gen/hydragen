@@ -249,10 +249,11 @@ def generate_option_nitrile(mol: Chem.Mol) -> list[dict]:
         return []
     
     # replace nitrile with a terminal alkyne
-    alkyne_mols = rdmolops.ReplaceSubstructs(mol, funcgroups_mols.nitrile, Chem.MolFromSmiles("C#C"))
+    rxn = rdChemReactions.ReactionFromSmarts("[C:1]#N>>[C:1]#C")
+    products = rxn.RunReactants((mol,))
     options = [
-        {"smiles": Chem.MolToSmiles(m), "explanation": ["nitrile-alkyne"]}
-         for m in alkyne_mols
+        {"smiles": Chem.MolToSmiles(p[0]), "explanation": ["nitrile-alkyne"]}
+         for p in products
     ]
 
     return options
