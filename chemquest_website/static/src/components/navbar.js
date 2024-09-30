@@ -5,7 +5,7 @@ import {
   nextMusic,
   musicList } from "./audioPlayer";
 // import {load} from "../../.pnp.loader.mjs";
-
+var music;
 var Navbar = {
   view: () => (
     <nav class="navbar">
@@ -68,7 +68,6 @@ var Navbar = {
         location.reload();
       })
     });
-    var music = new Object();
     document.addEventListener('DOMContentLoaded', () => {
       // if (localStorage.getItem("music_play") === null) {
       localStorage.setItem("music_play", "0");
@@ -88,15 +87,26 @@ var Navbar = {
       // }
       console.log("Music Time: " + AudioPlayer.audio.currentTime);
     });
+    console.log(music);
 
-    AudioPlayer.audio.addEventListener("ended", () => {
-      console.log("music ended");
-      AudioPlayer.audio.currentTime = 0;
-      var currentMusic = "get-audio/" + music.playMusic;
-      AudioPlayer.load(currentMusic);
-      AudioPlayer.play();
-      music = nextMusic(music.nextInstrument);
-    });
+    function detectMusicEnd() {
+      $(AudioPlayer.audio).on("ended", () => {
+        console.log("music ended");
+        console.log(music)
+        AudioPlayer.audio.currentTime = 0;
+        var currentMusic = "get-audio/" + music.playMusic;
+        AudioPlayer.load(currentMusic);
+        AudioPlayer.play();
+        music = nextMusic(music.nextInstrument);
+        reInitAudio();
+      });
+    }
+    
+    detectMusicEnd();
+
+    function reInitAudio() {
+      detectMusicEnd();
+    }
 
     $("#music_icon").on("click", () => {
       if (localStorage.getItem("music_play") === "1") {

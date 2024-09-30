@@ -64,6 +64,7 @@ function randomMusic() {
 
 function nextMusic(nextInstrument) {
   var nowMusicNext = randomInt(1, 3);
+  console.log(nowMusicNext);
   var music = {
     playMusic: musicList[nextInstrument][nowMusicNext],
     nextInstrument: nowMusicNext,
