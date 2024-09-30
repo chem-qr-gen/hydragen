@@ -1,7 +1,11 @@
 import m from "mithril";
-import AudioPlayer from "./audioPlayer";
+import {
+  AudioPlayer, 
+  randomMusic,
+  nextMusic,
+  musicList } from "./audioPlayer";
 // import {load} from "../../.pnp.loader.mjs";
-
+var music;
 var Navbar = {
   view: () => (
     <nav class="navbar">
@@ -64,32 +68,58 @@ var Navbar = {
         location.reload();
       })
     });
-
     document.addEventListener('DOMContentLoaded', () => {
       // if (localStorage.getItem("music_play") === null) {
-        localStorage.setItem("music_play", "0");
+      localStorage.setItem("music_play", "0");
       // }
-      AudioPlayer.load("get-audio/music1.mp4")
+      music = randomMusic();
+      console.log(music);
+      var currentMusic = "get-audio/" + music.playMusic;
+      AudioPlayer.load(currentMusic);
+      music = nextMusic(music.nextInstrument);
+      console.log(music);
       // if (localStorage.getItem("music_play") === "1") {
       //   $("#music_icon")[0].textContent = "music_note";
       //   AudioPlayer.play();
       // } else {
-        $("#music_icon")[0].textContent = "music_off";
+      $("#music_icon")[0].textContent = "music_off";
       //   AudioPlayer.pause();
       // }
+      detectMusicEnd();
+      console.log("Music Time: " + AudioPlayer.audio.currentTime);
     });
+    console.log(music);
 
+    function detectMusicEnd() {
+      $(AudioPlayer.audio).on("ended", () => {
+        console.log("music ended");
+        console.log(music)
+        AudioPlayer.audio.currentTime = 0;
+        var currentMusic = "get-audio/" + music.playMusic;
+        AudioPlayer.load(currentMusic);
+        AudioPlayer.play();
+        music = nextMusic(music.nextInstrument);
+        reInitAudio();
+      });
+    }
+    
+    
+
+    function reInitAudio() {
+      detectMusicEnd();
+    }
 
     $("#music_icon").on("click", () => {
       if (localStorage.getItem("music_play") === "1") {
         localStorage.setItem("music_play", "0");
         $("#music_icon")[0].textContent = "music_off";
         AudioPlayer.pause();
-
+        console.log("Music Time: " + AudioPlayer.audio.currentTime);
       } else {
         localStorage.setItem("music_play", "1");
         $("#music_icon")[0].textContent = "music_note";
         AudioPlayer.play();
+        console.log("Music duration: " + AudioPlayer.audio.duration);
       }
     });
   }

@@ -8,8 +8,6 @@
 );
 
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
-
-
 @import "views/landing.scss";
 @import "views/home.scss";
 @import "views/tour.scss";
@@ -52,6 +50,7 @@ html[data-theme="light"] {
     --skip-button-style: url("/static/images/skip-light.svg");
     --next-button-style: url("/static/images/next-light.svg");
     --navbar-logo-style: url("/static/images/logo_horizontal_light.png");
+    --selected-color: linear-gradient(to right, #5f46fe8a, #8470ff3d, #8470ff0f, #290bec03, #543de900, #00000000);
 }
 
 /* Dark theme override */
@@ -66,13 +65,14 @@ html[data-theme="dark"] {
     --safe-color: #00a832; 
     --warning-color: #cfa902;
     --danger-color: #f00000;
-    --field-bg-color: #333a42;
+    --field-bg-color: #292d37;
     --button-color: #00d1b2; 
     --button-text-color: #fff;
     --bg-color-tour: #32333F;
     --skip-button-style: url("/static/images/skip-dark.svg");
     --next-button-style: url("/static/images/next-dark.svg");
     --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
+    --selected-color: linear-gradient(to right, #5f46fe8a, #8470ff3d, #8470ff0f, #290bec03, #543de900, #00000000);
 }
 /* Dark theme (system preference) */
 @media (prefers-color-scheme: dark) {
@@ -87,13 +87,14 @@ html[data-theme="dark"] {
         --safe-color: #00a832; 
         --warning-color: #cfa902;
         --danger-color: #f00000;
-        --field-bg-color: #333a42;
+        --field-bg-color: #292d37;
         --button-color: #00d1b2;
         --button-text-color: #fff;
         --bg-color-tour: #32333F;
         --skip-button-style: url("/static/images/skip-dark.svg");
         --next-button-style: url("/static/images/next-dark.svg");
         --navbar-logo-style: url("/static/images/logo_horizontal_dark.png");
+        --selected-color: linear-gradient(to right, #5f46fe8a, #8470ff3d, #8470ff0f, #290bec03, #543de900, #00000000);
     }
 }
 
@@ -109,7 +110,7 @@ html, body{
     padding-top: 52px;
 }
 .container-wrapper {
-    height:91%;
+    height:100%;
 }
 .content {
     box-sizing: border-box;
@@ -122,6 +123,8 @@ h1,h2,h3,h4,h5,p,label{
 }
 .field{
     background-color: var(--field-bg-color);
+    border-radius: 25px;
+    padding: 2%
 }
 .field::after {
     content: "";
@@ -137,7 +140,6 @@ thead{
 th{
     color: var(--text-color) !important;
 }
-
 
 
 /* For testing purposes, disable upon use */

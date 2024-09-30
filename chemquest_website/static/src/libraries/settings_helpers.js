@@ -4,12 +4,10 @@ function checkTheme(themeName) {
 
 function setTheme() {
 	var cachedTheme = localStorage.getItem('theme');  //attempt to retrieve theme from cache
-	console.log(cachedTheme);
 	if (cachedTheme === null) {
 		cachedTheme = 'auto';
 	}
 	document.documentElement.dataset['theme'] = cachedTheme;
-	console.log(cachedTheme);
 	return cachedTheme;
 }
 // Applies current theme, make sure correct button is checked, listen for user input
