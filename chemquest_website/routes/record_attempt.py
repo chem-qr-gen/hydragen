@@ -2,6 +2,7 @@ import datetime
 from flask import request
 from flask_login import current_user
 from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import update
 
 import chemquest_website.helpers.elo as elo
 from chemquest_website import app, engine, meta
@@ -85,9 +86,16 @@ def record_attempt():
                         "is_correct": attempt["is_correct"],
                         "player_new_elo": attempt["player_new_elo"],
                     }
+                ),
+            )
+            
+        with engine.connect() as conn:
+            conn.execute(
+            update(users_table).where(users_table.c.username == attempt["username"]).values({
+                    "elo": attempt["player_new_elo"]
+                    }
                 )
             )
-    
         return {"msg": "Response recorded.", "new_elo": new_elo}
     
     # User not logged in, record attempt without username
