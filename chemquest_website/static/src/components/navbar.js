@@ -85,6 +85,7 @@ var Navbar = {
       $("#music_icon")[0].textContent = "music_off";
       //   AudioPlayer.pause();
       // }
+      detectMusicEnd();
       console.log("Music Time: " + AudioPlayer.audio.currentTime);
     });
     console.log(music);
@@ -102,7 +103,7 @@ var Navbar = {
       });
     }
     
-    detectMusicEnd();
+    
 
     function reInitAudio() {
       detectMusicEnd();
@@ -113,12 +114,12 @@ var Navbar = {
         localStorage.setItem("music_play", "0");
         $("#music_icon")[0].textContent = "music_off";
         AudioPlayer.pause();
-        console.log("Music Time: " + AudioPlayer.audio.duration);
+        console.log("Music Time: " + AudioPlayer.audio.currentTime);
       } else {
         localStorage.setItem("music_play", "1");
         $("#music_icon")[0].textContent = "music_note";
         AudioPlayer.play();
-        console.log("Music Time: " + AudioPlayer.audio.duration);
+        console.log("Music duration: " + AudioPlayer.audio.duration);
       }
     });
   }
