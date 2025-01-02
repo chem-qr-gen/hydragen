@@ -21,7 +21,7 @@ def rate_single(rating_a: float, rating_b: float, score_a: float, score_b: float
 
     return (new_rating_a, new_rating_b)
 
-def calculate_new_elo(old_elo: float, question_elo: float, attempts: list[bool]) -> float:
+def calculate_new_elo(old_elo: float, question_elo: float, attempts: list[bool], hints_used: int) -> float:
     """
     Calculates the new Elo of a player after attempting a question.
 
@@ -35,6 +35,7 @@ def calculate_new_elo(old_elo: float, question_elo: float, attempts: list[bool])
         old_elo (float): Player's elo before attempting the question
         question_elo (float): Question's elo
         attempts (list[bool]): List of attempts, True for correct, False for incorrect
+        hints_used (int): Number of hints used
 
     Returns:
         float: New elo of the player
@@ -47,6 +48,8 @@ def calculate_new_elo(old_elo: float, question_elo: float, attempts: list[bool])
             score += 1.0
             break
     
+    score -= 0.1 * hints_used
+
     score = max(0.0, score)
     
     new_elo = rate_single(old_elo, question_elo, score, 1.0 - score)[0]

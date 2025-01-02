@@ -11,7 +11,6 @@ app = Flask(__name__)
 with open("chemquest_website/chemquest_config.toml", "rb") as f:
     cfg = tomllib.load(f)
 app.config.from_mapping(cfg)
-#app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(days = 1) # TODO: set up a JWT refresh token so the user is auto-logged out after inactivity.
 
 # initialise the various addons and other services needed
 mail = Mail(app)

@@ -14,6 +14,7 @@ def record_attempt():
     hash_id = request.json['hashId']
     qid = request.json['qid']
     is_correct = request.json['isCorrect']
+    hints_used = request.json['hintsUsed']
     generateTimestamp = request.json["generate_timestamp"]
     user_ip = request.remote_addr
 
@@ -55,7 +56,8 @@ def record_attempt():
             new_elo = elo.calculate_new_elo(
                 old_elo=attempt["player_old_elo"],
                 question_elo=question_dict["difficulty"],
-                attempts=attempt["is_correct"]
+                attempts=attempt["is_correct"],
+                hints_used=hints_used
             )
             attempt["player_new_elo"] = new_elo
 
@@ -64,7 +66,8 @@ def record_attempt():
             new_elo = elo.calculate_new_elo(
                 old_elo=player_old_elo,
                 question_elo=question_dict["difficulty"],
-                attempts=[is_correct]
+                attempts=[is_correct],
+                hints_used=hints_used
             )
             attempt = {
                 "attempt_id": hash_id,

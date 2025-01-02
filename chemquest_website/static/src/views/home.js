@@ -119,7 +119,7 @@ export var MCQ = {
         initMsQuestionSubmitBtn();
         initSubmitBtn(false);
         initNextBtn();
-        
+
         // get the explanation tag for the chosen option
         var explan = questionData.mcqAnswers[$("input[name='answer']:checked").val()]["explanation"];
 
