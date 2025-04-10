@@ -19,7 +19,6 @@ For development and testing (port 5000):
 $ poetry install
 $ cd chemquest_website/static
 $ yarn install
-$ yarn run sass-watch & # compile sass into css, run in background
 $ yarn run watch
 # In a separate console window (in the main folder):
 $ poetry run flask --app=chemquest_website --debug run

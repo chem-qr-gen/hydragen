@@ -49,7 +49,7 @@ export var MCQ = {
                                     </div>
                                 </div>
 
-                                <button id="switch-graph" class="button is-primary">View Periodic Table</button>
+                                <button id="switch-graph" class="button is-primary" type="button">View Periodic Table</button>
 
                                 <div className="feedback">
                                     <h4 id="question-feedback"></h4>
